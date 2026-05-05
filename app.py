@@ -4,12 +4,27 @@ TOTAL_DIST = 350
 
 CLUBS = [
     {"name": "1W", "dist": 200, "miss": 0.25},
-    {"name": "U4", "dist": 170, "miss": 0.25},
-    {"name": "U5", "dist": 160, "miss": 0.25},
-    {"name": "7i", "dist": 145, "miss": 0.20},
-    {"name": "9i", "dist": 130, "miss": 0.15},
-    {"name": "PW", "dist": 120, "miss": 0.15},
-    {"name": "56", "dist": 80, "miss": 0.15},
+    {"name": "5W", "dist": 180, "miss": 0.25},
+    {"name": "4U", "dist": 170, "miss": 0.25},
+    {"name": "5U", "dist": 160, "miss": 0.25},
+    {"name": "6I", "dist": 150, "miss": 0.20},
+    {"name": "7I", "dist": 145, "miss": 0.20},
+    {"name": "8I", "dist": 135, "miss": 0.18},
+    {"name": "9I", "dist": 125, "miss": 0.15},
+    {"name": "PW", "dist": 115, "miss": 0.15},
+    {"name": "52°", "dist": 95, "miss": 0.15},
+    {"name": "56°", "dist": 85, "miss": 0.15},
+    {"name": "58°", "dist": 75, "miss": 0.15},
+    {"name": "60°", "dist": 65, "miss": 0.15},
+]
+
+CLUB_OPTIONS = [
+    "（未選択）", 
+    "1W", "3W", "5W",
+    "3U", "4U", "5U", "6U",
+    "5I", "6I", "7I", "8I", "9I",
+    "PW", "AW", "UW",
+    "SW", "52°", "56°", "58°", "60°"
 ]
 
 if "clubs" not in st.session_state:
@@ -27,55 +42,73 @@ COURSE = {
     9: {"par": 4, "yard": 370},
 }
 
-def choose_club(remaining, shots_left, is_first_shot):
+def choose_club(remaining, shots_left, is_first_shot, par_num, strategy):
 
-    # 👇ここを修正
+    # 👇 ① 有効クラブだけ抽出（ここ追加）
+    valid_clubs = [c for c in st.session_state.clubs if c["dist"] > 0 and c["name"] != "なし"]
+
+    # 👇 ② クラブがない場合
+    if not valid_clubs:
+        return {"name": "なし", "dist": 0, "miss": 1.0}
+
+    # 👇 ③ 1打目ロジック
     if is_first_shot:
 
         if remaining <= 220:
-            return min(
-                st.session_state.clubs,
-                key=lambda c: abs(c["dist"] - remaining)
-            )
 
-        return max(st.session_state.clubs, key=lambda c: c["dist"])
+            # 👇 安全モードなら届くクラブを除外
+            if strategy == "安全（刻む）":
+                safe_clubs = [c for c in valid_clubs if c["dist"] < remaining]
 
+                if safe_clubs:
+                    return min(
+                        safe_clubs, 
+                        key=lambda c: abs(c["dist"] - remaining)
+                    )
+
+        return min(
+            valid_clubs,
+            key=lambda c: abs(c["dist"] - remaining)
+        )
+
+        return max(valid_clubs, key=lambda c: c["dist"])
+
+    # 👇 ④ ここから元のロジック（残す）
     best = None
     best_score = 999
 
     target = remaining / shots_left
 
-    for club in st.session_state.clubs:
+    if par_num == 5 and not is_first_shot and shots_left >= 2 and remaining > 180:
+        target = remaining * 0.7   # ←ここがポイント（強気に距離を取りに行く）
 
-        if not is_first_shot and club["name"] == "1W":
+    for club in valid_clubs:
+
+        if club["name"] == "1W":
             continue
 
-        # 👇追加（オーバー防止）
         if shots_left > 1 and club["dist"] > remaining:
             continue
-
 
         good = club["dist"]
         miss = club["dist"] * 0.6
         miss_rate = club["miss"]
 
-        # 期待残距離
         expected_after = (
             (1 - miss_rate) * (remaining - good)
             + miss_rate * (remaining - miss)
         )
 
-        # 次の1打も考慮
         if shots_left > 1:
             next_best = min(
                 abs(expected_after - c["dist"])
-                for c in st.session_state.clubs
+                for c in valid_clubs
             )
 
             score = (
                 expected_after
                 + next_best * (3 / shots_left)
-                + abs(club["dist"] - target) * 1.5  # 👈追加
+                + abs(club["dist"] - target) * 1.5
             )
         else:
             score = abs(expected_after)
@@ -85,11 +118,7 @@ def choose_club(remaining, shots_left, is_first_shot):
             best = club
 
     if best is None:
-
-        if not is_first_shot:
-            best = min(st.session_state.clubs, key=lambda c: c["dist"])
-        else:
-            best = max(st.session_state.clubs, key=lambda c: c["dist"])
+        best = min(valid_clubs, key=lambda c: c["dist"])
 
     return best
 
@@ -101,7 +130,7 @@ def find_replacement_club(remaining):
 
     return None
 
-def plan(total_dist, strokes, used):
+def plan(total_dist, strokes, used, par_num, strategy):
     result = []
     remaining = total_dist
 
@@ -112,7 +141,7 @@ def plan(total_dist, strokes, used):
         is_first_shot = (used + i == 0)
 
         # クラブ選択
-        club = choose_club(remaining, shots_left, is_first_shot)
+        club = choose_club(remaining, shots_left, is_first_shot, par_num, strategy)
 
         shot_dist = club["dist"]
 
@@ -126,7 +155,8 @@ def plan(total_dist, strokes, used):
 
         remaining = max(remaining - shot_dist, 0)
 
-        if remaining == 0:
+        if remaining <= 0:
+            remaining = 0
             break
 
     return result
@@ -134,6 +164,13 @@ def plan(total_dist, strokes, used):
 import streamlit as st
 
 st.title("⛳ AIキャディ")
+
+st.markdown("### 🎯 ラウンド目標")
+
+target_score = st.number_input(
+    "何打で回りたい？",
+    60, 150, 88
+)
 
 if "course" not in st.session_state:
     st.session_state.course = {
@@ -158,22 +195,114 @@ if "course" not in st.session_state:
         18: {"par": 4, "yard": 420},
     }
 
+
+
+# 🎯 ホール難易度計算
+hole_difficulty = {}
+
+for h, data in st.session_state.course.items():
+    yard = data["yard"]
+    par = data["par"]
+
+    score = yard / 100
+
+    if par == 5:
+        score -= 2
+        score -= 1   # Par5優遇
+
+    elif par == 3:
+        score += 1
+
+    if par == 4 and yard > 380:
+        score += 1.5
+
+    hole_difficulty[h] = score
+
+# 合計パー
+total_par = sum(h["par"] for h in st.session_state.course.values())
+
+# ボギーペース
+bogey_base = total_par + 18
+
+# 難易度でソート（簡単→難しい）
+sorted_holes = sorted(hole_difficulty.items(), key=lambda x: x[1])
+
+# 初期化
+target_par_holes = []
+target_double_holes = []
+
+if target_score <= bogey_base:
+    # パーを取る必要があるケース（90以下）
+    needed_par = bogey_base - target_score
+    target_par_holes = [h[0] for h in sorted_holes[:needed_par]]
+
+else:
+    # ダボOKを作るケース（90以上）
+    extra = target_score - bogey_base
+    target_double_holes = [h[0] for h in sorted_holes[::-1][:extra]]
+
 st.markdown(
-    "<h4 style='margin-bottom:-30px;'>ホールを選択</h4>",
+    "<div style='font-size:18px; font-weight:bold'>🧠 ラウンドスコア戦略</div>",
     unsafe_allow_html=True
 )
 
-hole = st.selectbox("", list(COURSE.keys()), key="hole_select")
+holes = sorted(st.session_state.course.keys())
 
-TOTAL_DIST = COURSE[hole]["yard"]
-par_num = COURSE[hole]["par"]
+cols = st.columns(6)
+
+for i, h in enumerate(holes):
+    col = cols[i % 6]
+
+    par = st.session_state.course[h]["par"]
+
+    if h in target_par_holes:
+        label = "◎パー"
+    elif h in target_double_holes:
+        label = "△ダボ"
+    else:
+        label = "〇ボギー"
+
+    with col:
+        st.markdown(
+            f"""
+            <div style='font-size:14px; line-height:1.7'>
+            <b>{h}番 Par{par}</b><br>
+            {label}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+st.markdown("<div style='margin-top:20px;'></div>", unsafe_allow_html=True)
+
+st.markdown(
+    "<div style='font-size:20px; font-weight:bold; margin-bottom:-8px;'>ホールを選択</div>",
+    unsafe_allow_html=True
+)
+
+
+
+
+hole = st.selectbox(
+    "",
+    list(st.session_state.course.keys()),
+    key="hole_select"
+)
+
+
+TOTAL_DIST = st.session_state.course[hole]["yard"]
+par_num = st.session_state.course[hole]["par"]
+
+
+
+
 
 # 👇 ここ追加
 if "prev_hole" not in st.session_state:
     st.session_state.prev_hole = hole
 
 if hole != st.session_state.prev_hole:
-    st.session_state.remaining = COURSE[hole]["yard"]
+    st.session_state.remaining = st.session_state.course[hole]["yard"]
     st.session_state.history = []   # ← これ追加（超重要）
     st.session_state.prev_hole = hole
 
@@ -205,6 +334,11 @@ st.markdown(
 
 putts = st.number_input("", 1, 5, 2)
 
+strategy = st.selectbox(
+    "戦略モード",
+    ["最短（攻め）", "安全（刻む）"]
+)
+
 shot_strokes = strokes - putts
 
 st.markdown(
@@ -221,7 +355,7 @@ if strokes < min_strokes:
     st.stop()
 
 # ④ 戦略作成（remainingを使う）
-plan_data = plan(st.session_state.remaining, shot_strokes, 0)
+plan_data = plan(st.session_state.remaining, shot_strokes, 0, par_num, strategy)
 
 # ⑤ 戦略表示
 st.markdown("<h5>📋 この戦略でいこう！</h5>", unsafe_allow_html=True)
@@ -242,7 +376,7 @@ remaining_strokes = shot_strokes - used
 # ③ 残り戦略
 
 if remaining_strokes > 0:
-    plan_data = plan(st.session_state.remaining, remaining_strokes, used)
+    plan_data = plan(st.session_state.remaining, remaining_strokes, used, par_num, strategy)
 
     for i, p in enumerate(plan_data):
 
@@ -348,6 +482,17 @@ if st.button("リセット"):
 st.divider()
 st.markdown("<h5>⚙️ クラブ設定（編集可能）</h5>", unsafe_allow_html=True)
 
+if st.button("クラブ設定を初期に戻す"):
+
+    st.session_state.clubs = CLUBS.copy()
+
+    # UIのkeyをリセット（これ重要）
+    for k in list(st.session_state.keys()):
+        if k.startswith("name_") or k.startswith("dist_") or k.startswith("miss_"):
+            del st.session_state[k]
+
+    st.rerun()
+
 # 👇 幅を調整（ここがポイント）
 col1, col2, col3 = st.columns([1, 1, 3])
 
@@ -364,11 +509,17 @@ edited_clubs = []
 
 for i, c in enumerate(st.session_state.clubs):
 
-    # 👇 同じ比率を使う（重要）
+    unique_id = f"{i}_{c['name']}" 
+
     col1, col2, col3 = st.columns([1, 1, 3])
 
     with col1:
-        name = st.text_input("", c["name"], key=f"name_{i}")
+        name = st.selectbox(
+            "",
+            CLUB_OPTIONS,
+            index=CLUB_OPTIONS.index(c["name"]) if c["name"] in CLUB_OPTIONS else 0,
+            key=f"name_{unique_id}"
+        )
 
     with col2:
         dist = st.number_input("", 0, 300, c["dist"], key=f"dist_{i}")
@@ -376,14 +527,34 @@ for i, c in enumerate(st.session_state.clubs):
     with col3:
         miss = st.slider("", 0.0, 0.8, c["miss"], 0.01, key=f"miss_{i}")
 
-    edited_clubs.append({
-        "name": name,
-        "dist": dist,
-        "miss": miss
-    })
+    # 👇ここに入れる（重要）
+    if name != "（未選択）":
+        edited_clubs.append({
+            "name": name,
+            "dist": dist,
+            "miss": miss
+        })
+
 
 if st.button("クラブ設定を更新"):
-    st.session_state.clubs = edited_clubs
+
+    names = [c["name"] for c in edited_clubs]
+
+    if len(names) != len(set(names)):
+        st.error("同じクラブは1本しか選べません")
+        st.stop()
+
+    if len(edited_clubs) > 13:
+        st.error("クラブはパターを除いて13本までです")
+        st.stop()
+
+    st.session_state.clubs = sorted(
+        edited_clubs,
+        key=lambda x: x["dist"],
+        reverse=True
+    )
+
+    st.session_state.pop("name_0", None)
     st.rerun()
 
 # ⑩　コース設定
