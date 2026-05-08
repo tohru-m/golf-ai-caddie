@@ -490,8 +490,7 @@ def plan(total_dist, strokes, used, par_num):
 
         if remaining <= 0:
             remaining = 0
-            break
-
+   
     return result
 
 import streamlit as st
@@ -856,7 +855,7 @@ default_index = options.index(recommended_score)
 
 with target_select:
 
-    target_score = st.selectbox(
+    target = st.selectbox(
         "",
         options,
         index=default_index,
@@ -885,7 +884,7 @@ with putt_row2:
         label_visibility="collapsed"
     )
 
-shot_strokes = target_score - putts
+shot_strokes = target - putts
 
 st.markdown(
     f"""
