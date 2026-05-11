@@ -527,15 +527,19 @@ def render_score_table(holes, hole_targets):
 st.title("⛳ AIキャディ")
 
 # ---------- ラウンド目標 ----------
-st.markdown('<div class="ui-label">🎯 何打で回りたい？</div>', unsafe_allow_html=True)
+goal_col1, goal_col2 = st.columns([3, 1])
 
-target_score = st.selectbox(
-    "",
-    list(range(60, 151)),
-    index=40,
-    key="target_score",
-    label_visibility="collapsed"
-)
+with goal_col1:
+    st.markdown('<div class="ui-label" style="margin-top:8px;">🎯 何打で回りたい？</div>', unsafe_allow_html=True)
+
+with goal_col2:
+    target_score = st.selectbox(
+        "",
+        list(range(60, 151)),
+        index=40,
+        key="target_score",
+        label_visibility="collapsed"
+    )
 
 hole_targets = calc_hole_targets(target_score)
 
