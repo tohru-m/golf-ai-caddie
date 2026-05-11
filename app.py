@@ -161,8 +161,14 @@ div[data-testid="stSelectbox"] {
 
 div[data-testid="stSelectbox"] select,
 div[data-testid="stSelectbox"] > div > div {
-    font-size: 16px !important;
-    min-height: 48px !important;
+    font-size: 22px !important;
+    min-height: 52px !important;
+    font-weight: 700 !important;
+}
+
+div[data-testid="stSelectbox"] span {
+    font-size: 22px !important;
+    font-weight: 700 !important;
 }
 
 /* ===== 数値入力 ===== */
