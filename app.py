@@ -794,7 +794,7 @@ st.markdown(
 
 with st.form("shot_form"):
 
-    st.markdown('<div class="ui-label">🎯 ショットの結果を入力</div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🎯 ショットの結果を入力</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="ui-label-small">使ったクラブ</div>', unsafe_allow_html=True)
     actual_club = st.selectbox(
