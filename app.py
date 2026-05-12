@@ -522,9 +522,18 @@ def render_score_table(holes, hole_targets):
         strategy_html = f"<span style='color:{color}; font-weight:700;'>計画 {target}{label_text}</span>"
         actual        = st.session_state.get(f"actual_{h}", "")
         deviation     = ""
+        dev_color     = "#1a1a1a"
         if actual != "":
-            gap = target - int(actual)
-            deviation = f"+{gap}" if gap > 0 else str(gap)
+            gap = int(actual) - target  # 実績 − 計画
+            if gap > 0:
+                deviation = f"+{gap}"
+                dev_color = "#dc2626"   # 赤
+            elif gap < 0:
+                deviation = str(gap)
+                dev_color = "#2563eb"   # 青
+            else:
+                deviation = "±0"
+                dev_color = "#1a1a1a"
 
         # 1段目：ホール番号・Par | 戦略
         r1, r2 = st.columns([1.2, 2.0])
@@ -534,12 +543,13 @@ def render_score_table(holes, hole_targets):
         # 2段目：実績 | 差異
         if actual != "":
             actual_diff = int(actual) - par
-            actual_label, actual_color = score_info(actual_diff)
+            actual_label, _ = score_info(actual_diff)
             actual_name = actual_label.split(' ', 1)[1] if ' ' in actual_label else actual_label
             st.markdown(
                 f"<div class='score-cell' style='padding-left:8px;'>"
-                f"<span style='color:{actual_color}; font-weight:700;'>実績{actual}{actual_name}</span>"
-                f"　差異{deviation}</div>",
+                f"<span style='color:#16a34a; font-weight:700;'>実績{actual}{actual_name}</span>"
+                f"　<span style='color:{dev_color}; font-weight:700;'>差異{deviation}</span>"
+                f"</div>",
                 unsafe_allow_html=True
             )
 
