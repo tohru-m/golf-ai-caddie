@@ -189,6 +189,8 @@ div[data-testid="stCheckbox"] input[type="checkbox"] {
     height: 24px !important;
     accent-color: #1a2e44;
     cursor: pointer;
+    outline: 3px solid #1a2e44 !important;
+    outline-offset: 2px;
 }
 
 /* ===== Expander ===== */
