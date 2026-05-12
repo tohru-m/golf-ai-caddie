@@ -896,7 +896,7 @@ with st.form("shot_form"):
 # =========================
 
 st.markdown("<div class='section-divider'></div>", unsafe_allow_html=True)
-st.markdown('<div class="ui-label">🏁 このホールの最終スコア</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🏁 このホールの最終スコア</div>', unsafe_allow_html=True)
 
 score_labels = [f"{i}打" for i in range(1, 17)]
 
@@ -905,14 +905,45 @@ def update_actual_score():
         st.session_state[f"final_score_input_{hole}"].replace("打", "")
     )
 
-st.selectbox(
-    "",
-    score_labels,
-    index=max(int(st.session_state.get(f"actual_{hole}", 1)) - 1, 0),
-    key=f"final_score_input_{hole}",
-    on_change=update_actual_score,
-    label_visibility="collapsed"
-)
+def get_score_name(score, par):
+    diff = score - par
+    if score == 1:
+        return "ホールインワン🌸！！", "#e53e3e"
+    elif diff <= -3:
+        return "アルバトロス！！！", "#7c3aed"
+    elif diff == -2:
+        return "イーグル！！", "#7c3aed"
+    elif diff == -1:
+        return "バーディー！！", "#2563eb"
+    elif diff == 0:
+        return "パー！", "#059669"
+    elif diff == 1:
+        return "ボギー", "#d97706"
+    elif diff == 2:
+        return "ダブルボギー", "#dc2626"
+    else:
+        return "トリプルボギー以上", "#7f1d1d"
+
+fs_col1, fs_col2 = st.columns([1, 1])
+
+with fs_col1:
+    st.selectbox(
+        "",
+        score_labels,
+        index=max(int(st.session_state.get(f"actual_{hole}", 1)) - 1, 0),
+        key=f"final_score_input_{hole}",
+        on_change=update_actual_score,
+        label_visibility="collapsed"
+    )
+
+with fs_col2:
+    selected = st.session_state.get(f"final_score_input_{hole}", f"{par_num}打")
+    current_score = int(selected.replace("打", "")) if isinstance(selected, str) else par_num
+    sname, scolor = get_score_name(current_score, par_num)
+    st.markdown(
+        f"<div style='font-size:22px; font-weight:900; color:{scolor}; padding-top:10px;'>{sname}</div>",
+        unsafe_allow_html=True
+    )
 
 # =========================
 # クラブ設定
