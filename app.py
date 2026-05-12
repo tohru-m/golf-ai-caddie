@@ -912,15 +912,15 @@ def get_score_name(score, par):
     elif diff <= -3:
         return "アルバトロス！！！", "#7c3aed"
     elif diff == -2:
-        return "イーグル！！", "#7c3aed"
+        return "イーグル！！", "#f97316"
     elif diff == -1:
         return "バーディー！！", "#2563eb"
     elif diff == 0:
-        return "パー！", "#059669"
+        return "パー！", "#1a1a1a"
     elif diff == 1:
-        return "ボギー", "#d97706"
+        return "ボギー", "#059669"
     elif diff == 2:
-        return "ダブルボギー", "#dc2626"
+        return "ダブルボギー", "#7c3aed"
     else:
         return "トリプルボギー以上", "#7f1d1d"
 
