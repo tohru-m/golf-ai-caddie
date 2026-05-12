@@ -957,43 +957,39 @@ with st.expander("⚙️ クラブ設定", expanded=False):
                 del st.session_state[k]
         st.rerun()
 
-    col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
-    with col1: st.markdown("**クラブ**")
-    with col2: st.markdown("**飛距離(y)**")
-    with col3: st.markdown("**得意距離(y)**")
-    with col4: st.markdown("**ミス率**")
-
     edited_clubs = []
 
     for i, c in enumerate(st.session_state.clubs):
         uid  = f"{i}_{c['name']}"
-        col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
 
-        with col1:
-            name = st.selectbox(
-                "",
-                CLUB_OPTIONS,
-                index=CLUB_OPTIONS.index(c["name"]) if c["name"] in CLUB_OPTIONS else 0,
-                key=f"name_{uid}"
-            )
-        with col2:
-            dist_options = list(range(300, 19, -10))
-            dist = st.selectbox(
-                "",
-                dist_options,
-                index=dist_options.index(c["dist"]) if c["dist"] in dist_options else 0,
-                key=f"dist_{i}"
-            )
-        with col3:
-            fav_options = ["未設定"] + list(range(300, 19, -10))
-            favorite    = st.selectbox(
-                "",
-                fav_options,
-                index=fav_options.index(c.get("favorite", 0)) if c.get("favorite", 0) in fav_options else 0,
-                key=f"favorite_{i}"
-            )
-        with col4:
-            miss = st.slider("", 0.0, 0.8, c["miss"], 0.01, key=f"miss_{i}")
+        st.markdown(f"<div class='ui-label-small'>クラブ</div>", unsafe_allow_html=True)
+        name = st.selectbox(
+            "",
+            CLUB_OPTIONS,
+            index=CLUB_OPTIONS.index(c["name"]) if c["name"] in CLUB_OPTIONS else 0,
+            key=f"name_{uid}"
+        )
+
+        st.markdown("<div class='ui-label-small'>飛距離（y）</div>", unsafe_allow_html=True)
+        dist_options = list(range(300, 19, -10))
+        dist = st.selectbox(
+            "",
+            dist_options,
+            index=dist_options.index(c["dist"]) if c["dist"] in dist_options else 0,
+            key=f"dist_{i}"
+        )
+
+        st.markdown("<div class='ui-label-small'>得意距離（y）</div>", unsafe_allow_html=True)
+        fav_options = ["未設定"] + list(range(300, 19, -10))
+        favorite = st.selectbox(
+            "",
+            fav_options,
+            index=fav_options.index(c.get("favorite", 0)) if c.get("favorite", 0) in fav_options else 0,
+            key=f"favorite_{i}"
+        )
+
+        st.markdown("<div class='ui-label-small'>ミス率</div>", unsafe_allow_html=True)
+        miss = st.slider("", 0.0, 0.8, c["miss"], 0.01, key=f"miss_{i}")
 
         if name != "（未選択）":
             edited_clubs.append({
@@ -1002,6 +998,8 @@ with st.expander("⚙️ クラブ設定", expanded=False):
                 "miss":     miss,
                 "favorite": 0 if favorite == "未設定" else favorite,
             })
+
+        st.markdown("<div class='section-divider'></div>", unsafe_allow_html=True)
 
 if st.button("✅ クラブ設定を更新", use_container_width=True):
     names = [c["name"] for c in edited_clubs]
