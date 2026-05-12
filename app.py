@@ -744,7 +744,7 @@ if remaining_strokes > 0:
 
         if is_last:
             if display_dist >= p["before"]:
-                msg       = "🏁 グリーンオン"
+                msg       = "🚩グリーンオン<span style='color:#e53e3e;'>！</span>"
                 row_class = "shot-row"
             else:
                 shortage  = p["before"] - display_dist
@@ -769,7 +769,7 @@ if remaining_strokes > 0:
 
 elif remaining_strokes == 0:
     if st.session_state.remaining <= 5:
-        st.markdown("<div class='shot-row'>🏁 グリーンオン（パットのみ）</div>", unsafe_allow_html=True)
+        st.markdown("<div class='shot-row'>🚩グリーンオン<span style='color:#e53e3e;'>！</span>（パットのみ）</div>", unsafe_allow_html=True)
     else:
         st.error("⚠️ この計画では届きません")
 else:
