@@ -780,31 +780,21 @@ elif remaining_strokes > 0:
     shots_to_green = next((i + 1 for i, p in enumerate(plan_data) if p["remain"] == 0), len(plan_data))
 
     for i, p in enumerate(plan_data):
-        display_dist = min(p["dist"], p["before"])
-        is_last      = (i == len(plan_data) - 1)
+        # 既にグリーンオン済みの冗長ショットはスキップ
+        if p["before"] == 0:
+            continue
 
-        if is_last:
-            if display_dist >= p["before"]:
-                msg       = "🚩グリーンオン<span style='color:#e53e3e;'>！</span>"
-                row_class = "shot-row"
-            else:
-                shortage  = p["before"] - display_dist
-                msg       = f"⚠️ あと{shortage}y届かない"
-                row_class = "shot-row-warn"
-        else:
-            msg       = f"残り {max(p['before'] - display_dist, 0)}y"
-            row_class = "shot-row"
+        display_dist     = min(p["dist"], p["before"])
+        is_last          = (i == len(plan_data) - 1)
+        green_on_here    = (p["remain"] == 0)
 
-        st.markdown(
-            f"<div class='{row_class}'>"
-            f"🏌️ <strong>{p['club']}</strong>（{display_dist}y） → {msg}"
-            f"</div>",
-            unsafe_allow_html=True
-        )
-
-        if is_last and display_dist >= p["before"]:
+        if green_on_here or (is_last and display_dist >= p["before"]):
+            # グリーンオン
             st.markdown(
-                f"<div class='shot-row'>🏌️ パット {putts}回</div>",
+                f"<div class='shot-row'>"
+                f"🏌️ <strong>{p['club']}</strong>（{display_dist}y） → "
+                f"🚩グリーンオン<span style='color:#e53e3e;'>！</span>"
+                f"</div>",
                 unsafe_allow_html=True
             )
             margin = remaining_strokes - shots_to_green
@@ -814,6 +804,28 @@ elif remaining_strokes > 0:
                     f"🟢 {margin}打余裕があります</div>",
                     unsafe_allow_html=True
                 )
+            st.markdown(
+                f"<div class='shot-row'>🏌️ パット {putts}回</div>",
+                unsafe_allow_html=True
+            )
+            break
+
+        elif is_last:
+            shortage = p["before"] - display_dist
+            st.markdown(
+                f"<div class='shot-row-warn'>"
+                f"🏌️ <strong>{p['club']}</strong>（{display_dist}y） → ⚠️ あと{shortage}y届かない"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+
+        else:
+            st.markdown(
+                f"<div class='shot-row'>"
+                f"🏌️ <strong>{p['club']}</strong>（{display_dist}y） → 残り {max(p['before'] - display_dist, 0)}y"
+                f"</div>",
+                unsafe_allow_html=True
+            )
 
 elif remaining_strokes == 0:
     st.error("⚠️ この計画では届きません")
