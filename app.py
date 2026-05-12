@@ -212,7 +212,7 @@ div[data-testid="stForm"] {
 
 /* ===== スコア表の文字 ===== */
 .score-cell {
-    font-size: 18px;
+    font-size: 22px;
     padding: 4px 0;
 }
 
