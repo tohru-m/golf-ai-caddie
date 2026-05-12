@@ -561,7 +561,7 @@ def render_score_table(holes, hole_targets):
 # アプリ本体
 # ============================================================
 
-_img_path = os.path.join(os.path.dirname(__file__), "caddie_dog.png")
+_img_path = os.path.join(os.path.dirname(__file__), "images", "caddie_dog.png")
 with open(_img_path, "rb") as _f:
     _img_b64 = base64.b64encode(_f.read()).decode()
 st.markdown(
