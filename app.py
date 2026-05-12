@@ -514,6 +514,7 @@ def render_score_table(holes, hole_targets):
 
     for h in holes:
         par    = st.session_state.course[h]["par"]
+        yard   = st.session_state.course[h]["yard"]
         target = hole_targets[h]
         diff   = target - par
         label, color = score_info(diff)
@@ -537,7 +538,7 @@ def render_score_table(holes, hole_targets):
 
         # 1段目：ホール番号・Par | 戦略
         r1, r2 = st.columns([1.2, 2.0])
-        with r1: st.markdown(f"<div class='score-cell' style='font-size:26px;'><b>{h}番</b> Par{par}</div>", unsafe_allow_html=True)
+        with r1: st.markdown(f"<div class='score-cell' style='font-size:26px;'><b>{h}番</b> Par{par} {yard}y</div>", unsafe_allow_html=True)
         with r2: st.markdown(f"<div class='score-cell'>{strategy_html}</div>", unsafe_allow_html=True)
 
         # 2段目：実績 | 差異
