@@ -229,6 +229,12 @@ div[data-testid="stSlider"] {
 }
 
 /* ===== クラブ選択グリッド ===== */
+div[data-testid="stRadio"] {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+}
 div[data-testid="stRadio"] > div:last-child {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
