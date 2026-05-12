@@ -512,13 +512,6 @@ def score_info(diff):
 
 def render_score_table(holes, hole_targets):
 
-    h1, h2, h3, h4, h5 = st.columns([0.7, 0.6, 1.6, 0.8, 0.8])
-    with h1: st.markdown("<div style='font-size:18px; font-weight:700;'>H</div>", unsafe_allow_html=True)
-    with h2: st.markdown("<div style='font-size:18px; font-weight:700;'>Par</div>", unsafe_allow_html=True)
-    with h3: st.markdown("<div style='font-size:18px; font-weight:700;'>戦略</div>", unsafe_allow_html=True)
-    with h4: st.markdown("<div style='font-size:18px; font-weight:700;'>実績</div>", unsafe_allow_html=True)
-    with h5: st.markdown("<div style='font-size:18px; font-weight:700;'>差</div>", unsafe_allow_html=True)
-
     for h in holes:
         par    = st.session_state.course[h]["par"]
         target = hole_targets[h]
@@ -532,12 +525,21 @@ def render_score_table(holes, hole_targets):
             gap = target - int(actual)
             deviation = f"+{gap}" if gap > 0 else str(gap)
 
-        r1, r2, r3, r4, r5 = st.columns([0.7, 0.6, 1.6, 0.8, 0.8])
-        with r1: st.markdown(f"<div class='score-cell'>{h}</div>",                    unsafe_allow_html=True)
-        with r2: st.markdown(f"<div class='score-cell'>{par}</div>",                  unsafe_allow_html=True)
-        with r3: st.markdown(f"<div class='score-cell'>{strategy_html}</div>",        unsafe_allow_html=True)
-        with r4: st.markdown(f"<div class='score-cell'>{actual}</div>",               unsafe_allow_html=True)
-        with r5: st.markdown(f"<div class='score-cell'>{deviation}</div>",            unsafe_allow_html=True)
+        # 1段目：ホール番号 | Par | 戦略
+        r1, r2, r3 = st.columns([0.8, 0.6, 2.0])
+        with r1: st.markdown(f"<div class='score-cell'><b>{h}番</b></div>", unsafe_allow_html=True)
+        with r2: st.markdown(f"<div class='score-cell'>Par{par}</div>", unsafe_allow_html=True)
+        with r3: st.markdown(f"<div class='score-cell'>{strategy_html}</div>", unsafe_allow_html=True)
+
+        # 2段目：実績 | 差
+        if actual != "":
+            st.markdown(
+                f"<div class='score-cell' style='padding-left:8px; color:#4a5568;'>"
+                f"実績：{actual}打　差：{deviation}</div>",
+                unsafe_allow_html=True
+            )
+
+        st.markdown("<div class='section-divider'></div>", unsafe_allow_html=True)
 
 # ============================================================
 # アプリ本体
