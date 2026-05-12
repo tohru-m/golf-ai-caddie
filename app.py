@@ -180,7 +180,23 @@ div[data-testid="stNumberInput"] input {
 
 /* ===== チェックボックス ===== */
 div[data-testid="stCheckbox"] label {
-    font-size: 16px !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+}
+
+div[data-testid="stCheckbox"] input[type="checkbox"] {
+    width: 22px !important;
+    height: 22px !important;
+    accent-color: #1a2e44;
+    cursor: pointer;
+}
+
+div[data-testid="stCheckbox"] {
+    border: 2.5px solid #1a2e44;
+    border-radius: 10px;
+    padding: 10px 14px !important;
+    background: #f0f4f8;
+    margin-top: 10px;
 }
 
 /* ===== Expander ===== */
