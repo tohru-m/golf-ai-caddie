@@ -97,18 +97,18 @@ html, body, [class*="css"] {
     margin: 10px 0 14px 0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 10px;
+    justify-content: flex-start;
+    gap: 8px;
 }
 .hole-header h2 {
     margin: 0;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 900;
     color: white;
     white-space: nowrap;
 }
 .hole-header .sub {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 900;
     color: #93c5fd;
     white-space: nowrap;
