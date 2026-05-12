@@ -614,14 +614,9 @@ label, rec_color  = score_info(diff)
 
 st.markdown(f'<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">⛳ {hole}番ホールの目標スコア</div>', unsafe_allow_html=True)
 
+label_text = label.split(' ', 1)[1] if ' ' in label else label
 st.markdown(
-    f"""
-    <div style='padding-bottom:4px;'>
-      <span class='recommend-badge' style='background:{rec_color}22; color:{rec_color}; border:1.5px solid {rec_color};'>
-        AI推奨：{recommended_score}打 {label}
-      </span>
-    </div>
-    """,
+    f"<div style='font-size:16px; font-weight:700; color:#1a1a1a; padding-bottom:4px;'>（AI推奨：{recommended_score}打 {label_text}）</div>",
     unsafe_allow_html=True
 )
 
