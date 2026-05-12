@@ -959,9 +959,9 @@ with st.expander("⚙️ クラブ設定", expanded=False):
 
     col1, col2, col3, col4 = st.columns([1, 1, 2, 1])
     with col1: st.markdown("**クラブ**")
-    with col2: st.markdown("**距離(y)**")
+    with col2: st.markdown("**飛距離(y)**")
     with col3: st.markdown("**ミス率**")
-    with col4: st.markdown("**得意**")
+    with col4: st.markdown("**得意距離(y)**")
 
     edited_clubs = []
 
