@@ -185,18 +185,10 @@ div[data-testid="stCheckbox"] label {
 }
 
 div[data-testid="stCheckbox"] input[type="checkbox"] {
-    width: 22px !important;
-    height: 22px !important;
+    width: 24px !important;
+    height: 24px !important;
     accent-color: #1a2e44;
     cursor: pointer;
-}
-
-div[data-testid="stCheckbox"] {
-    border: 2.5px solid #1a2e44;
-    border-radius: 10px;
-    padding: 10px 14px !important;
-    background: #f0f4f8;
-    margin-top: 10px;
 }
 
 /* ===== Expander ===== */
