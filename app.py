@@ -526,11 +526,10 @@ def render_score_table(holes, hole_targets):
             gap = target - int(actual)
             deviation = f"+{gap}" if gap > 0 else str(gap)
 
-        # 1段目：ホール番号 | Par | 戦略
-        r1, r2, r3 = st.columns([0.8, 0.6, 2.0])
-        with r1: st.markdown(f"<div class='score-cell'><b>{h}番</b></div>", unsafe_allow_html=True)
-        with r2: st.markdown(f"<div class='score-cell'>Par{par}</div>", unsafe_allow_html=True)
-        with r3: st.markdown(f"<div class='score-cell'>{strategy_html}</div>", unsafe_allow_html=True)
+        # 1段目：ホール番号・Par | 戦略
+        r1, r2 = st.columns([1.2, 2.0])
+        with r1: st.markdown(f"<div class='score-cell'><b>{h}番</b> Par{par}</div>", unsafe_allow_html=True)
+        with r2: st.markdown(f"<div class='score-cell'>{strategy_html}</div>", unsafe_allow_html=True)
 
         # 2段目：実績 | 差
         if actual != "":
