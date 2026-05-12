@@ -63,7 +63,7 @@ html, body, [class*="css"] {
     border-radius: 8px;
     padding: 10px 14px;
     margin: 6px 0;
-    font-size: 17px;
+    font-size: 20px;
     line-height: 1.5;
 }
 
@@ -73,7 +73,7 @@ html, body, [class*="css"] {
     border-radius: 8px;
     padding: 10px 14px;
     margin: 6px 0;
-    font-size: 16px;
+    font-size: 19px;
     color: #1e40af;
     line-height: 1.5;
 }
@@ -84,7 +84,7 @@ html, body, [class*="css"] {
     border-radius: 8px;
     padding: 10px 14px;
     margin: 6px 0;
-    font-size: 17px;
+    font-size: 20px;
     line-height: 1.5;
 }
 
@@ -724,7 +724,7 @@ for h in st.session_state.history:
     suffix = f" ⚡ {result_text}" if result_text else ""
     st.markdown(
         f"<div class='shot-row-history'>"
-        f"✅ {current_shot}打目（実績）：{h['club']} {h['dist']}y{green_on_mark}{suffix}"
+        f"✅ （実績）：{h['club']} {h['dist']}y{green_on_mark}{suffix}"
         f"</div>",
         unsafe_allow_html=True
     )
@@ -764,7 +764,7 @@ elif remaining_strokes > 0:
 
         st.markdown(
             f"<div class='{row_class}'>"
-            f"🏌️ {used + p['shot']}打目：<strong>{p['club']}</strong>（{display_dist}y） → {msg}"
+            f"🏌️ <strong>{p['club']}</strong>（{display_dist}y） → {msg}"
             f"</div>",
             unsafe_allow_html=True
         )
