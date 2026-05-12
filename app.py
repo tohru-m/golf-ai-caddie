@@ -612,24 +612,21 @@ recommended_score = hole_targets[hole]
 diff              = recommended_score - par_num
 label, rec_color  = score_info(diff)
 
-plan_col1, plan_col2, plan_col3 = st.columns([4, 3, 2])
+st.markdown('<div class="ui-label">⛳ このホールの目標スコアは？</div>', unsafe_allow_html=True)
 
-with plan_col1:
-    st.markdown('<div style="font-size:14px; font-weight:700; color:#1a2e44; margin-top:14px; white-space:nowrap;">⛳ このホールの目標スコアは？</div>', unsafe_allow_html=True)
+st.markdown(
+    f"""
+    <div style='padding-bottom:4px;'>
+      <span class='recommend-badge' style='background:{rec_color}22; color:{rec_color}; border:1.5px solid {rec_color};'>
+        AI推奨：{recommended_score}打 {label}
+      </span>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
-with plan_col2:
-    st.markdown(
-        f"""
-        <div style='padding-top:8px;'>
-          <span class='recommend-badge' style='background:{rec_color}22; color:{rec_color}; border:1.5px solid {rec_color}; font-size:12px;'>
-            AI推奨：{recommended_score}打 {label}
-          </span>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-with plan_col3:
+target_col, _ = st.columns([2, 3])
+with target_col:
     target = st.selectbox(
         "",
         list(range(1, 16)),
