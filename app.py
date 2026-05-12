@@ -30,8 +30,8 @@ html, body, [class*="css"] {
 }
 
 .ui-label-small {
-    font-size: 14px;
-    font-weight: 400;
+    font-size: 22px;
+    font-weight: 700;
     color: #4a5568;
     display: block;
     margin-bottom: 4px;
