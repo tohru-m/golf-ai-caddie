@@ -957,17 +957,17 @@ with st.expander("⚙️ クラブ設定", expanded=False):
                 del st.session_state[k]
         st.rerun()
 
-    col1, col2, col3, col4 = st.columns([1, 1, 2, 1])
+    col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
     with col1: st.markdown("**クラブ**")
     with col2: st.markdown("**飛距離(y)**")
-    with col3: st.markdown("**ミス率**")
-    with col4: st.markdown("**得意距離(y)**")
+    with col3: st.markdown("**得意距離(y)**")
+    with col4: st.markdown("**ミス率**")
 
     edited_clubs = []
 
     for i, c in enumerate(st.session_state.clubs):
         uid  = f"{i}_{c['name']}"
-        col1, col2, col3, col4 = st.columns([1, 1, 2, 1])
+        col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
 
         with col1:
             name = st.selectbox(
@@ -985,8 +985,6 @@ with st.expander("⚙️ クラブ設定", expanded=False):
                 key=f"dist_{i}"
             )
         with col3:
-            miss = st.slider("", 0.0, 0.8, c["miss"], 0.01, key=f"miss_{i}")
-        with col4:
             fav_options = ["未設定"] + list(range(300, 19, -10))
             favorite    = st.selectbox(
                 "",
@@ -994,6 +992,8 @@ with st.expander("⚙️ クラブ設定", expanded=False):
                 index=fav_options.index(c.get("favorite", 0)) if c.get("favorite", 0) in fav_options else 0,
                 key=f"favorite_{i}"
             )
+        with col4:
+            miss = st.slider("", 0.0, 0.8, c["miss"], 0.01, key=f"miss_{i}")
 
         if name != "（未選択）":
             edited_clubs.append({
