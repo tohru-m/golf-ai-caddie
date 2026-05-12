@@ -714,9 +714,10 @@ if "prev_hole" not in st.session_state:
     st.session_state.prev_hole = hole
 
 if hole != st.session_state.prev_hole:
-    st.session_state.remaining = TOTAL_DIST
-    st.session_state.history   = []
-    st.session_state.prev_hole = hole
+    st.session_state.remaining    = TOTAL_DIST
+    st.session_state.history      = []
+    st.session_state.prev_hole    = hole
+    st.session_state.green_on_flag = False
 
 if "remaining" not in st.session_state:
     st.session_state.remaining = TOTAL_DIST
@@ -945,6 +946,20 @@ CLUB_DIST_OPTIONS = {
     "56°": list(range( 30, 120, 10)),
 }
 
+CLUB_SLIDER_RANGE = {
+    "1W":  (100, 250),
+    "4U":  (100, 220),
+    "5U":  ( 90, 210),
+    "6I":  ( 80, 200),
+    "7I":  ( 80, 190),
+    "8I":  ( 70, 180),
+    "9I":  ( 60, 170),
+    "PW":  ( 50, 160),
+    "UW":  ( 50, 150),
+    "52°": ( 40, 140),
+    "56°": ( 30, 120),
+}
+
 st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🎯 ショットの結果を入力</div>', unsafe_allow_html=True)
 
 st.markdown('<div class="ui-label-small">使ったクラブ</div>', unsafe_allow_html=True)
@@ -957,14 +972,43 @@ actual_club = st.radio(
 )
 
 st.markdown('<div style="font-size:22px; font-weight:700; color:#4a5568; margin-top:8px; margin-bottom:4px;">飛距離（ヤード）</div>', unsafe_allow_html=True)
-dist_opts = ["🚩グリーンオン！"] + CLUB_DIST_OPTIONS.get(actual_club, list(range(10, 290, 10)))
-actual_dist = st.selectbox(
-    "",
-    dist_opts,
-    index=0,
-    key="actual_dist_select",
-    label_visibility="collapsed"
-)
+
+if "green_on_flag" not in st.session_state:
+    st.session_state.green_on_flag = False
+
+# クラブ変更時はグリーンオンフラグをリセット
+if st.session_state.get("_prev_club") != actual_club:
+    st.session_state.green_on_flag = False
+    st.session_state["_prev_club"] = actual_club
+
+# スライダー範囲とデフォルト値
+smin, smax = CLUB_SLIDER_RANGE.get(actual_club, (10, 250))
+slider_key  = f"dist_slider_{actual_club}"
+if slider_key not in st.session_state:
+    st.session_state[slider_key] = int(smax * 0.7)
+
+# グリーンオンボタン
+if st.session_state.green_on_flag:
+    st.markdown(
+        "<div style='background:#fee2e2; border:2px solid #dc2626; border-radius:8px; "
+        "padding:10px; text-align:center; font-size:24px; font-weight:700; color:#dc2626; margin-bottom:6px;'>"
+        "🚩 グリーンオン！ 選択中</div>",
+        unsafe_allow_html=True
+    )
+    if st.button("↩ スライダーに戻る", key="cancel_green_on", use_container_width=True):
+        st.session_state.green_on_flag = False
+        st.rerun()
+else:
+    if st.button("🚩 グリーンオン！", key="green_on_btn", use_container_width=True):
+        st.session_state.green_on_flag = True
+        st.rerun()
+    current_dist = st.session_state[slider_key]
+    st.markdown(
+        f"<div style='font-size:36px; font-weight:700; color:#1a2e44; margin:4px 0;'>📏 {current_dist}y</div>",
+        unsafe_allow_html=True
+    )
+    st.slider("", min_value=smin, max_value=smax, step=10,
+              key=slider_key, label_visibility="collapsed")
 
 with st.form("shot_form"):
 
@@ -983,10 +1027,12 @@ with st.form("shot_form"):
         undo = st.form_submit_button("↩️ 取消", use_container_width=True)
 
     if submitted:
-        penalty      = 0
-        green_on     = (actual_dist == "🚩グリーンオン！")
-        dist_val     = st.session_state.remaining if green_on else int(actual_dist)
+        penalty   = 0
+        green_on  = st.session_state.get("green_on_flag", False)
+        _, _smax = CLUB_SLIDER_RANGE.get(actual_club, (10, 250))
+        dist_val  = st.session_state.remaining if green_on else st.session_state.get(f"dist_slider_{actual_club}", int(_smax * 0.7))
         remain_adjust = dist_val
+        st.session_state.green_on_flag = False
 
         if shot_result == "OB":
             penalty = 1;  remain_adjust = 0
