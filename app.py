@@ -228,6 +228,49 @@ div[data-testid="stSlider"] {
     padding-top: 4px;
 }
 
+/* ===== クラブ選択グリッド ===== */
+div[data-testid="stRadio"] {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+}
+div[data-testid="stRadio"] > div:last-child {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+    flex-wrap: unset !important;
+}
+div[data-testid="stRadio"] label {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 60px !important;
+    background: white !important;
+    border: 2px solid #9ca3af !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    padding: 0 8px !important;
+    margin: 0 !important;
+    color: #1a1a1a !important;
+}
+div[data-testid="stRadio"] label p,
+div[data-testid="stRadio"] label span {
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    color: #1a1a1a !important;
+}
+div[data-testid="stRadio"] label:has(input[type="radio"]:checked) {
+    background: #1a2e44 !important;
+    border-color: #1a2e44 !important;
+}
+div[data-testid="stRadio"] label:has(input[type="radio"]:checked) p,
+div[data-testid="stRadio"] label:has(input[type="radio"]:checked) span {
+    color: white !important;
+}
+div[data-testid="stRadio"] input[type="radio"] {
+    display: none !important;
+}
 
 </style>
 """, unsafe_allow_html=True)
@@ -261,6 +304,8 @@ CLUB_OPTIONS = [
 
 if "clubs" not in st.session_state:
     st.session_state.clubs = CLUBS.copy()
+if "selected_club" not in st.session_state:
+    st.session_state.selected_club = CLUBS[0]["name"]
 
 if "course" not in st.session_state:
     st.session_state.course = {
@@ -903,11 +948,12 @@ CLUB_DIST_OPTIONS = {
 st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🎯 ショットの結果を入力</div>', unsafe_allow_html=True)
 
 st.markdown('<div class="ui-label-small">使ったクラブ</div>', unsafe_allow_html=True)
-actual_club = st.selectbox(
+actual_club = st.radio(
     "",
     [c["name"] for c in st.session_state.clubs],
-    key="actual_club_select",
-    label_visibility="collapsed"
+    key="selected_club",
+    label_visibility="collapsed",
+    horizontal=True,
 )
 
 st.markdown('<div style="font-size:22px; font-weight:700; color:#4a5568; margin-top:8px; margin-bottom:4px;">飛距離（ヤード）</div>', unsafe_allow_html=True)
