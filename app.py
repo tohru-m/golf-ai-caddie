@@ -720,10 +720,11 @@ for h in st.session_state.history:
         "空振り": "空振り",
     }.get(h.get("result", "通常"), "")
 
+    green_on_mark = " 🚩グリーンオン！" if h.get("green_on") else ""
     suffix = f" ⚡ {result_text}" if result_text else ""
     st.markdown(
         f"<div class='shot-row-history'>"
-        f"✅ {current_shot}打目（実績）：{h['club']} {h['dist']}y{suffix}"
+        f"✅ {current_shot}打目（実績）：{h['club']} {h['dist']}y{green_on_mark}{suffix}"
         f"</div>",
         unsafe_allow_html=True
     )
@@ -817,7 +818,7 @@ actual_club = st.selectbox(
 )
 
 st.markdown('<div style="font-size:17px; font-weight:700; color:#4a5568; margin-top:8px; margin-bottom:4px;">飛距離（ヤード）</div>', unsafe_allow_html=True)
-dist_opts = CLUB_DIST_OPTIONS.get(actual_club, list(range(10, 290, 10)))
+dist_opts = ["🚩グリーンオン！"] + CLUB_DIST_OPTIONS.get(actual_club, list(range(10, 290, 10)))
 actual_dist = st.selectbox(
     "",
     dist_opts,
@@ -844,24 +845,27 @@ with st.form("shot_form"):
 
     if submitted:
         penalty      = 0
-        remain_adjust = actual_dist
+        green_on     = (actual_dist == "🚩グリーンオン！")
+        dist_val     = st.session_state.remaining if green_on else int(actual_dist)
+        remain_adjust = dist_val
 
         if shot_result == "OB":
             penalty = 1;  remain_adjust = 0
         elif shot_result == "池":
-            penalty = 1;  remain_adjust = actual_dist
+            penalty = 1;  remain_adjust = dist_val
         elif shot_result == "赤杭":
-            penalty = 1;  remain_adjust = actual_dist
+            penalty = 1;  remain_adjust = dist_val
         elif shot_result == "ロスト":
-            penalty = 2;  remain_adjust = actual_dist
+            penalty = 2;  remain_adjust = dist_val
         elif shot_result == "空振り":
             remain_adjust = 0
 
         st.session_state.history.append({
-            "club":    actual_club,
-            "dist":    actual_dist,
-            "result":  shot_result,
-            "penalty": penalty,
+            "club":     actual_club,
+            "dist":     dist_val,
+            "result":   shot_result,
+            "penalty":  penalty,
+            "green_on": green_on,
         })
         st.session_state.remaining = max(st.session_state.remaining - remain_adjust, 0)
         st.rerun()
