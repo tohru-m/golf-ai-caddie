@@ -744,7 +744,7 @@ if remaining_strokes > 0:
 
         if is_last:
             if display_dist >= p["before"]:
-                msg       = f"🏁 グリーンオン → パット {putts}回"
+                msg       = "🏁 グリーンオン"
                 row_class = "shot-row"
             else:
                 shortage  = p["before"] - display_dist
@@ -761,11 +761,11 @@ if remaining_strokes > 0:
             unsafe_allow_html=True
         )
 
-    if plan_data and st.session_state.remaining <= 5:
-        st.markdown(
-            f"<div class='shot-row'>🏁 → パット {putts}回</div>",
-            unsafe_allow_html=True
-        )
+        if is_last and display_dist >= p["before"]:
+            st.markdown(
+                f"<div class='shot-row'>🏌️ パット {putts}回</div>",
+                unsafe_allow_html=True
+            )
 
 elif remaining_strokes == 0:
     if st.session_state.remaining <= 5:
