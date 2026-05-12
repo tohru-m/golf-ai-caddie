@@ -543,11 +543,11 @@ def render_score_table(holes, hole_targets):
         # 2段目：実績 | 差異
         if actual != "":
             actual_diff = int(actual) - par
-            actual_label, _ = score_info(actual_diff)
+            actual_label, actual_color = score_info(actual_diff)
             actual_name = actual_label.split(' ', 1)[1] if ' ' in actual_label else actual_label
             st.markdown(
                 f"<div class='score-cell' style='padding-left:8px;'>"
-                f"<span style='color:#16a34a; font-weight:700;'>実績{actual}{actual_name}</span>"
+                f"<span style='color:{actual_color}; font-weight:700;'>実績{actual}{actual_name}</span>"
                 f"　<span style='color:{dev_color}; font-weight:700;'>差異{deviation}</span>"
                 f"</div>",
                 unsafe_allow_html=True
