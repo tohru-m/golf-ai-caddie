@@ -615,7 +615,7 @@ label, rec_color  = score_info(diff)
 plan_col1, plan_col2, plan_col3 = st.columns([2, 3, 2])
 
 with plan_col1:
-    st.markdown('<div class="ui-label-fixed" style="margin-top:14px;">何打で上がる計画？</div>', unsafe_allow_html=True)
+    st.markdown('<div class="ui-label-fixed" style="margin-top:14px;">⛳ このホールは何打で上がる？</div>', unsafe_allow_html=True)
 
 with plan_col2:
     st.markdown(
