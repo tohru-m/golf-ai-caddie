@@ -536,7 +536,7 @@ st.title("⛳ AIキャディ")
 goal_col1, goal_col2 = st.columns([1, 1])
 
 with goal_col1:
-    st.markdown('<div class="ui-label" style="margin-top:14px;">🎯 何打で回りたい？</div>', unsafe_allow_html=True)
+    st.markdown('<div class="ui-label" style="margin-top:14px;">🎯 目標スコアは？</div>', unsafe_allow_html=True)
 
 with goal_col2:
     target_score = st.selectbox(
