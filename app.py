@@ -804,9 +804,11 @@ with st.form("shot_form"):
     )
 
     st.markdown('<div style="font-size:17px; font-weight:700; color:#4a5568; margin-top:8px; margin-bottom:4px;">飛距離（ヤード）</div>', unsafe_allow_html=True)
-    actual_dist = st.number_input(
+    actual_dist = st.selectbox(
         "",
-        0, 400, 100,
+        list(range(100, 290, 10)),
+        index=0,
+        key="dist_select",
         label_visibility="collapsed"
     )
 
