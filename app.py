@@ -139,8 +139,8 @@ html, body, [class*="css"] {
 /* ===== ボタン共通（Streamlitネイティブ上書き） ===== */
 div[data-testid="stFormSubmitButton"] > button,
 div[data-testid="stButton"] > button {
-    height: 52px !important;
-    font-size: 16px !important;
+    height: 56px !important;
+    font-size: 22px !important;
     font-weight: 700 !important;
     border-radius: 12px !important;
     width: 100% !important;
