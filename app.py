@@ -568,7 +568,7 @@ st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
 hole_label_col, hole_select_col = st.columns([2, 3])
 
 with hole_label_col:
-    st.markdown('<div class="ui-label" style="margin-top:14px;">📍 ホールを選択</div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">📍 ホールを選択</div>', unsafe_allow_html=True)
 
 with hole_select_col:
     hole = st.selectbox(
