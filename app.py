@@ -560,7 +560,7 @@ def render_score_table(holes, hole_targets):
 # アプリ本体
 # ============================================================
 
-st.markdown("<h1 style='color:#dc2626;'>⛳ AIキャディ</h1>", unsafe_allow_html=True)
+st.title("⛳ AIキャディ")
 
 # ---------- ラウンド目標 ----------
 goal_col1, goal_col2 = st.columns([1, 1])
