@@ -531,11 +531,15 @@ def render_score_table(holes, hole_targets):
         with r1: st.markdown(f"<div class='score-cell'><b>{h}番</b> Par{par}</div>", unsafe_allow_html=True)
         with r2: st.markdown(f"<div class='score-cell'>{strategy_html}</div>", unsafe_allow_html=True)
 
-        # 2段目：実績 | 差
+        # 2段目：実績 | 差異
         if actual != "":
+            actual_diff = int(actual) - par
+            actual_label, actual_color = score_info(actual_diff)
+            actual_name = actual_label.split(' ', 1)[1] if ' ' in actual_label else actual_label
             st.markdown(
-                f"<div class='score-cell' style='padding-left:8px; color:#4a5568;'>"
-                f"実績：{actual}打　差：{deviation}</div>",
+                f"<div class='score-cell' style='padding-left:8px;'>"
+                f"<span style='color:{actual_color}; font-weight:700;'>実績{actual}{actual_name}</span>"
+                f"　差異{deviation}</div>",
                 unsafe_allow_html=True
             )
 
