@@ -174,8 +174,10 @@ div[data-testid="stSelectbox"] span {
 
 /* ===== 数値入力 ===== */
 div[data-testid="stNumberInput"] input {
-    font-size: 18px !important;
-    height: 48px !important;
+    font-size: 26px !important;
+    height: 52px !important;
+    font-weight: 700 !important;
+    background-color: #fefce8 !important;
 }
 
 /* ===== チェックボックス ===== */
