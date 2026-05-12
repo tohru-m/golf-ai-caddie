@@ -576,7 +576,7 @@ with hole_select_col:
         list(st.session_state.course.keys()),
         key="hole_select",
         label_visibility="collapsed",
-        format_func=lambda h: f"{h}番ホール｜Par{st.session_state.course[h]['par']}｜{st.session_state.course[h]['yard']}y"
+        format_func=lambda h: f"{h}番ホール"
     )
 
 TOTAL_DIST = st.session_state.course[hole]["yard"]
