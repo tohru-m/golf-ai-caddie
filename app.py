@@ -212,8 +212,8 @@ div[data-testid="stForm"] {
 
 /* ===== スコア表の文字 ===== */
 .score-cell {
-    font-size: 14px;
-    padding: 2px 0;
+    font-size: 18px;
+    padding: 4px 0;
 }
 
 /* ===== セクション区切り ===== */
@@ -513,11 +513,11 @@ def score_info(diff):
 def render_score_table(holes, hole_targets):
 
     h1, h2, h3, h4, h5 = st.columns([0.7, 0.6, 1.6, 0.8, 0.8])
-    with h1: st.markdown("**H**")
-    with h2: st.markdown("**Par**")
-    with h3: st.markdown("**戦略**")
-    with h4: st.markdown("**実績**")
-    with h5: st.markdown("**差**")
+    with h1: st.markdown("<div style='font-size:18px; font-weight:700;'>H</div>", unsafe_allow_html=True)
+    with h2: st.markdown("<div style='font-size:18px; font-weight:700;'>Par</div>", unsafe_allow_html=True)
+    with h3: st.markdown("<div style='font-size:18px; font-weight:700;'>戦略</div>", unsafe_allow_html=True)
+    with h4: st.markdown("<div style='font-size:18px; font-weight:700;'>実績</div>", unsafe_allow_html=True)
+    with h5: st.markdown("<div style='font-size:18px; font-weight:700;'>差</div>", unsafe_allow_html=True)
 
     for h in holes:
         par    = st.session_state.course[h]["par"]
