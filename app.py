@@ -803,12 +803,21 @@ with st.form("shot_form"):
         label_visibility="collapsed"
     )
 
-    st.markdown('<div class="ui-label-small">飛距離（ヤード）</div>', unsafe_allow_html=True)
-    actual_dist = st.number_input(
+    st.markdown('<div style="font-size:17px; font-weight:700; color:#4a5568; margin-top:8px; margin-bottom:4px;">飛距離（ヤード）</div>', unsafe_allow_html=True)
+    dist_options = list(range(100, 280, 10)) + ["その他（直接入力）"]
+    dist_select = st.selectbox(
         "",
-        0, 300, 100,
+        dist_options,
+        index=0,
+        key="dist_select",
         label_visibility="collapsed"
     )
+    dist_manual = st.number_input(
+        "その他の距離（ヤード）",
+        0, 400, 0,
+        key="dist_manual"
+    )
+    actual_dist = dist_manual if dist_select == "その他（直接入力）" else int(dist_select)
 
     st.markdown('<div class="ui-label-small">結果</div>', unsafe_allow_html=True)
     shot_result = st.selectbox(
