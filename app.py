@@ -629,7 +629,6 @@ st.markdown(
     f"目標比：<span style='color:{target_color};'>{target_str}</span>"
     f"　パー比：<span style='color:{par_color};'>{par_str}</span>"
     f"</div>"
-    f"<div style='font-size:17px; color:#4a5568; margin-top:4px;'>実績 {completed_count}ホール ／ 残り {remaining_count}ホールは計画値</div>"
     f"</div>",
     unsafe_allow_html=True
 )
