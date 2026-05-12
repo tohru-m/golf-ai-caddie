@@ -1054,7 +1054,7 @@ with st.expander("⛳ コース設定", expanded=False):
         cur_par  = st.session_state.course[h]["par"]
         cur_yard = st.session_state.course[h]["yard"]
 
-        c1, c2, c3, c4, c5 = st.columns([0.8, 0.5, 1.1, 0.6, 1.8])
+        c1, c2, c3, c4, c5 = st.columns([0.7, 0.4, 1.0, 0.5, 1.8])
 
         with c1:
             st.markdown(
