@@ -1059,12 +1059,12 @@ with st.expander("⛳ コース設定", expanded=False):
 
         with c1:
             st.markdown(
-                f"<div style='font-size:20px; font-weight:700; color:#2563eb; padding-top:12px;'>{h}番ホール</div>",
+                f"<div style='font-size:24px; font-weight:700; color:#2563eb; padding-top:10px;'>{h}番ホール</div>",
                 unsafe_allow_html=True
             )
         with c2:
             st.markdown(
-                "<div style='font-size:17px; font-weight:600; color:#4a5568; padding-top:12px;'>Par</div>",
+                "<div style='font-size:22px; font-weight:700; color:#4a5568; padding-top:10px;'>Par</div>",
                 unsafe_allow_html=True
             )
         with c3:
