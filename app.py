@@ -612,7 +612,7 @@ recommended_score = hole_targets[hole]
 diff              = recommended_score - par_num
 label, rec_color  = score_info(diff)
 
-st.markdown('<div class="ui-label">⛳ このホールの目標スコアは？</div>', unsafe_allow_html=True)
+st.markdown(f'<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">⛳ {hole}番ホールの目標スコア</div>', unsafe_allow_html=True)
 
 st.markdown(
     f"""
