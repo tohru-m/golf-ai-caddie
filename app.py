@@ -533,7 +533,7 @@ def render_score_table(holes, hole_targets):
 st.title("⛳ AIキャディ")
 
 # ---------- ラウンド目標 ----------
-goal_col1, goal_col2 = st.columns([3, 2])
+goal_col1, goal_col2 = st.columns([2, 1])
 
 with goal_col1:
     st.markdown('<div class="ui-label" style="margin-top:14px;">🎯 何打で回りたい？</div>', unsafe_allow_html=True)
