@@ -898,14 +898,16 @@ with st.form("shot_form"):
 st.markdown("<div class='section-divider'></div>", unsafe_allow_html=True)
 st.markdown('<div class="ui-label">🏁 このホールの最終スコア</div>', unsafe_allow_html=True)
 
+score_labels = [f"{i}打" for i in range(1, 17)]
+
 def update_actual_score():
     st.session_state[f"actual_{hole}"] = int(
-        st.session_state[f"final_score_input_{hole}"]
+        st.session_state[f"final_score_input_{hole}"].replace("打", "")
     )
 
 st.selectbox(
     "",
-    list(range(1, 17)),
+    score_labels,
     index=max(int(st.session_state.get(f"actual_{hole}", 1)) - 1, 0),
     key=f"final_score_input_{hole}",
     on_change=update_actual_score,
