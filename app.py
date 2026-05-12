@@ -1048,7 +1048,6 @@ with st.expander("⛳ コース設定", expanded=False):
 
     edited_course = {}
     par_options  = ["Par", 3, 4, 5, 6]
-    yard_options = ["ヤード"] + list(range(100, 705, 5))
 
     for h in st.session_state.course.keys():
         cur_par  = st.session_state.course[h]["par"]
@@ -1079,12 +1078,10 @@ with st.expander("⛳ コース設定", expanded=False):
                 unsafe_allow_html=True
             )
         with c5:
-            yard_idx = yard_options.index(cur_yard) if cur_yard in yard_options else 0
-            yard_sel = st.selectbox(
-                "", yard_options, index=yard_idx,
+            yard = st.number_input(
+                "", 50, 700, cur_yard,
                 key=f"yard_{h}", label_visibility="collapsed"
             )
-            yard = cur_yard if yard_sel == "ヤード" else int(yard_sel)
 
         edited_course[h] = {"par": par, "yard": yard}
 
