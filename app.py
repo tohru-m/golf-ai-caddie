@@ -804,6 +804,13 @@ elif remaining_strokes > 0:
                 f"<div class='shot-row'>🏌️ パット {putts}回</div>",
                 unsafe_allow_html=True
             )
+            margin = remaining_strokes - len(plan_data)
+            if margin > 0:
+                st.markdown(
+                    f"<div style='background:#dcfce7; border-left:4px solid #16a34a; border-radius:8px; padding:10px 14px; margin-top:8px; font-size:22px; font-weight:700; color:#15803d;'>"
+                    f"🟢 {margin}打余裕があります</div>",
+                    unsafe_allow_html=True
+                )
 
 elif remaining_strokes == 0:
     st.error("⚠️ この計画では届きません")
