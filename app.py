@@ -839,7 +839,7 @@ actual_club = st.selectbox(
     label_visibility="collapsed"
 )
 
-st.markdown('<div style="font-size:17px; font-weight:700; color:#4a5568; margin-top:8px; margin-bottom:4px;">飛距離（ヤード）</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:22px; font-weight:700; color:#4a5568; margin-top:8px; margin-bottom:4px;">飛距離（ヤード）</div>', unsafe_allow_html=True)
 dist_opts = ["🚩グリーンオン！"] + CLUB_DIST_OPTIONS.get(actual_club, list(range(10, 290, 10)))
 actual_dist = st.selectbox(
     "",
