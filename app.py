@@ -962,7 +962,7 @@ with st.expander("⚙️ クラブ設定", expanded=False):
     for i, c in enumerate(st.session_state.clubs):
         uid  = f"{i}_{c['name']}"
 
-        st.markdown("<div style='font-size:13px; font-weight:600; color:#4a5568; margin-top:6px; margin-bottom:-12px;'>クラブ</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size:13px; font-weight:600; color:#4a5568; margin-top:6px; margin-bottom:-16px;'>クラブ</div>", unsafe_allow_html=True)
         name = st.selectbox(
             "",
             CLUB_OPTIONS,
@@ -970,7 +970,7 @@ with st.expander("⚙️ クラブ設定", expanded=False):
             key=f"name_{uid}"
         )
 
-        st.markdown("<div style='font-size:13px; font-weight:600; color:#4a5568; margin-top:4px; margin-bottom:-12px;'>飛距離（y）</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size:13px; font-weight:600; color:#4a5568; margin-top:4px; margin-bottom:-16px;'>飛距離（y）</div>", unsafe_allow_html=True)
         dist_options = list(range(300, 19, -10))
         dist = st.selectbox(
             "",
@@ -979,7 +979,7 @@ with st.expander("⚙️ クラブ設定", expanded=False):
             key=f"dist_{i}"
         )
 
-        st.markdown("<div style='font-size:13px; font-weight:600; color:#4a5568; margin-top:4px; margin-bottom:-12px;'>得意距離（y）</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size:13px; font-weight:600; color:#4a5568; margin-top:4px; margin-bottom:-16px;'>得意距離（y）</div>", unsafe_allow_html=True)
         fav_options = ["未設定"] + list(range(300, 19, -10))
         favorite = st.selectbox(
             "",
@@ -988,7 +988,7 @@ with st.expander("⚙️ クラブ設定", expanded=False):
             key=f"favorite_{i}"
         )
 
-        st.markdown("<div style='font-size:13px; font-weight:600; color:#4a5568; margin-top:4px; margin-bottom:-12px;'>ミス率</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size:13px; font-weight:600; color:#4a5568; margin-top:4px; margin-bottom:-16px;'>ミス率</div>", unsafe_allow_html=True)
         miss = st.slider("", 0.0, 0.8, c["miss"], 0.01, key=f"miss_{i}")
 
         if name != "（未選択）":
