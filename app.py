@@ -58,7 +58,7 @@ html, body, [class*="css"] {
 
 /* ===== 戦略表示行 ===== */
 .shot-row {
-    background: #f8fafc;
+    background: #dbeafe;
     border-left: 4px solid #3b82f6;
     border-radius: 8px;
     padding: 10px 14px;
@@ -68,7 +68,7 @@ html, body, [class*="css"] {
 }
 
 .shot-row-history {
-    background: #eff6ff;
+    background: #ffffff;
     border-left: 4px solid #60a5fa;
     border-radius: 8px;
     padding: 10px 14px;
