@@ -711,7 +711,7 @@ if use_danger:
 # 戦略表示
 # =========================
 
-st.markdown('<div class="ui-label">📋 この戦略でいこう！</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">📋 ショット戦略</div>', unsafe_allow_html=True)
 
 # 打った球の履歴
 current_shot = 1
