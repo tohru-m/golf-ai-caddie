@@ -520,7 +520,7 @@ def render_score_table(holes, hole_targets):
         label, color = score_info(diff)
 
         label_text    = label.split(' ', 1)[1] if ' ' in label else label
-        strategy_html = f"<span style='color:{color}; font-weight:700;'>計画 {target}{label_text}</span>"
+        strategy_html = f"<span style='color:{color}; font-weight:700; font-size:26px;'>計画 {target}{label_text}</span>"
         actual        = st.session_state.get(f"actual_{h}", "")
         deviation     = ""
         dev_color     = "#1a1a1a"
@@ -547,7 +547,7 @@ def render_score_table(holes, hole_targets):
             actual_label, actual_color = score_info(actual_diff)
             actual_name = actual_label.split(' ', 1)[1] if ' ' in actual_label else actual_label
             st.markdown(
-                f"<div class='score-cell' style='padding-left:8px;'>"
+                f"<div class='score-cell' style='padding-left:8px; font-size:26px;'>"
                 f"<span style='color:{actual_color}; font-weight:700;'>実績{actual}{actual_name}</span>"
                 f"　<span style='color:{dev_color}; font-weight:700;'>差異{deviation}</span>"
                 f"</div>",
