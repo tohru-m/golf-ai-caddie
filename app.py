@@ -608,25 +608,30 @@ recommended_score = hole_targets[hole]
 diff              = recommended_score - par_num
 label, rec_color  = score_info(diff)
 
-st.markdown(
-    f"""
-    <div class='ui-label-fixed'>何打で上がる計画？</div>
-    <div>
-      <span class='recommend-badge' style='background:{rec_color}22; color:{rec_color}; border:1.5px solid {rec_color};'>
-        AI推奨：{recommended_score}打 {label}
-      </span>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+st.markdown('<div class="ui-label-fixed">何打で上がる計画？</div>', unsafe_allow_html=True)
 
-target = st.selectbox(
-    "",
-    list(range(1, 16)),
-    index=recommended_score - 1,
-    key=f"target_select_{hole}",
-    label_visibility="collapsed"
-)
+plan_col1, plan_col2 = st.columns([3, 2])
+
+with plan_col1:
+    st.markdown(
+        f"""
+        <div style='padding-top:6px;'>
+          <span class='recommend-badge' style='background:{rec_color}22; color:{rec_color}; border:1.5px solid {rec_color};'>
+            AI推奨：{recommended_score}打 {label}
+          </span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+with plan_col2:
+    target = st.selectbox(
+        "",
+        list(range(1, 16)),
+        index=recommended_score - 1,
+        key=f"target_select_{hole}",
+        label_visibility="collapsed"
+    )
 
 st.markdown('<div class="ui-label">🏌️ パット数は？</div>', unsafe_allow_html=True)
 
