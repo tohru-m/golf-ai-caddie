@@ -164,6 +164,7 @@ div[data-testid="stSelectbox"] > div > div {
     font-size: 26px !important;
     min-height: 52px !important;
     font-weight: 700 !important;
+    background-color: #fefce8 !important;
 }
 
 div[data-testid="stSelectbox"] span {
