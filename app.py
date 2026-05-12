@@ -776,6 +776,9 @@ if st.session_state.remaining == 0:
 elif remaining_strokes > 0:
     plan_data = plan(st.session_state.remaining, remaining_strokes, used, par_num, hole)
 
+    # 実際にグリーンオン（残り0y）になる打数を検出
+    shots_to_green = next((i + 1 for i, p in enumerate(plan_data) if p["remain"] == 0), len(plan_data))
+
     for i, p in enumerate(plan_data):
         display_dist = min(p["dist"], p["before"])
         is_last      = (i == len(plan_data) - 1)
@@ -804,7 +807,7 @@ elif remaining_strokes > 0:
                 f"<div class='shot-row'>🏌️ パット {putts}回</div>",
                 unsafe_allow_html=True
             )
-            margin = remaining_strokes - len(plan_data)
+            margin = remaining_strokes - shots_to_green
             if margin > 0:
                 st.markdown(
                     f"<div style='background:#dcfce7; border-left:4px solid #16a34a; border-radius:8px; padding:10px 14px; margin-top:8px; font-size:22px; font-weight:700; color:#15803d;'>"
