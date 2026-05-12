@@ -623,8 +623,7 @@ else:
 
 st.markdown(
     f"<div style='background:#f0f9ff; border:2px solid #7dd3fc; border-radius:10px; padding:12px 16px; margin-top:8px;'>"
-    f"<div style='font-size:20px; font-weight:900; color:#1a2e44; margin-bottom:6px;'>📊 現状の見込み</div>"
-    f"<div style='font-size:24px; font-weight:700; color:#1a1a1a;'>見込みスコア：<b>{projected_total}</b>打</div>"
+    f"<div style='font-size:24px; font-weight:700; color:#1a1a1a;'>現状の見込みスコア　<b>{projected_total}</b></div>"
     f"<div style='font-size:20px; font-weight:700; margin-top:4px;'>"
     f"目標比：<span style='color:{target_color};'>{target_str}</span>"
     f"　パー比：<span style='color:{par_color};'>{par_str}</span>"
