@@ -638,15 +638,19 @@ with plan_col3:
         label_visibility="collapsed"
     )
 
-st.markdown('<div class="ui-label">🏌️ パット数は？</div>', unsafe_allow_html=True)
+putt_col1, putt_col2 = st.columns([3, 2])
 
-putts = st.selectbox(
-    "",
-    [1, 2, 3, 4, 5],
-    index=1,
-    key="putt_select",
-    label_visibility="collapsed"
-)
+with putt_col1:
+    st.markdown('<div class="ui-label" style="margin-top:14px;">🏌️ パット数は？</div>', unsafe_allow_html=True)
+
+with putt_col2:
+    putts = st.selectbox(
+        "",
+        [1, 2, 3, 4, 5],
+        index=1,
+        key="putt_select",
+        label_visibility="collapsed"
+    )
 
 shot_strokes = target - putts
 
