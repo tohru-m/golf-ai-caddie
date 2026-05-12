@@ -180,7 +180,7 @@ div[data-testid="stNumberInput"] input {
 
 /* ===== チェックボックス ===== */
 div[data-testid="stCheckbox"] label {
-    font-size: 20px !important;
+    font-size: 22px !important;
     font-weight: 700 !important;
 }
 
