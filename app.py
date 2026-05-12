@@ -792,25 +792,41 @@ st.markdown(
 # ショット結果入力フォーム
 # =========================
 
+CLUB_DIST_OPTIONS = {
+    "1W":  list(range(100, 290, 10)),
+    "4U":  list(range(100, 230, 10)),
+    "5U":  list(range( 90, 220, 10)),
+    "6I":  list(range( 80, 200, 10)),
+    "7I":  list(range( 80, 190, 10)),
+    "8I":  list(range( 70, 180, 10)),
+    "9I":  list(range( 60, 170, 10)),
+    "PW":  list(range( 50, 160, 10)),
+    "UW":  list(range( 50, 150, 10)),
+    "52°": list(range( 40, 140, 10)),
+    "56°": list(range( 30, 120, 10)),
+}
+
+st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🎯 ショットの結果を入力</div>', unsafe_allow_html=True)
+
+st.markdown('<div class="ui-label-small">使ったクラブ</div>', unsafe_allow_html=True)
+actual_club = st.selectbox(
+    "",
+    [c["name"] for c in CLUBS],
+    key="actual_club_select",
+    label_visibility="collapsed"
+)
+
+st.markdown('<div style="font-size:17px; font-weight:700; color:#4a5568; margin-top:8px; margin-bottom:4px;">飛距離（ヤード）</div>', unsafe_allow_html=True)
+dist_opts = CLUB_DIST_OPTIONS.get(actual_club, list(range(10, 290, 10)))
+actual_dist = st.selectbox(
+    "",
+    dist_opts,
+    index=0,
+    key="actual_dist_select",
+    label_visibility="collapsed"
+)
+
 with st.form("shot_form"):
-
-    st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🎯 ショットの結果を入力</div>', unsafe_allow_html=True)
-
-    st.markdown('<div class="ui-label-small">使ったクラブ</div>', unsafe_allow_html=True)
-    actual_club = st.selectbox(
-        "",
-        [c["name"] for c in CLUBS],
-        label_visibility="collapsed"
-    )
-
-    st.markdown('<div style="font-size:17px; font-weight:700; color:#4a5568; margin-top:8px; margin-bottom:4px;">飛距離（ヤード）</div>', unsafe_allow_html=True)
-    actual_dist = st.selectbox(
-        "",
-        list(range(100, 290, 10)),
-        index=0,
-        key="dist_select",
-        label_visibility="collapsed"
-    )
 
     st.markdown('<div class="ui-label-small">結果</div>', unsafe_allow_html=True)
     shot_result = st.selectbox(
