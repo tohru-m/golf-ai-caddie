@@ -1058,12 +1058,12 @@ with st.expander("⛳ コース設定", expanded=False):
 
         with c1:
             st.markdown(
-                f"<div style='font-size:17px; font-weight:700; color:#1a2e44; padding-top:12px;'>{h}番</div>",
+                f"<div style='font-size:20px; font-weight:700; color:#1a2e44; padding-top:12px;'>{h}番</div>",
                 unsafe_allow_html=True
             )
         with c2:
             st.markdown(
-                "<div style='font-size:13px; color:#4a5568; padding-top:14px;'>Par</div>",
+                "<div style='font-size:17px; font-weight:600; color:#4a5568; padding-top:12px;'>Par</div>",
                 unsafe_allow_html=True
             )
         with c3:
@@ -1075,7 +1075,7 @@ with st.expander("⛳ コース設定", expanded=False):
             par = cur_par if par_sel == "Par" else int(par_sel)
         with c4:
             st.markdown(
-                "<div style='font-size:13px; color:#4a5568; padding-top:14px;'>距離(y)</div>",
+                "<div style='font-size:17px; font-weight:600; color:#4a5568; padding-top:12px;'>距離(y)</div>",
                 unsafe_allow_html=True
             )
         with c5:
