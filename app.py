@@ -616,7 +616,7 @@ st.markdown(f'<div style="font-size:22px; font-weight:900; color:#1a2e44; margin
 
 label_text = label.split(' ', 1)[1] if ' ' in label else label
 st.markdown(
-    f"<div style='font-size:16px; font-weight:700; color:#1a1a1a; padding-bottom:4px;'>（AI推奨：{recommended_score}打 {label_text}）</div>",
+    f"<div style='font-size:20px; font-weight:700; color:#1a1a1a; padding-bottom:4px;'>（AI推奨：{recommended_score}打 {label_text}）</div>",
     unsafe_allow_html=True
 )
 
