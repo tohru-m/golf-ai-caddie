@@ -550,7 +550,7 @@ with goal_col2:
 hole_targets = calc_hole_targets(target_score)
 
 # ---------- ラウンドスコア戦略（折りたたみ） ----------
-with st.expander(f"🧠 {target_score}打で回るためのラウンド戦略", expanded=False):
+with st.expander(f"🧠 目標スコア{target_score}を達成するためのラウンド戦略", expanded=False):
     holes   = sorted(st.session_state.course.keys())
     front9  = holes[:9]
     back9   = holes[9:]
