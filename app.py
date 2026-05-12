@@ -519,7 +519,7 @@ def render_score_table(holes, hole_targets):
         label, color = score_info(diff)
 
         label_text    = label.split(' ', 1)[1] if ' ' in label else label
-        strategy_html = f"<span style='color:{color}; font-weight:700;'>{target} {label_text}</span>"
+        strategy_html = f"<span style='color:{color}; font-weight:700;'>計画 {target}{label_text}</span>"
         actual        = st.session_state.get(f"actual_{h}", "")
         deviation     = ""
         if actual != "":
