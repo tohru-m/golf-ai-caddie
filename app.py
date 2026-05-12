@@ -584,6 +584,56 @@ with st.expander(f"🧠 目標スコア{target_score}のラウンド戦略", exp
     holes = sorted(st.session_state.course.keys())
     render_score_table(holes, hole_targets)
 
+# ---------- 現状の見込み ----------
+holes = sorted(st.session_state.course.keys())
+total_par       = sum(st.session_state.course[h]["par"] for h in holes)
+projected_total = 0
+completed_count = 0
+for h in holes:
+    actual = st.session_state.get(f"actual_{h}", "")
+    if actual != "":
+        projected_total += int(actual)
+        completed_count += 1
+    else:
+        projected_total += hole_targets[h]
+
+remaining_count  = 18 - completed_count
+diff_from_target = projected_total - target_score
+diff_from_par    = projected_total - total_par
+
+if diff_from_target > 0:
+    target_str   = f"+{diff_from_target}"
+    target_color = "#dc2626"
+elif diff_from_target < 0:
+    target_str   = str(diff_from_target)
+    target_color = "#2563eb"
+else:
+    target_str   = "±0"
+    target_color = "#1a1a1a"
+
+if diff_from_par > 0:
+    par_str   = f"+{diff_from_par}"
+    par_color = "#dc2626"
+elif diff_from_par < 0:
+    par_str   = str(diff_from_par)
+    par_color = "#2563eb"
+else:
+    par_str   = "±0"
+    par_color = "#1a1a1a"
+
+st.markdown(
+    f"<div style='background:#f0f9ff; border:2px solid #7dd3fc; border-radius:10px; padding:12px 16px; margin-top:8px;'>"
+    f"<div style='font-size:20px; font-weight:900; color:#1a2e44; margin-bottom:6px;'>📊 現状の見込み</div>"
+    f"<div style='font-size:24px; font-weight:700; color:#1a1a1a;'>見込みスコア：<b>{projected_total}</b>打</div>"
+    f"<div style='font-size:20px; font-weight:700; margin-top:4px;'>"
+    f"目標比：<span style='color:{target_color};'>{target_str}</span>"
+    f"　パー比：<span style='color:{par_color};'>{par_str}</span>"
+    f"</div>"
+    f"<div style='font-size:17px; color:#4a5568; margin-top:4px;'>実績 {completed_count}ホール ／ 残り {remaining_count}ホールは計画値</div>"
+    f"</div>",
+    unsafe_allow_html=True
+)
+
 st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
 
 # ---------- ホール選択（大きなセレクト） ----------
