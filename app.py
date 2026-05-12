@@ -228,6 +228,24 @@ div[data-testid="stSlider"] {
     padding-top: 4px;
 }
 
+/* ===== フローティングボタン ===== */
+div:has(> #shot-float-btns) + div {
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 10px !important;
+    right: 10px !important;
+    z-index: 999 !important;
+}
+div:has(> #shot-float-btns) + div button {
+    height: 70px !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    background-color: #1a2e44 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 10px !important;
+}
+
 /* ===== クラブ選択グリッド ===== */
 div[data-testid="stRadio"] {
     border: none !important;
@@ -1010,57 +1028,60 @@ else:
         st.session_state.green_on_flag = True
         st.rerun()
 
-with st.form("shot_form"):
+st.markdown('<div class="ui-label-small">結果</div>', unsafe_allow_html=True)
+shot_result = st.selectbox(
+    "",
+    ["通常", "OB", "池", "赤杭", "ロスト", "空振り"],
+    key="shot_result_select",
+    label_visibility="collapsed"
+)
 
-    st.markdown('<div class="ui-label-small">結果</div>', unsafe_allow_html=True)
-    shot_result = st.selectbox(
-        "",
-        ["通常", "OB", "池", "赤杭", "ロスト", "空振り"],
-        label_visibility="collapsed"
-    )
+# コンテンツが固定ボタンの下に隠れないよう余白
+st.markdown("<div style='padding-bottom: 110px;'></div>", unsafe_allow_html=True)
 
-    # ボタンを2列で大きく
-    btn1, btn2 = st.columns(2)
-    with btn1:
-        submitted = st.form_submit_button("✅ 反映", use_container_width=True)
-    with btn2:
-        undo = st.form_submit_button("↩️ 取消", use_container_width=True)
+# ─── フローティングボタン（固定表示）───
+st.markdown('<div id="shot-float-btns"></div>', unsafe_allow_html=True)
+btn1, btn2 = st.columns(2)
+with btn1:
+    submitted = st.button("✅ 反映", key="btn_submit_shot", use_container_width=True)
+with btn2:
+    undo = st.button("↩️ 取消", key="btn_undo_shot", use_container_width=True)
 
-    if submitted:
-        penalty   = 0
-        green_on  = st.session_state.get("green_on_flag", False)
-        _, _smax = CLUB_SLIDER_RANGE.get(actual_club, (10, 250))
-        dist_val  = st.session_state.remaining if green_on else st.session_state.get(f"dist_slider_{actual_club}", int(_smax * 0.7))
-        remain_adjust = dist_val
-        st.session_state.green_on_flag = False
+if submitted:
+    penalty   = 0
+    green_on  = st.session_state.get("green_on_flag", False)
+    _, _smax = CLUB_SLIDER_RANGE.get(actual_club, (10, 250))
+    dist_val  = st.session_state.remaining if green_on else st.session_state.get(f"dist_slider_{actual_club}", int(_smax * 0.7))
+    remain_adjust = dist_val
+    st.session_state.green_on_flag = False
 
-        if shot_result == "OB":
-            penalty = 1;  remain_adjust = 0
-        elif shot_result == "池":
-            penalty = 1;  remain_adjust = dist_val
-        elif shot_result == "赤杭":
-            penalty = 1;  remain_adjust = dist_val
-        elif shot_result == "ロスト":
-            penalty = 2;  remain_adjust = dist_val
-        elif shot_result == "空振り":
-            remain_adjust = 0
+    if shot_result == "OB":
+        penalty = 1;  remain_adjust = 0
+    elif shot_result == "池":
+        penalty = 1;  remain_adjust = dist_val
+    elif shot_result == "赤杭":
+        penalty = 1;  remain_adjust = dist_val
+    elif shot_result == "ロスト":
+        penalty = 2;  remain_adjust = dist_val
+    elif shot_result == "空振り":
+        remain_adjust = 0
 
-        st.session_state.history.append({
-            "club":     actual_club,
-            "dist":     dist_val,
-            "result":   shot_result,
-            "penalty":  penalty,
-            "green_on": green_on,
-        })
-        st.session_state.remaining = max(st.session_state.remaining - remain_adjust, 0)
+    st.session_state.history.append({
+        "club":     actual_club,
+        "dist":     dist_val,
+        "result":   shot_result,
+        "penalty":  penalty,
+        "green_on": green_on,
+    })
+    st.session_state.remaining = max(st.session_state.remaining - remain_adjust, 0)
+    st.rerun()
+
+if undo:
+    if st.session_state.history:
+        last      = st.session_state.history.pop()
+        back_dist = 0 if last["result"] in ("OB", "空振り") else last["dist"]
+        st.session_state.remaining += back_dist
         st.rerun()
-
-    if undo:
-        if st.session_state.history:
-            last      = st.session_state.history.pop()
-            back_dist = 0 if last["result"] in ("OB", "空振り") else last["dist"]
-            st.session_state.remaining += back_dist
-            st.rerun()
 
 # =========================
 # 最終スコア入力
