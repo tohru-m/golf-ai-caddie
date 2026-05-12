@@ -736,7 +736,14 @@ used = sum(1 + h.get("penalty", 0) for h in st.session_state.history)
 remaining_strokes = shot_strokes - used
 
 # 残りの推奨戦略
-if remaining_strokes > 0:
+if st.session_state.remaining == 0:
+    # すでにグリーンオン済み → パットのみ表示
+    st.markdown(
+        f"<div class='shot-row'>🏌️ パット {putts}回</div>",
+        unsafe_allow_html=True
+    )
+
+elif remaining_strokes > 0:
     plan_data = plan(st.session_state.remaining, remaining_strokes, used, par_num, hole)
 
     for i, p in enumerate(plan_data):
@@ -769,10 +776,7 @@ if remaining_strokes > 0:
             )
 
 elif remaining_strokes == 0:
-    if st.session_state.remaining <= 5:
-        st.markdown("<div class='shot-row'>🚩グリーンオン<span style='color:#e53e3e;'>！</span>（パットのみ）</div>", unsafe_allow_html=True)
-    else:
-        st.error("⚠️ この計画では届きません")
+    st.error("⚠️ この計画では届きません")
 else:
     st.error("ショット数が不足しています")
 
