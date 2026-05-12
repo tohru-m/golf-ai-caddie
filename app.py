@@ -253,6 +253,9 @@ div[data-testid="stRadio"] {
     background: transparent !important;
     padding: 0 !important;
 }
+div[data-testid="stRadio"] [data-testid="stWidgetLabel"] {
+    display: none !important;
+}
 div[data-testid="stRadio"] > div:last-child {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
