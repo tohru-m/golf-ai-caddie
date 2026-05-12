@@ -623,10 +623,10 @@ else:
 
 st.markdown(
     f"<div style='background:#f0f9ff; border:2px solid #7dd3fc; border-radius:10px; padding:12px 16px; margin-top:8px;'>"
-    f"<div style='font-size:26px; font-weight:700; color:#1a1a1a;'>現状の見込みスコア　<b style='font-size:32px;'>{projected_total}</b></div>"
-    f"<div style='font-size:26px; font-weight:700; margin-top:4px;'>"
-    f"目標比：<span style='color:{target_color}; font-size:30px;'>{target_str}</span>"
-    f"　パー比：<span style='color:{par_color}; font-size:30px;'>{par_str}</span>"
+    f"<div style='font-size:24px; font-weight:700; color:#1a1a1a;'>現状の見込みスコア　<b style='font-size:28px;'>{projected_total}</b></div>"
+    f"<div style='font-size:24px; font-weight:700; margin-top:0px;'>"
+    f"目標比：<span style='color:{target_color}; font-size:26px;'>{target_str}</span>"
+    f"　パー比：<span style='color:{par_color}; font-size:26px;'>{par_str}</span>"
     f"</div>"
     f"</div>",
     unsafe_allow_html=True
