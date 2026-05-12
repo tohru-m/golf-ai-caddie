@@ -565,15 +565,19 @@ with st.expander("🧠 ラウンドスコア戦略を見る", expanded=False):
 st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
 
 # ---------- ホール選択（大きなセレクト） ----------
-st.markdown('<div class="ui-label">📍 ホールを選択</div>', unsafe_allow_html=True)
+hole_label_col, hole_select_col = st.columns([2, 3])
 
-hole = st.selectbox(
-    "",
-    list(st.session_state.course.keys()),
-    key="hole_select",
-    label_visibility="collapsed",
-    format_func=lambda h: f"{h}番ホール｜Par{st.session_state.course[h]['par']}｜{st.session_state.course[h]['yard']}y"
-)
+with hole_label_col:
+    st.markdown('<div class="ui-label" style="margin-top:14px;">📍 ホールを選択</div>', unsafe_allow_html=True)
+
+with hole_select_col:
+    hole = st.selectbox(
+        "",
+        list(st.session_state.course.keys()),
+        key="hole_select",
+        label_visibility="collapsed",
+        format_func=lambda h: f"{h}番ホール｜Par{st.session_state.course[h]['par']}｜{st.session_state.course[h]['yard']}y"
+    )
 
 TOTAL_DIST = st.session_state.course[hole]["yard"]
 par_num    = st.session_state.course[hole]["par"]
