@@ -904,7 +904,7 @@ with st.form("shot_form"):
 # =========================
 
 st.markdown("<div class='section-divider'></div>", unsafe_allow_html=True)
-st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🏁 このホールの最終スコア</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">⛳ このホールの最終スコア</div>', unsafe_allow_html=True)
 
 score_labels = [f"{i}打" for i in range(1, 17)]
 
