@@ -719,6 +719,15 @@ if use_danger:
 
 st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">📋 ショット戦略</div>', unsafe_allow_html=True)
 
+st.markdown(
+    f"""
+    <div class="remain-badge">
+        📍 現在の残り距離　{st.session_state.remaining}y
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 # 打った球の履歴
 current_shot = 1
 for h in st.session_state.history:
@@ -790,18 +799,6 @@ elif remaining_strokes == 0:
 else:
     st.error("ショット数が不足しています")
 
-# =========================
-# 残り距離バッジ
-# =========================
-
-st.markdown(
-    f"""
-    <div class="remain-badge">
-        📍 現在の残り距離　{st.session_state.remaining}y
-    </div>
-    """,
-    unsafe_allow_html=True
-)
 
 # =========================
 # ショット結果入力フォーム
