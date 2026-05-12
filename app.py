@@ -999,9 +999,6 @@ if st.session_state.green_on_flag:
         st.session_state.green_on_flag = False
         st.rerun()
 else:
-    if st.button("🚩 グリーンオン！", key="green_on_btn", use_container_width=True):
-        st.session_state.green_on_flag = True
-        st.rerun()
     current_dist = st.session_state[slider_key]
     st.markdown(
         f"<div style='font-size:36px; font-weight:700; color:#1a2e44; margin:4px 0;'>📏 {current_dist}y</div>",
@@ -1009,6 +1006,9 @@ else:
     )
     st.slider("", min_value=smin, max_value=smax, step=10,
               key=slider_key, label_visibility="collapsed")
+    if st.button("🚩 グリーンオン！", key="green_on_btn", use_container_width=True):
+        st.session_state.green_on_flag = True
+        st.rerun()
 
 with st.form("shot_form"):
 
