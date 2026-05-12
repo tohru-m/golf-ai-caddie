@@ -1047,37 +1047,46 @@ with st.expander("⛳ コース設定", expanded=False):
     st.divider()
 
     edited_course = {}
-    all_holes     = list(st.session_state.course.keys())
-    left_holes    = all_holes[:9]
-    right_holes   = all_holes[9:]
-    col_left, col_right = st.columns(2)
+    par_options  = ["Par", 3, 4, 5, 6]
+    yard_options = ["ヤード"] + list(range(100, 705, 5))
 
-    def render_holes(holes_subset):
-        for h in holes_subset:
-            c1, c2, c3, c4, c5 = st.columns([0.8, 0.6, 1, 0.6, 1])
-            with c1: st.markdown(f"**{h}番**")
-            with c2: st.markdown("Par")
-            with c3:
-                par = st.number_input(
-                    "", 3, 6,
-                    st.session_state.course[h]["par"],
-                    key=f"par_{h}",
-                    label_visibility="collapsed"
-                )
-            with c4: st.markdown("Yd")
-            with c5:
-                yard = st.number_input(
-                    "", 50, 700,
-                    st.session_state.course[h]["yard"],
-                    key=f"yard_{h}",
-                    label_visibility="collapsed"
-                )
-            edited_course[h] = {"par": par, "yard": yard}
+    for h in st.session_state.course.keys():
+        cur_par  = st.session_state.course[h]["par"]
+        cur_yard = st.session_state.course[h]["yard"]
 
-    with col_left:
-        render_holes(left_holes)
-    with col_right:
-        render_holes(right_holes)
+        c1, c2, c3, c4, c5 = st.columns([1, 0.8, 1.2, 1, 1.8])
+
+        with c1:
+            st.markdown(
+                f"<div style='font-size:17px; font-weight:700; color:#1a2e44; padding-top:12px;'>{h}番</div>",
+                unsafe_allow_html=True
+            )
+        with c2:
+            st.markdown(
+                "<div style='font-size:13px; color:#4a5568; padding-top:14px;'>Par</div>",
+                unsafe_allow_html=True
+            )
+        with c3:
+            par_idx = par_options.index(cur_par) if cur_par in par_options else 0
+            par_sel = st.selectbox(
+                "", par_options, index=par_idx,
+                key=f"par_{h}", label_visibility="collapsed"
+            )
+            par = cur_par if par_sel == "Par" else int(par_sel)
+        with c4:
+            st.markdown(
+                "<div style='font-size:13px; color:#4a5568; padding-top:14px;'>距離(y)</div>",
+                unsafe_allow_html=True
+            )
+        with c5:
+            yard_idx = yard_options.index(cur_yard) if cur_yard in yard_options else 0
+            yard_sel = st.selectbox(
+                "", yard_options, index=yard_idx,
+                key=f"yard_{h}", label_visibility="collapsed"
+            )
+            yard = cur_yard if yard_sel == "ヤード" else int(yard_sel)
+
+        edited_course[h] = {"par": par, "yard": yard}
 
 if st.button("✅ コース設定を更新", use_container_width=True):
     st.session_state.course      = edited_course
