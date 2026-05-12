@@ -655,7 +655,7 @@ with putt_col2:
 shot_strokes = target - putts
 
 st.markdown(
-    f"<div class='ui-label-small'>ショット：{shot_strokes}回 ＋ パット：{putts}回</div>",
+    f"<div style='font-size:17px; font-weight:700; color:#e53e3e; margin-top:6px;'>ショット：{shot_strokes}回 ＋ パット：{putts}回</div>",
     unsafe_allow_html=True
 )
 
