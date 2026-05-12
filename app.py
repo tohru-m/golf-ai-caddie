@@ -564,16 +564,8 @@ hole_targets = calc_hole_targets(target_score)
 
 # ---------- ラウンドスコア戦略（折りたたみ） ----------
 with st.expander(f"🧠 目標スコア{target_score}のラウンド戦略", expanded=False):
-    holes   = sorted(st.session_state.course.keys())
-    front9  = holes[:9]
-    back9   = holes[9:]
-    lc, rc  = st.columns(2)
-    with lc:
-        st.markdown("**前半**")
-        render_score_table(front9, hole_targets)
-    with rc:
-        st.markdown("**後半**")
-        render_score_table(back9, hole_targets)
+    holes = sorted(st.session_state.course.keys())
+    render_score_table(holes, hole_targets)
 
 st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
 
