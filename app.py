@@ -246,6 +246,23 @@ div:has(> #shot-float-btns) + div button {
     border-radius: 10px !important;
 }
 
+/* ===== ホール選択グリッド（マーカーIDで特定） ===== */
+div:has(> #hole-grid-marker) + div,
+div:has(> #hole-grid-marker) + div > *,
+div:has(> #hole-grid-marker) + div [data-testid="stRadio"] {
+    width: 100% !important;
+    display: block !important;
+}
+div:has(> #hole-grid-marker) + div [data-testid="stRadio"] > div:last-child {
+    display: grid !important;
+    grid-template-columns: repeat(6, 1fr) !important;
+    width: 100% !important;
+    gap: 6px !important;
+}
+div:has(> #hole-grid-marker) + div [data-testid="stRadio"] label > *:not(p):not(span):not(input) {
+    display: none !important;
+}
+
 /* ===== 目標スコアグリッド（4列×2行：8択） ===== */
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(8)):not(:has(> label:nth-child(9))) {
     grid-template-columns: repeat(4, 1fr) !important;
@@ -262,6 +279,7 @@ div[data-testid="stRadio"] {
     box-shadow: none !important;
     background: transparent !important;
     padding: 0 !important;
+    width: 100% !important;
 }
 div[data-testid="stRadio"] [data-testid="stWidgetLabel"] {
     display: none !important;
@@ -271,6 +289,7 @@ div[data-testid="stRadio"] > div:last-child {
     grid-template-columns: repeat(3, 1fr) !important;
     gap: 6px !important;
     flex-wrap: unset !important;
+    width: 100% !important;
 }
 div[data-testid="stRadio"] label {
     display: flex !important;
@@ -711,20 +730,16 @@ st.markdown(
 
 st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
 
-# ---------- ホール選択（大きなセレクト） ----------
-hole_label_col, hole_select_col = st.columns([2, 3])
-
-with hole_label_col:
-    st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">📍 ホールを選択</div>', unsafe_allow_html=True)
-
-with hole_select_col:
-    hole = st.selectbox(
-        "",
-        list(st.session_state.course.keys()),
-        key="hole_select",
-        label_visibility="collapsed",
-        format_func=lambda h: f"{h}番ホール"
-    )
+# ---------- ホール選択（ボタングリッド） ----------
+st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">📍 ホールを選択</div>', unsafe_allow_html=True)
+st.markdown('<div id="hole-grid-marker"></div>', unsafe_allow_html=True)
+hole = st.radio(
+    "",
+    list(st.session_state.course.keys()),
+    key="hole_select",
+    label_visibility="collapsed",
+    horizontal=True
+)
 
 TOTAL_DIST = st.session_state.course[hole]["yard"]
 par_num    = st.session_state.course[hole]["par"]
