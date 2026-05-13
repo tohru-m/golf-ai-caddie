@@ -278,12 +278,16 @@ div:has(> #shot-float-btns) + div button {
     display: none !important;
 }
 
-/* ===== クラブ選択グリッド（11択：3列） ===== */
-[data-testid="stRadio"] > div:last-child:has(> label:nth-child(11)):not(:has(> label:nth-child(12))) label > *:first-child {
-    display: none !important;
+/* ===== クラブ選択グリッド（11択：5列×3行） ===== */
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(11)):not(:has(> label:nth-child(12))) {
+    grid-template-columns: repeat(5, 1fr) !important;
+    width: 100% !important;
 }
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(11)):not(:has(> label:nth-child(12))) label {
-    min-width: calc((100vw - 2rem - 2 * 6px) / 3) !important;
+    min-width: calc((100vw - 2rem - 4 * 6px) / 5) !important;
+}
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(11)):not(:has(> label:nth-child(12))) label > *:first-child {
+    display: none !important;
 }
 
 /* ===== クラブ選択グリッド ===== */
