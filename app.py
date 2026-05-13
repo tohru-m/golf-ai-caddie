@@ -1504,12 +1504,8 @@ with st.expander("⛳ コース設定", expanded=False):
                 st.session_state[f"yard_{h}"] = data["yard"]
             st.rerun()
 
-    st.divider()
-
     tee_type = st.session_state.get("tee_type", "REG")
- 
-    st.divider()
- 
+
     edited_course = {}
     par_options   = ["Par", 3, 4, 5, 6]
  
