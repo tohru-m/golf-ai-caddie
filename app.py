@@ -465,6 +465,7 @@ div[data-testid="stRadio"] input[type="radio"] {
 
 PRESET_COURSES = {
     "大阪パブリックゴルフ場（フロント）": {
+        "name": "大阪パブリックゴルフ場",
         "tee": "FRO",
         "holes": {
             1:  {"par": 4, "yard": 228},
@@ -488,6 +489,7 @@ PRESET_COURSES = {
         }
     },
     "大阪パブリックゴルフ場（レディース）": {
+        "name": "大阪パブリックゴルフ場",
         "tee": "LADIES",
         "holes": {
             1:  {"par": 4, "yard": 223},
@@ -511,6 +513,7 @@ PRESET_COURSES = {
         }
     },
     "宝塚ゴルフ倶楽部新C（フロント）": {
+        "name": "宝塚ゴルフ倶楽部",
         "tee": "FRO",
         "holes": {
             1:  {"par": 5, "yard": 425},
@@ -1481,8 +1484,9 @@ with st.expander("⛳ コース設定", expanded=False):
     if selected_preset != "── プリセットを選択 ──":
         if st.button("↓ このプリセットを読み込む", key="btn_load_preset", use_container_width=True):
             preset = PRESET_COURSES[selected_preset]
-            st.session_state.course   = preset["holes"].copy()
-            st.session_state.tee_type = preset["tee"]
+            st.session_state.course      = preset["holes"].copy()
+            st.session_state.tee_type    = preset["tee"]
+            st.session_state.course_name = preset["name"]
             for h, data in preset["holes"].items():
                 st.session_state[f"par_{h}"]  = data["par"]
                 st.session_state[f"yard_{h}"] = data["yard"]
