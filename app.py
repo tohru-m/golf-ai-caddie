@@ -977,7 +977,7 @@ elif remaining_strokes > 0:
             # グリーンオン
             st.markdown(
                 f"<div class='shot-row'>"
-                f"<strong>{p['club']}</strong> ／{display_dist}y（🚩Gオン！）"
+                f"<strong>{p['club']} ／{display_dist}y</strong>（🚩Gオン！）"
                 f"</div>",
                 unsafe_allow_html=True
             )
@@ -998,7 +998,7 @@ elif remaining_strokes > 0:
             shortage = p["before"] - display_dist
             st.markdown(
                 f"<div class='shot-row-warn'>"
-                f"<strong>{p['club']}</strong> ／{display_dist}y（残 {max(p['before'] - display_dist, 0)}y）"
+                f"<strong>{p['club']} ／{display_dist}y</strong>（残 {max(p['before'] - display_dist, 0)}y）"
                 f"</div>",
                 unsafe_allow_html=True
             )
@@ -1006,7 +1006,7 @@ elif remaining_strokes > 0:
         else:
             st.markdown(
                 f"<div class='shot-row'>"
-                f"<strong>{p['club']}</strong> ／{display_dist}y（残 {max(p['before'] - display_dist, 0)}y）"
+                f"<strong>{p['club']} ／{display_dist}y</strong>（残 {max(p['before'] - display_dist, 0)}y）"
                 f"</div>",
                 unsafe_allow_html=True
             )
