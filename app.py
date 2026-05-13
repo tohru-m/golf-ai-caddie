@@ -1056,7 +1056,7 @@ else:
 # 🎤 音声入力セクション
 # =========================
  
-st.markdown('<div style="font-size:30px; font-weight:400; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🎤 音声で結果を入力</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:26px; font-weight:700; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🎤 音声で結果を入力</div>', unsafe_allow_html=True)
  
 st.markdown(
     "<div class='voice-box'>"
