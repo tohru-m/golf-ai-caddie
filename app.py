@@ -229,10 +229,10 @@ div[data-testid="stSlider"] {
 }
 
 /* ===== 反映・取消ボタン（primaryボタン） ===== */
-button[data-testid="baseButton-primary"],
-button[data-testid="baseButton-primary"]:hover,
-button[data-testid="baseButton-primary"]:focus,
-button[data-testid="baseButton-primary"]:active {
+button[data-testid="baseButton-primary"]:not(#_),
+button[data-testid="baseButton-primary"]:not(#_):hover,
+button[data-testid="baseButton-primary"]:not(#_):focus,
+button[data-testid="baseButton-primary"]:not(#_):active {
     font-size: 40px !important;
     height: 70px !important;
     font-weight: 700 !important;
