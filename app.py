@@ -251,6 +251,11 @@ div:has(> #target-score-grid) + [data-testid="stRadio"] > div:last-child {
     grid-template-columns: repeat(2, 1fr) !important;
 }
 
+/* ===== パット数グリッド（4列） ===== */
+div:has(> #putt-count-grid) + [data-testid="stRadio"] > div:last-child {
+    grid-template-columns: repeat(4, 1fr) !important;
+}
+
 /* ===== クラブ選択グリッド ===== */
 div[data-testid="stRadio"] {
     border: none !important;
@@ -774,19 +779,16 @@ target = st.radio(
     horizontal=True,
 )
 
-putt_col1, putt_col2 = st.columns([3, 2])
-
-with putt_col1:
-    st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🏌️ パット数は？</div>', unsafe_allow_html=True)
-
-with putt_col2:
-    putts = st.selectbox(
-        "",
-        [1, 2, 3, 4, 5],
-        index=1,
-        key="putt_select",
-        label_visibility="collapsed"
-    )
+st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🏌️ パット数は？</div>', unsafe_allow_html=True)
+st.markdown('<div id="putt-count-grid"></div>', unsafe_allow_html=True)
+putts = st.radio(
+    "",
+    [1, 2, 3, 4],
+    index=1,
+    key="putt_select",
+    label_visibility="collapsed",
+    horizontal=True,
+)
 
 shot_strokes = target - putts
 
