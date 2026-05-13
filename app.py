@@ -1116,7 +1116,6 @@ with btn1:
 with btn2:
     undo = st.button("↩️ 取消", key="btn_undo_shot", use_container_width=True)
 
-st.markdown('<div style="font-size:14px; font-weight:600; color:#9ca3af; margin-top:16px; margin-bottom:4px;">実績を全てリセット</div>', unsafe_allow_html=True)
 reset_all = st.button("実績を全てリセット", key="btn_reset_all", use_container_width=False)
 
 if submitted:
