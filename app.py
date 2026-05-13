@@ -247,12 +247,12 @@ div:has(> #shot-float-btns) + div button {
 }
 
 /* ===== 目標スコアグリッド（2列） ===== */
-div:has(> #target-score-grid) + [data-testid="stRadio"] > div:last-child {
+div:has(#target-score-grid) + [data-testid="stRadio"] > div:last-child {
     grid-template-columns: repeat(2, 1fr) !important;
 }
 
-/* ===== パット数グリッド（4列） ===== */
-div:has(> #putt-count-grid) + [data-testid="stRadio"] > div:last-child {
+/* ===== パット数グリッド（4列・横1列） ===== */
+div:has(#putt-count-grid) + [data-testid="stRadio"] > div:last-child {
     grid-template-columns: repeat(4, 1fr) !important;
 }
 
