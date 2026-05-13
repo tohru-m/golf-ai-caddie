@@ -1483,6 +1483,9 @@ with st.expander("⛳ コース設定", expanded=False):
             preset = PRESET_COURSES[selected_preset]
             st.session_state.course   = preset["holes"].copy()
             st.session_state.tee_type = preset["tee"]
+            for h, data in preset["holes"].items():
+                st.session_state[f"par_{h}"]  = data["par"]
+                st.session_state[f"yard_{h}"] = data["yard"]
             st.rerun()
 
     st.divider()
