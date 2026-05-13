@@ -209,7 +209,13 @@ html, body, [class*="css"] {
     width: 38px !important;
     height: 38px !important;
 }
- 
+
+/* ===== この内容で反映するボタン拡大 ===== */
+div:has(> #voice-apply-anchor) + div[data-testid="stButton"] > button {
+    height: 80px !important;
+    font-size: 38px !important;
+}
+
 /* ===== ホール見出し ===== */
 .hole-header {
     background: linear-gradient(135deg, #1a2e44 0%, #2d4a6e 100%);
@@ -1113,6 +1119,7 @@ if audio_file is not None:
             )
  
             # そのまま反映ボタン
+            st.markdown('<div id="voice-apply-anchor"></div>', unsafe_allow_html=True)
             if st.button("✅ この内容で反映する", key="btn_voice_apply", use_container_width=True):
                 club_name = parsed.get("club", "")
                 dist_val  = parsed.get("dist", 0)
