@@ -258,6 +258,9 @@ div:has(> #shot-float-btns) + div button {
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(8)):not(:has(> label:nth-child(9))) {
     grid-template-columns: repeat(4, 1fr) !important;
 }
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(8)):not(:has(> label:nth-child(9))) label > *:first-child {
+    display: none !important;
+}
 
 /* ===== パット数グリッド（4列：4択） ===== */
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(4)):not(:has(> label:nth-child(5))) {
