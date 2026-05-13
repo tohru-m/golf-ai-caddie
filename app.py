@@ -269,12 +269,12 @@ div[data-testid="stSlider"] {
     }
 }
 
-/* ===== 結果グリッド（9択：3列×3行） ===== */
-[data-testid="stRadio"] > div:last-child:has(> label:nth-child(9)):not(:has(> label:nth-child(10))) {
-    grid-template-columns: repeat(3, 1fr) !important;
+/* ===== 結果グリッド（10択：5列×2行） ===== */
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(10)):not(:has(> label:nth-child(11))) {
+    grid-template-columns: repeat(5, 1fr) !important;
     width: 100% !important;
 }
-[data-testid="stRadio"] > div:last-child:has(> label:nth-child(9)):not(:has(> label:nth-child(10))) label > *:first-child {
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(10)):not(:has(> label:nth-child(11))) label > *:first-child {
     display: none !important;
 }
 
@@ -284,8 +284,8 @@ div[data-testid="stSlider"] {
     [data-testid="stRadio"] > div:last-child:has(> label:nth-child(4)):not(:has(> label:nth-child(5))) label {
         min-width: calc((100vw - 2rem - 4 * 6px) / 5) !important;
     }
-    [data-testid="stRadio"] > div:last-child:has(> label:nth-child(9)):not(:has(> label:nth-child(10))) label {
-        min-width: calc((100vw - 2rem - 2 * 6px) / 3) !important;
+    [data-testid="stRadio"] > div:last-child:has(> label:nth-child(10)):not(:has(> label:nth-child(11))) label {
+        min-width: calc((100vw - 2rem - 4 * 6px) / 5) !important;
     }
 }
 
@@ -1060,14 +1060,6 @@ actual_club = st.radio(
     horizontal=True,
 )
 
-if "green_on_flag" not in st.session_state:
-    st.session_state.green_on_flag = False
-
-# クラブ変更時はグリーンオンフラグをリセット
-if st.session_state.get("_prev_club") != actual_club:
-    st.session_state.green_on_flag = False
-    st.session_state["_prev_club"] = actual_club
-
 # スライダー範囲とデフォルト値
 smin, smax = CLUB_SLIDER_RANGE.get(actual_club, (10, 250))
 slider_key  = f"dist_slider_{actual_club}"
@@ -1080,29 +1072,13 @@ st.markdown(
     f'飛距離　<span style="font-size:42px; color:#1a2e44; font-weight:900;">{current_dist}y</span></div>',
     unsafe_allow_html=True
 )
-
-# グリーンオンボタン
-if st.session_state.green_on_flag:
-    st.markdown(
-        "<div style='background:#fee2e2; border:2px solid #dc2626; border-radius:8px; "
-        "padding:10px; text-align:center; font-size:24px; font-weight:700; color:#dc2626; margin-bottom:6px;'>"
-        "🚩 グリーンオン！ 選択中</div>",
-        unsafe_allow_html=True
-    )
-    if st.button("↩ スライダーに戻る", key="cancel_green_on", use_container_width=True):
-        st.session_state.green_on_flag = False
-        st.rerun()
-else:
-    st.slider("", min_value=smin, max_value=smax, step=10,
-              key=slider_key, label_visibility="collapsed")
-    if st.button("🚩 グリーンオン！", key="green_on_btn", use_container_width=True):
-        st.session_state.green_on_flag = True
-        st.rerun()
+st.slider("", min_value=smin, max_value=smax, step=10,
+          key=slider_key, label_visibility="collapsed")
 
 st.markdown('<div class="ui-label-small">結果</div>', unsafe_allow_html=True)
 shot_result = st.radio(
     "",
-    ["FW", "ラフ", "OB", "池", "赤杭", "ロスト", "空振り", "プレ4", "プレ3"],
+    ["FW", "ラフ", "OB", "池", "赤杭", "ロスト", "空振り", "プレ4", "プレ3", "🚩Gオン"],
     key="shot_result_select",
     label_visibility="collapsed",
     horizontal=True,
@@ -1118,11 +1094,10 @@ with btn2:
 
 if submitted:
     penalty   = 0
-    green_on  = st.session_state.get("green_on_flag", False)
+    green_on  = (shot_result == "🚩Gオン")
     _, _smax = CLUB_SLIDER_RANGE.get(actual_club, (10, 250))
     dist_val  = st.session_state.remaining if green_on else st.session_state.get(f"dist_slider_{actual_club}", int(_smax * 0.7))
     remain_adjust = dist_val
-    st.session_state.green_on_flag = False
 
     if shot_result == "OB":
         penalty = 1;  remain_adjust = 0
