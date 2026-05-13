@@ -1061,7 +1061,6 @@ st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-
 st.markdown(
     "<div class='voice-box'>"
         "<div style='font-size:18px; color:#4b5563;'>例：「7番アイアン、150ヤード、フェアウェイ」</div>"
-    "<div style='font-size:18px; color:#4b5563;'>例：「ピーダブ、120、グリーンオン」</div>"
     "<div style='font-size:18px; color:#4b5563;'>例：「1W、180ヤード、OB」</div>"
     "</div>",
     unsafe_allow_html=True
