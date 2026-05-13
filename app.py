@@ -228,32 +228,16 @@ div[data-testid="stSlider"] {
     padding-top: 4px;
 }
 
-/* ===== フローティングボタン ===== */
-[data-testid="stHorizontalBlock"]:has(#shot-float-btns) {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    gap: 10px !important;
-}
-[data-testid="stHorizontalBlock"]:has(#shot-float-btns) [data-testid="column"] {
-    flex: 1 1 0 !important;
-    min-width: 0 !important;
-    max-width: 50% !important;
-    width: 0 !important;
+/* ===== 反映・取消ボタン ===== */
+[data-testid="stHorizontalBlock"]:has(#shot-float-btns) [data-testid="stMarkdownContainer"]:has(#shot-float-btns) {
+    height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
     padding: 0 !important;
 }
-[data-testid="stHorizontalBlock"]:has(#shot-float-btns) [data-testid="stButton"] {
-    width: 100% !important;
-}
 [data-testid="stHorizontalBlock"]:has(#shot-float-btns) button {
-    width: 100% !important;
-    height: 60px !important;
     font-size: 32px !important;
-    font-weight: 700 !important;
-    background-color: #1a2e44 !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 8px !important;
+    height: 62px !important;
 }
 
 /* ===== ホール選択グリッド（5列×4行：18択） ===== */
@@ -1134,7 +1118,7 @@ shot_result = st.radio(
 
 # コンテンツが固定ボタンの下に隠れないよう余白
 # ─── ボタン ───
-btn1, btn2 = st.columns([1, 1])
+btn1, btn2, _ = st.columns([1, 1, 1])
 with btn1:
     st.markdown('<span id="shot-float-btns" style="display:none"></span>', unsafe_allow_html=True)
     submitted = st.button("✅ 反映", key="btn_submit_shot", use_container_width=True)
