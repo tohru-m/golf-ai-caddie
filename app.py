@@ -1503,15 +1503,10 @@ with st.expander("⛳ コース設定", expanded=False):
 
     st.divider()
 
-    course_col1, course_col2 = st.columns([3, 1])
-    with course_col1:
-        course_name = st.text_input("コース名",
-            value=st.session_state.get("course_name", ""),
-            placeholder="例：宝塚ゴルフ倶楽部")
-    with course_col2:
-        tee_options = ["BACK", "REG", "FRO", "LADIES"]
-        tee_type    = st.selectbox("ティー", tee_options,
-            index=tee_options.index(st.session_state.get("tee_type", "REG")))
+    course_name = st.text_input("コース名",
+        value=st.session_state.get("course_name", ""),
+        placeholder="例：宝塚ゴルフ倶楽部")
+    tee_type = st.session_state.get("tee_type", "REG")
  
     st.divider()
  
