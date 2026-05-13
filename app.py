@@ -233,6 +233,9 @@ div[data-testid="stSlider"] {
     font-size: 40px !important;
     height: 70px !important;
     font-weight: 700 !important;
+    background-color: white !important;
+    color: #1a2e44 !important;
+    border: 1px solid #9ca3af !important;
 }
 
 /* ===== ホール選択グリッド（5列×4行：18択） ===== */
