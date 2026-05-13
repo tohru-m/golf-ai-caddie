@@ -246,13 +246,13 @@ div:has(> #shot-float-btns) + div button {
     border-radius: 10px !important;
 }
 
-/* ===== 目標スコアグリッド（2列） ===== */
-div:has(#target-score-grid) + [data-testid="stRadio"] > div:last-child {
+/* ===== 目標スコアグリッド（2列：8択） ===== */
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(8)):not(:has(> label:nth-child(9))) {
     grid-template-columns: repeat(2, 1fr) !important;
 }
 
-/* ===== パット数グリッド（4列・横1列） ===== */
-div:has(#putt-count-grid) + [data-testid="stRadio"] > div:last-child {
+/* ===== パット数グリッド（4列：4択） ===== */
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(4)):not(:has(> label:nth-child(5))) {
     grid-template-columns: repeat(4, 1fr) !important;
 }
 
@@ -769,7 +769,6 @@ st.markdown(
 )
 
 default_target = max(1, min(recommended_score, 8)) - 1
-st.markdown('<div id="target-score-grid"></div>', unsafe_allow_html=True)
 target = st.radio(
     "",
     list(range(1, 9)),
@@ -780,7 +779,6 @@ target = st.radio(
 )
 
 st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🏌️ パット数は？</div>', unsafe_allow_html=True)
-st.markdown('<div id="putt-count-grid"></div>', unsafe_allow_html=True)
 putts = st.radio(
     "",
     [1, 2, 3, 4],
