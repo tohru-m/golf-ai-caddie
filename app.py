@@ -230,16 +230,10 @@ div[data-testid="stSlider"] {
 
 /* ===== フローティングボタン ===== */
 [data-testid="stHorizontalBlock"]:has(#shot-float-btns) {
-    position: fixed !important;
-    bottom: 20px !important;
-    left: 10px !important;
-    right: 10px !important;
-    z-index: 999 !important;
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: nowrap !important;
     gap: 10px !important;
-    background: none !important;
 }
 [data-testid="stHorizontalBlock"]:has(#shot-float-btns) [data-testid="column"] {
     flex: 1 1 0 !important;
@@ -1139,9 +1133,7 @@ shot_result = st.radio(
 )
 
 # コンテンツが固定ボタンの下に隠れないよう余白
-st.markdown("<div style='padding-bottom: 110px;'></div>", unsafe_allow_html=True)
-
-# ─── フローティングボタン（固定表示）───
+# ─── ボタン ───
 btn1, btn2 = st.columns([1, 1])
 with btn1:
     st.markdown('<span id="shot-float-btns" style="display:none"></span>', unsafe_allow_html=True)
