@@ -250,7 +250,7 @@ div:has(> #shot-float-btns) + div button {
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(18)):not(:has(> label:nth-child(19))) {
     grid-template-columns: repeat(5, 1fr) !important;
 }
-[data-testid="stRadio"] > div:last-child:has(> label:nth-child(18)):not(:has(> label:nth-child(19))) label > *:not(p):not(span):not(input) {
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(18)):not(:has(> label:nth-child(19))) label > div:has(input[type="radio"]) {
     display: none !important;
 }
 
