@@ -278,6 +278,18 @@ div:has(> #shot-float-btns) + div button {
     display: none !important;
 }
 
+/* ===== 結果グリッド（6択：3列×2行） ===== */
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(6)):not(:has(> label:nth-child(7))) {
+    grid-template-columns: repeat(3, 1fr) !important;
+    width: 100% !important;
+}
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(6)):not(:has(> label:nth-child(7))) label {
+    min-width: calc((100vw - 2rem - 2 * 6px) / 3) !important;
+}
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(6)):not(:has(> label:nth-child(7))) label > *:first-child {
+    display: none !important;
+}
+
 /* ===== クラブ選択グリッド（11択：5列×3行） ===== */
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(11)):not(:has(> label:nth-child(12))) {
     grid-template-columns: repeat(5, 1fr) !important;
@@ -1086,11 +1098,12 @@ else:
         st.rerun()
 
 st.markdown('<div class="ui-label-small">結果</div>', unsafe_allow_html=True)
-shot_result = st.selectbox(
+shot_result = st.radio(
     "",
     ["通常", "OB", "池", "赤杭", "ロスト", "空振り"],
     key="shot_result_select",
-    label_visibility="collapsed"
+    label_visibility="collapsed",
+    horizontal=True,
 )
 
 # コンテンツが固定ボタンの下に隠れないよう余白
