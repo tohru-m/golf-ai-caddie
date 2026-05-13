@@ -236,14 +236,18 @@ div:has(> #shot-float-btns) + div {
     right: 10px !important;
     z-index: 999 !important;
 }
-div:has(> #shot-float-btns) + div > div {
+div:has(> #shot-float-btns) + div > div,
+div:has(> #shot-float-btns) + div [data-testid="stHorizontalBlock"] {
     display: flex !important;
     flex-direction: row !important;
+    flex-wrap: nowrap !important;
     gap: 10px !important;
 }
-div:has(> #shot-float-btns) + div > div > div {
+div:has(> #shot-float-btns) + div > div > div,
+div:has(> #shot-float-btns) + div [data-testid="column"] {
     flex: 1 !important;
     min-width: 0 !important;
+    width: 50% !important;
 }
 div:has(> #shot-float-btns) + div button {
     height: 70px !important;
