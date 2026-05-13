@@ -1116,6 +1116,9 @@ with btn1:
 with btn2:
     undo = st.button("↩️ 取消", key="btn_undo_shot", use_container_width=True)
 
+st.markdown('<div style="font-size:14px; font-weight:600; color:#9ca3af; margin-top:16px; margin-bottom:4px;">実績を全てリセット</div>', unsafe_allow_html=True)
+reset_all = st.button("🗑️ リセット", key="btn_reset_all", use_container_width=False)
+
 if submitted:
     penalty   = 0
     green_on  = st.session_state.get("green_on_flag", False)
@@ -1155,6 +1158,12 @@ if undo:
         back_dist = 0 if last["result"] in ("OB", "空振り") else last["dist"]
         st.session_state.remaining += back_dist
         st.rerun()
+
+if reset_all:
+    st.session_state.history       = []
+    st.session_state.remaining     = TOTAL_DIST
+    st.session_state.green_on_flag = False
+    st.rerun()
 
 # =========================
 # 最終スコア入力
