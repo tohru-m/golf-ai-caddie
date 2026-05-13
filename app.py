@@ -255,6 +255,10 @@ div:has(> #shot-float-btns) + div button {
 }
 
 /* ===== 目標スコアグリッド（5列×2行：8択） ===== */
+div[data-testid="stRadio"]:has(> div:last-child > label:nth-child(8)):not(:has(> div:last-child > label:nth-child(9))) {
+    width: 100% !important;
+    display: block !important;
+}
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(8)):not(:has(> label:nth-child(9))) {
     grid-template-columns: repeat(5, 1fr) !important;
     width: 100% !important;
