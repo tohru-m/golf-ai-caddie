@@ -1504,7 +1504,7 @@ with st.expander("⛳ コース設定", expanded=False):
     st.markdown('<div id="preset-select-anchor"></div>', unsafe_allow_html=True)
     selected_preset = st.selectbox("プリセット選択", preset_options, key="preset_select", label_visibility="collapsed")
     if selected_preset != "コースを選択":
-        if st.button("↓ このプリセットを読み込む", key="btn_load_preset", use_container_width=True):
+        if st.button("↓ コース情報を読み込む", key="btn_load_preset", use_container_width=True):
             preset = PRESET_COURSES[selected_preset]
             st.session_state.course      = preset["holes"].copy()
             st.session_state.tee_type    = preset["tee"]
