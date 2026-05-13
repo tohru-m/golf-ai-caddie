@@ -236,6 +236,15 @@ div:has(> #shot-float-btns) + div {
     right: 10px !important;
     z-index: 999 !important;
 }
+div:has(> #shot-float-btns) + div > div {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 10px !important;
+}
+div:has(> #shot-float-btns) + div > div > div {
+    flex: 1 !important;
+    min-width: 0 !important;
+}
 div:has(> #shot-float-btns) + div button {
     height: 70px !important;
     font-size: 28px !important;
