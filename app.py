@@ -229,7 +229,7 @@ div[data-testid="stSlider"] {
 }
 
 /* ===== フローティングボタン ===== */
-div:has(> #shot-float-btns) + div {
+[data-testid="stHorizontalBlock"]:has(#shot-float-btns) {
     position: fixed !important;
     bottom: 20px !important;
     left: 10px !important;
@@ -239,23 +239,19 @@ div:has(> #shot-float-btns) + div {
     flex-direction: row !important;
     flex-wrap: nowrap !important;
     gap: 10px !important;
-    padding: 0 !important;
     background: none !important;
 }
-div:has(> #shot-float-btns) + div [data-testid="column"],
-div:has(> #shot-float-btns) + div > div {
+[data-testid="stHorizontalBlock"]:has(#shot-float-btns) [data-testid="column"] {
     flex: 1 1 0 !important;
     min-width: 0 !important;
     max-width: 50% !important;
     width: 0 !important;
     padding: 0 !important;
 }
-div:has(> #shot-float-btns) + div [data-testid="stButton"],
-div:has(> #shot-float-btns) + div > div > div {
+[data-testid="stHorizontalBlock"]:has(#shot-float-btns) [data-testid="stButton"] {
     width: 100% !important;
-    padding: 0 !important;
 }
-div:has(> #shot-float-btns) + div button {
+[data-testid="stHorizontalBlock"]:has(#shot-float-btns) button {
     width: 100% !important;
     height: 60px !important;
     font-size: 24px !important;
@@ -263,9 +259,7 @@ div:has(> #shot-float-btns) + div button {
     background-color: #1a2e44 !important;
     color: white !important;
     border: none !important;
-    border-radius: 10px !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    border-radius: 8px !important;
 }
 
 /* ===== ホール選択グリッド（5列×4行：18択） ===== */
@@ -1148,9 +1142,9 @@ shot_result = st.radio(
 st.markdown("<div style='padding-bottom: 110px;'></div>", unsafe_allow_html=True)
 
 # ─── フローティングボタン（固定表示）───
-st.markdown('<div id="shot-float-btns"></div>', unsafe_allow_html=True)
 btn1, btn2 = st.columns(2)
 with btn1:
+    st.markdown('<span id="shot-float-btns" style="display:none"></span>', unsafe_allow_html=True)
     submitted = st.button("✅ 反映", key="btn_submit_shot", use_container_width=True)
 with btn2:
     undo = st.button("↩️ 取消", key="btn_undo_shot", use_container_width=True)
