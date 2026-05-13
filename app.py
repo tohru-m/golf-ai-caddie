@@ -257,8 +257,8 @@ div:has(> #shot-float-btns) + div > div > div {
 }
 div:has(> #shot-float-btns) + div button {
     width: 100% !important;
-    height: 70px !important;
-    font-size: 28px !important;
+    height: 60px !important;
+    font-size: 24px !important;
     font-weight: 700 !important;
     background-color: #1a2e44 !important;
     color: white !important;
