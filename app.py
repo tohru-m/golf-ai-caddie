@@ -1409,8 +1409,18 @@ with reset_col:
  
 if reset_all:
     st.session_state.history       = []
-    st.session_state.remaining     = TOTAL_DIST
     st.session_state.green_on_flag = False
+    st.session_state.hole_select   = 1
+    st.session_state.remaining     = st.session_state.course[1]["yard"]
+    # 各ホールの実績スコアをリセット
+    for h in st.session_state.course.keys():
+        st.session_state.pop(f"actual_{h}", None)
+        st.session_state.pop(f"final_score_input_{h}", None)
+    # 音声入力をリセット
+    st.session_state.voice_club   = None
+    st.session_state.voice_dist   = None
+    st.session_state.voice_result = None
+    st.session_state.voice_text   = ""
     st.rerun()
  
 # =========================
