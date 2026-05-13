@@ -246,17 +246,9 @@ div:has(> #shot-float-btns) + div button {
     border-radius: 10px !important;
 }
 
-/* ===== ホール選択ボタン（選択中のみネイビー） ===== */
-button[kind="primary"] {
-    background-color: #1a2e44 !important;
-    color: white !important;
-    border-color: #1a2e44 !important;
-    border: 2px solid #1a2e44 !important;
-}
-button[kind="secondary"] {
-    background-color: white !important;
-    color: #1a1a1a !important;
-    border: 2px solid #9ca3af !important;
+/* ===== ホール選択グリッド（5列×4行：18択） ===== */
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(18)):not(:has(> label:nth-child(19))) {
+    grid-template-columns: repeat(5, 1fr) !important;
 }
 
 /* ===== 目標スコアグリッド（4列×2行：8択） ===== */
@@ -726,23 +718,15 @@ st.markdown(
 
 st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
 
-# ---------- ホール選択（ボタングリッド） ----------
+# ---------- ホール選択（ラジオボタングリッド） ----------
 st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">📍 ホールを選択</div>', unsafe_allow_html=True)
-hole_keys = list(st.session_state.course.keys())
-if "hole_select" not in st.session_state:
-    st.session_state["hole_select"] = hole_keys[0]
-for row_start in range(0, len(hole_keys), 4):
-    row_holes = hole_keys[row_start:row_start + 4]
-    cols = st.columns(4)
-    for i, h in enumerate(row_holes):
-        with cols[i]:
-            is_sel = st.session_state["hole_select"] == h
-            if st.button(str(h), key=f"hole_btn_{h}",
-                         use_container_width=True,
-                         type="primary" if is_sel else "secondary"):
-                st.session_state["hole_select"] = h
-                st.rerun()
-hole = st.session_state["hole_select"]
+hole = st.radio(
+    "",
+    list(st.session_state.course.keys()),
+    key="hole_select",
+    label_visibility="collapsed",
+    horizontal=True,
+)
 
 TOTAL_DIST = st.session_state.course[hole]["yard"]
 par_num    = st.session_state.course[hole]["par"]
