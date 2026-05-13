@@ -1502,7 +1502,10 @@ if st.button("✅ クラブ設定を更新", use_container_width=True):
 # コース設定
 # =========================
  
-with st.expander("⛳ コース設定", expanded=False):
+if "course_expander_open" not in st.session_state:
+    st.session_state.course_expander_open = False
+
+with st.expander("⛳ コース設定", expanded=st.session_state.course_expander_open):
 
     # ── プリセット選択 ──
     preset_options = ["コースを選択"] + list(PRESET_COURSES.keys())
@@ -1512,10 +1515,11 @@ with st.expander("⛳ コース設定", expanded=False):
         st.markdown('<div id="load-preset-anchor"></div>', unsafe_allow_html=True)
         if st.button("↓ コース情報を読み込む", key="btn_load_preset", use_container_width=True):
             preset = PRESET_COURSES[selected_preset]
-            st.session_state.course        = preset["holes"].copy()
-            st.session_state.tee_type      = preset["tee"]
-            st.session_state.history       = []
-            st.session_state.green_on_flag = False
+            st.session_state.course               = preset["holes"].copy()
+            st.session_state.tee_type             = preset["tee"]
+            st.session_state.history              = []
+            st.session_state.green_on_flag        = False
+            st.session_state.course_expander_open = True
             st.session_state.pop("hole_select", None)
             st.session_state.remaining     = list(preset["holes"].values())[0]["yard"]
             for h, data in preset["holes"].items():
