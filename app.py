@@ -254,9 +254,10 @@ div:has(> #shot-float-btns) + div button {
     display: none !important;
 }
 
-/* ===== 目標スコアグリッド（4列×2行：8択） ===== */
+/* ===== 目標スコアグリッド（5列×2行：8択） ===== */
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(8)):not(:has(> label:nth-child(9))) {
-    grid-template-columns: repeat(4, 1fr) !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    width: 100% !important;
 }
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(8)):not(:has(> label:nth-child(9))) label > *:first-child {
     display: none !important;
