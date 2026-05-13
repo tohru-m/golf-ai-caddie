@@ -462,7 +462,56 @@ div[data-testid="stRadio"] input[type="radio"] {
 # =========================
 # 定数・初期データ
 # =========================
- 
+
+PRESET_COURSES = {
+    "フロント": {
+        "tee": "FRO",
+        "holes": {
+            1:  {"par": 4, "yard": 228},
+            2:  {"par": 4, "yard": 282},
+            3:  {"par": 5, "yard": 506},
+            4:  {"par": 4, "yard": 235},
+            5:  {"par": 5, "yard": 410},
+            6:  {"par": 3, "yard": 115},
+            7:  {"par": 3, "yard": 154},
+            8:  {"par": 4, "yard": 226},
+            9:  {"par": 3, "yard": 146},
+            10: {"par": 4, "yard": 257},
+            11: {"par": 3, "yard": 180},
+            12: {"par": 3, "yard": 127},
+            13: {"par": 5, "yard": 530},
+            14: {"par": 4, "yard": 295},
+            15: {"par": 4, "yard": 234},
+            16: {"par": 4, "yard": 298},
+            17: {"par": 4, "yard": 238},
+            18: {"par": 4, "yard": 250},
+        }
+    },
+    "レディース": {
+        "tee": "LADIES",
+        "holes": {
+            1:  {"par": 4, "yard": 223},
+            2:  {"par": 4, "yard": 282},
+            3:  {"par": 5, "yard": 435},
+            4:  {"par": 4, "yard": 230},
+            5:  {"par": 5, "yard": 358},
+            6:  {"par": 3, "yard": 112},
+            7:  {"par": 3, "yard": 154},
+            8:  {"par": 4, "yard": 200},
+            9:  {"par": 3, "yard": 146},
+            10: {"par": 4, "yard": 255},
+            11: {"par": 3, "yard": 178},
+            12: {"par": 3, "yard": 127},
+            13: {"par": 5, "yard": 418},
+            14: {"par": 4, "yard": 292},
+            15: {"par": 4, "yard": 232},
+            16: {"par": 4, "yard": 298},
+            17: {"par": 4, "yard": 234},
+            18: {"par": 4, "yard": 250},
+        }
+    },
+}
+
 CLUBS = [
     {"name": "1W",  "dist": 200, "miss": 0.25, "favorite": 0},
     {"name": "4U",  "dist": 180, "miss": 0.25, "favorite": 0},
@@ -1400,9 +1449,21 @@ if st.button("✅ クラブ設定を更新", use_container_width=True):
 # =========================
  
 with st.expander("⛳ コース設定", expanded=False):
- 
+
     st.markdown("### コース情報")
- 
+
+    # ── プリセット選択 ──
+    preset_options = ["── プリセットを選択 ──"] + list(PRESET_COURSES.keys())
+    selected_preset = st.selectbox("プリセット読み込み", preset_options, key="preset_select")
+    if selected_preset != "── プリセットを選択 ──":
+        if st.button("↓ このプリセットを読み込む", key="btn_load_preset", use_container_width=True):
+            preset = PRESET_COURSES[selected_preset]
+            st.session_state.course   = preset["holes"].copy()
+            st.session_state.tee_type = preset["tee"]
+            st.rerun()
+
+    st.divider()
+
     course_col1, course_col2 = st.columns([3, 1])
     with course_col1:
         course_name = st.text_input("コース名",
