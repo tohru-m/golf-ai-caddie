@@ -931,7 +931,7 @@ for h in st.session_state.history:
         "空振り": "空振り",
     }.get(h.get("result", "通常"), "")
 
-    green_on_mark = " 🚩グリーンオン！" if h.get("green_on") else ""
+    green_on_mark = " <span style='font-size:20px;'>グリーンオン</span>" if h.get("green_on") else ""
     suffix = f" ⚡ {result_text}" if result_text else ""
     st.markdown(
         f"<div class='shot-row-history'>"
@@ -974,7 +974,7 @@ elif remaining_strokes > 0:
             st.markdown(
                 f"<div class='shot-row'>"
                 f"🏌️ <strong>{p['club']}</strong>（{display_dist}y） → "
-                f"🚩グリーンオン<span style='color:#e53e3e;'>！</span>"
+                f"<span style='font-size:20px;'>グリーンオン</span>"
                 f"</div>",
                 unsafe_allow_html=True
             )
