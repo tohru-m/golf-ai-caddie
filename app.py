@@ -269,6 +269,13 @@ div:has(> #shot-float-btns) + div button {
 /* ===== パット数グリッド（4列：4択） ===== */
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(4)):not(:has(> label:nth-child(5))) {
     grid-template-columns: repeat(4, 1fr) !important;
+    width: 100% !important;
+}
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(4)):not(:has(> label:nth-child(5))) label {
+    min-width: calc((100vw - 2rem - 3 * 6px) / 4) !important;
+}
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(4)):not(:has(> label:nth-child(5))) label > *:first-child {
+    display: none !important;
 }
 
 /* ===== クラブ選択グリッド ===== */
