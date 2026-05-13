@@ -246,6 +246,11 @@ div:has(> #shot-float-btns) + div button {
     border-radius: 10px !important;
 }
 
+/* ===== 目標スコアグリッド（2列） ===== */
+div:has(> #target-score-grid) + [data-testid="stRadio"] > div:last-child {
+    grid-template-columns: repeat(2, 1fr) !important;
+}
+
 /* ===== クラブ選択グリッド ===== */
 div[data-testid="stRadio"] {
     border: none !important;
@@ -758,15 +763,16 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-target_col, _ = st.columns([2, 3])
-with target_col:
-    target = st.selectbox(
-        "",
-        list(range(1, 16)),
-        index=recommended_score - 1,
-        key=f"target_select_{hole}",
-        label_visibility="collapsed"
-    )
+default_target = max(1, min(recommended_score, 8)) - 1
+st.markdown('<div id="target-score-grid"></div>', unsafe_allow_html=True)
+target = st.radio(
+    "",
+    list(range(1, 9)),
+    index=default_target,
+    key=f"target_select_{hole}",
+    label_visibility="collapsed",
+    horizontal=True,
+)
 
 putt_col1, putt_col2 = st.columns([3, 2])
 
