@@ -246,22 +246,21 @@ div:has(> #shot-float-btns) + div button {
     border-radius: 10px !important;
 }
 
-/* ===== ホール選択ボタン（st.button グリッド） ===== */
-button[data-testid="baseButton-primary"] {
-    background-color: #1a2e44 !important;
-    color: white !important;
-    border-color: #1a2e44 !important;
-    height: 58px !important;
-    font-size: 22px !important;
-    font-weight: 700 !important;
+/* ===== ホール選択グリッド（マーカーIDで特定） ===== */
+div:has(> #hole-grid-marker) + div,
+div:has(> #hole-grid-marker) + div > *,
+div:has(> #hole-grid-marker) + div [data-testid="stRadio"] {
+    width: 100% !important;
+    display: block !important;
 }
-button[data-testid="baseButton-secondary"] {
-    background-color: white !important;
-    color: #1a1a1a !important;
-    border-color: #9ca3af !important;
-    height: 58px !important;
-    font-size: 22px !important;
-    font-weight: 700 !important;
+div:has(> #hole-grid-marker) + div [data-testid="stRadio"] > div:last-child {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    width: 100% !important;
+    gap: 6px !important;
+}
+div:has(> #hole-grid-marker) + div [data-testid="stRadio"] label > *:not(p):not(span):not(input) {
+    display: none !important;
 }
 
 /* ===== 目標スコアグリッド（4列×2行：8択） ===== */
@@ -733,21 +732,14 @@ st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
 
 # ---------- ホール選択（ボタングリッド） ----------
 st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">📍 ホールを選択</div>', unsafe_allow_html=True)
-hole_keys = list(st.session_state.course.keys())
-if "hole_select" not in st.session_state:
-    st.session_state["hole_select"] = hole_keys[0]
-for row_start in range(0, len(hole_keys), 5):
-    row_holes = hole_keys[row_start:row_start + 5]
-    cols = st.columns(5)
-    for i in range(5):
-        if i < len(row_holes):
-            h = row_holes[i]
-            with cols[i]:
-                btn_type = "primary" if st.session_state["hole_select"] == h else "secondary"
-                if st.button(str(h), key=f"hole_btn_{h}", use_container_width=True, type=btn_type):
-                    st.session_state["hole_select"] = h
-                    st.rerun()
-hole = st.session_state["hole_select"]
+st.markdown('<div id="hole-grid-marker"></div>', unsafe_allow_html=True)
+hole = st.radio(
+    "",
+    list(st.session_state.course.keys()),
+    key="hole_select",
+    label_visibility="collapsed",
+    horizontal=True
+)
 
 TOTAL_DIST = st.session_state.course[hole]["yard"]
 par_num    = st.session_state.course[hole]["par"]
