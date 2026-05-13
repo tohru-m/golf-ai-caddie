@@ -259,9 +259,6 @@ div:has(> #shot-float-btns) + div button {
     grid-template-columns: repeat(5, 1fr) !important;
     width: 100% !important;
 }
-[data-testid="stRadio"] > div:last-child:has(> label:nth-child(8)):not(:has(> label:nth-child(9))) label {
-    min-width: calc((100vw - 2rem - 4 * 6px) / 5) !important;
-}
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(8)):not(:has(> label:nth-child(9))) label > *:first-child {
     display: none !important;
 }
@@ -270,9 +267,6 @@ div:has(> #shot-float-btns) + div button {
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(4)):not(:has(> label:nth-child(5))) {
     grid-template-columns: repeat(4, 1fr) !important;
     width: 100% !important;
-}
-[data-testid="stRadio"] > div:last-child:has(> label:nth-child(4)):not(:has(> label:nth-child(5))) label {
-    min-width: calc((100vw - 2rem - 4 * 6px) / 5) !important;
 }
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(4)):not(:has(> label:nth-child(5))) label > *:first-child {
     display: none !important;
@@ -283,11 +277,19 @@ div:has(> #shot-float-btns) + div button {
     grid-template-columns: repeat(3, 1fr) !important;
     width: 100% !important;
 }
-[data-testid="stRadio"] > div:last-child:has(> label:nth-child(6)):not(:has(> label:nth-child(7))) label {
-    min-width: calc((100vw - 2rem - 2 * 6px) / 3) !important;
-}
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(6)):not(:has(> label:nth-child(7))) label > *:first-child {
     display: none !important;
+}
+
+/* ===== モバイルのみ：ボタン最小幅を強制 ===== */
+@media (max-width: 640px) {
+    [data-testid="stRadio"] > div:last-child:has(> label:nth-child(8)):not(:has(> label:nth-child(9))) label,
+    [data-testid="stRadio"] > div:last-child:has(> label:nth-child(4)):not(:has(> label:nth-child(5))) label {
+        min-width: calc((100vw - 2rem - 4 * 6px) / 5) !important;
+    }
+    [data-testid="stRadio"] > div:last-child:has(> label:nth-child(6)):not(:has(> label:nth-child(7))) label {
+        min-width: calc((100vw - 2rem - 2 * 6px) / 3) !important;
+    }
 }
 
 /* ===== クラブ選択グリッド（11択：5列×3行） ===== */
