@@ -272,7 +272,7 @@ div:has(> #shot-float-btns) + div button {
     width: 100% !important;
 }
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(4)):not(:has(> label:nth-child(5))) label {
-    min-width: calc((100vw - 2rem - 3 * 6px) / 4) !important;
+    min-width: calc((100vw - 2rem - 4 * 6px) / 5) !important;
 }
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(4)):not(:has(> label:nth-child(5))) label > *:first-child {
     display: none !important;
