@@ -272,6 +272,16 @@ div[data-testid="stButton"] > button:active {
     transform: scale(0.97);
 }
  
+/* ===== プリセット選択セレクトボックス（小） ===== */
+div:has(> #preset-select-anchor) + div[data-testid="stSelectbox"] select,
+div:has(> #preset-select-anchor) + div[data-testid="stSelectbox"] > div > div {
+    font-size: 16px !important;
+    min-height: 38px !important;
+}
+div:has(> #preset-select-anchor) + div[data-testid="stSelectbox"] span {
+    font-size: 16px !important;
+}
+
 /* ===== セレクトボックス ===== */
 div[data-testid="stSelectbox"] {
     max-width: 100% !important;
@@ -1477,9 +1487,10 @@ if st.button("✅ クラブ設定を更新", use_container_width=True):
 with st.expander("⛳ コース設定", expanded=False):
 
     # ── プリセット選択 ──
-    preset_options = ["── プリセットを選択 ──"] + list(PRESET_COURSES.keys())
+    preset_options = ["コースを選択"] + list(PRESET_COURSES.keys())
+    st.markdown('<div id="preset-select-anchor"></div>', unsafe_allow_html=True)
     selected_preset = st.selectbox("プリセット選択", preset_options, key="preset_select")
-    if selected_preset != "── プリセットを選択 ──":
+    if selected_preset != "コースを選択":
         if st.button("↓ このプリセットを読み込む", key="btn_load_preset", use_container_width=True):
             preset = PRESET_COURSES[selected_preset]
             st.session_state.course      = preset["holes"].copy()
