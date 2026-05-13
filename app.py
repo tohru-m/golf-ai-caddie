@@ -246,9 +246,9 @@ div:has(> #shot-float-btns) + div button {
     border-radius: 10px !important;
 }
 
-/* ===== 目標スコアグリッド（2列：8択） ===== */
+/* ===== 目標スコアグリッド（4列×2行：8択） ===== */
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(8)):not(:has(> label:nth-child(9))) {
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(4, 1fr) !important;
 }
 
 /* ===== パット数グリッド（4列：4択） ===== */
