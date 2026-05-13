@@ -109,7 +109,7 @@ html, body, [class*="css"] {
     font-weight: 700;
     color: #1a2e44;
     display: block;
-    margin-top: 14px;
+    margin-top: 20px;
     margin-bottom: 6px;
 }
  
@@ -136,7 +136,7 @@ html, body, [class*="css"] {
     background: white;
     border-radius: 16px;
     padding: 16px;
-    margin-bottom: 14px;
+    margin-bottom: 20px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 }
  
@@ -145,7 +145,7 @@ html, body, [class*="css"] {
     background: #dbeafe;
     border-left: 4px solid #3b82f6;
     border-radius: 8px;
-    padding: 10px 14px;
+    padding: 10px 20px;
     margin: 6px 0;
     font-size: 26px;
     line-height: 1.5;
@@ -155,7 +155,7 @@ html, body, [class*="css"] {
     background: #ffffff;
     border-left: 4px solid #60a5fa;
     border-radius: 8px;
-    padding: 10px 14px;
+    padding: 10px 20px;
     margin: 6px 0;
     font-size: 26px;
     color: #1e40af;
@@ -166,7 +166,7 @@ html, body, [class*="css"] {
     background: #fff7ed;
     border-left: 4px solid #f97316;
     border-radius: 8px;
-    padding: 10px 14px;
+    padding: 10px 20px;
     margin: 6px 0;
     font-size: 26px;
     line-height: 1.5;
@@ -176,16 +176,16 @@ html, body, [class*="css"] {
 .voice-box {
     background: #f0fdf4;
     border: 2px solid #86efac;
-    border-radius: 14px;
-    padding: 14px 16px;
-    margin: 10px 0 14px 0;
+    border-radius: 20px;
+    padding: 20px 16px;
+    margin: 10px 0 20px 0;
 }
 
 .voice-result {
     background: #fefce8;
     border: 2px solid #fde68a;
     border-radius: 10px;
-    padding: 10px 14px;
+    padding: 10px 20px;
     font-size: 22px;
     font-weight: 700;
     color: #92400e;
@@ -220,9 +220,9 @@ div:has(> #voice-apply-anchor) + div[data-testid="stButton"] > button {
 .hole-header {
     background: linear-gradient(135deg, #1a2e44 0%, #2d4a6e 100%);
     color: white;
-    border-radius: 14px;
-    padding: 14px 18px;
-    margin: 10px 0 14px 0;
+    border-radius: 20px;
+    padding: 20px 18px;
+    margin: 10px 0 20px 0;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -275,14 +275,14 @@ div[data-testid="stButton"] > button:active {
 /* ===== プリセット選択セレクトボックス（小） ===== */
 div:has(#preset-select-anchor) + div [data-testid="stSelectbox"] > div > div,
 div:has(#preset-select-anchor) + div [data-testid="stSelectbox"] select {
-    font-size: 14px !important;
+    font-size: 20px !important;
     min-height: 28px !important;
 }
 div:has(#preset-select-anchor) + div [data-testid="stSelectbox"] span {
-    font-size: 14px !important;
+    font-size: 20px !important;
 }
 div:has(#preset-select-anchor) + div [data-testid="stSelectbox"] label p {
-    font-size: 14px !important;
+    font-size: 20px !important;
 }
 
 /* ===== セレクトボックス ===== */
@@ -351,7 +351,7 @@ div[data-testid="stForm"] {
 .section-divider {
     height: 1px;
     background: #e2e8f0;
-    margin: 14px 0;
+    margin: 20px 0;
 }
  
 /* ===== スライダー ===== */
@@ -877,7 +877,7 @@ st.title("⛳ AIキャディ")
 goal_col1, goal_col2 = st.columns([1, 1])
  
 with goal_col1:
-    st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">⛳ ラウンドスコア目標</div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;">⛳ ラウンドスコア目標</div>', unsafe_allow_html=True)
  
 with goal_col2:
     target_score = st.selectbox(
@@ -930,7 +930,7 @@ st.markdown(
 st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
  
 # ---------- ホール選択 ----------
-st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">⛳ ホールを選択</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;">⛳ ホールを選択</div>', unsafe_allow_html=True)
 hole = st.radio(
     "",
     list(st.session_state.course.keys()),
@@ -971,7 +971,7 @@ recommended_score = hole_targets[hole]
 diff              = recommended_score - par_num
 label, rec_color  = score_info(diff)
  
-st.markdown(f'<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">⛳ {hole}番ホールの目標スコア</div>', unsafe_allow_html=True)
+st.markdown(f'<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;">⛳ {hole}番ホールの目標スコア</div>', unsafe_allow_html=True)
  
 label_text = label.split(' ', 1)[1] if ' ' in label else label
 st.markdown(
@@ -999,7 +999,7 @@ target = st.radio(
     horizontal=True,
 )
  
-st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🏌️ パット数は？</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;">🏌️ パット数は？</div>', unsafe_allow_html=True)
 putts = st.radio(
     "",
     [1, 2, 3, 4],
@@ -1059,7 +1059,7 @@ if use_danger:
 # ショット戦略表示
 # =========================
  
-st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">⛳ ショット戦略</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;">⛳ ショット戦略</div>', unsafe_allow_html=True)
  
 st.markdown(
     f"""
@@ -1122,7 +1122,7 @@ elif remaining_strokes > 0:
             margin = remaining_strokes - shots_to_green
             if margin > 0:
                 st.markdown(
-                    f"<div style='background:#dcfce7; border-left:4px solid #16a34a; border-radius:8px; padding:10px 14px; margin-top:8px; font-size:22px; font-weight:700; color:#15803d;'>"
+                    f"<div style='background:#dcfce7; border-left:4px solid #16a34a; border-radius:8px; padding:10px 20px; margin-top:8px; font-size:22px; font-weight:700; color:#15803d;'>"
                     f"🟢 {margin}打余裕があります</div>",
                     unsafe_allow_html=True
                 )
@@ -1151,7 +1151,7 @@ else:
 # 🎤 音声入力セクション
 # =========================
  
-st.markdown('<div style="font-size:26px; font-weight:700; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🎤 音声で結果を入力</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:26px; font-weight:700; color:#1a2e44; margin-top:20px; margin-bottom:6px;">🎤 音声で結果を入力</div>', unsafe_allow_html=True)
  
 st.markdown(
     "<div class='voice-box'>"
@@ -1200,7 +1200,7 @@ if audio_file is not None:
                 st.session_state.voice_result = parsed["result"]
  
             st.markdown(
-                f"<div style='background:#dbeafe; border:2px solid #93c5fd; border-radius:10px; padding:12px 14px; margin-top:8px; font-size:22px; font-weight:700;'>"
+                f"<div style='background:#dbeafe; border:2px solid #93c5fd; border-radius:10px; padding:12px 20px; margin-top:8px; font-size:22px; font-weight:700;'>"
                 f"✅ 解析結果：{parsed.get('club','?')} ／ {parsed.get('dist','?')}y ／ {parsed.get('result','?')}"
                 f"</div>",
                 unsafe_allow_html=True
@@ -1275,7 +1275,7 @@ CLUB_SLIDER_RANGE = {
     "56°": ( 30, 120),
 }
  
-st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">✏️ 手動でショットを入力</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;">✏️ 手動でショットを入力</div>', unsafe_allow_html=True)
  
 st.markdown('<div class="ui-label-small">使ったクラブ</div>', unsafe_allow_html=True)
 actual_club = st.radio(
@@ -1359,7 +1359,7 @@ if undo:
 # =========================
  
 st.markdown("<div class='section-divider'></div>", unsafe_allow_html=True)
-st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">⛳ このホールの最終スコア</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;">⛳ このホールの最終スコア</div>', unsafe_allow_html=True)
  
 def get_score_name(score, par):
     diff = score - par
