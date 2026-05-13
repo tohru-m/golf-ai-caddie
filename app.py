@@ -1116,7 +1116,9 @@ with btn1:
 with btn2:
     undo = st.button("↩️ 取消", key="btn_undo_shot", use_container_width=True)
 
-reset_all = st.button("実績を全てリセット", key="btn_reset_all", use_container_width=False)
+reset_col, _, __ = st.columns([1, 1, 1])
+with reset_col:
+    reset_all = st.button("✖ 実績をすべてリセット", key="btn_reset_all", use_container_width=True)
 
 if submitted:
     penalty   = 0
