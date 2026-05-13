@@ -4,7 +4,7 @@ import os
 import json
  
 # =========================
-# OpenAI Whisper + Claude による音声解析
+# OpenAI Whisper + GPT による音声解析
 # =========================
  
 def transcribe_audio(audio_bytes: bytes) -> str:
@@ -82,51 +82,8 @@ def parse_shot_from_text(text: str, club_names: list) -> dict:
         st.error(f"解析エラー：{e}")
 
     return {}
- 
-        clubs_str = "、".join(club_names)
-        result_options = "FW、ラフ、OB、池、赤杭、ロスト、空振り、プレ4、プレ3、Gオン"
- 
-        prompt = f"""
-以下の発話からゴルフのショット情報を抽出してください。
- 
-発話：「{text}」
- 
-利用可能なクラブ一覧：{clubs_str}
-結果の選択肢：{result_options}
- 
-以下のJSON形式だけで返してください（説明文は不要）：
-{{"club": "クラブ名", "dist": 飛距離の数値, "result": "結果"}}
- 
-判断のルール：
-- クラブは上記一覧から最も近いものを選ぶ（「セブン」→「7I」、「ピーダブ」→「PW」など）
-- 飛距離は数値のみ（単位なし）
-- 結果が明示されていない場合は「FW」とする
-- 「グリーンオン」「乗った」→「Gオン」
-- 「OB」「アウト」→「OB」
-- 「池」「ウォーター」→「池」
-- 「空振り」「ミス」→「空振り」
-- 飛距離が不明な場合は0とする
-"""
- 
-        message = client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=200,
-            messages=[{"role": "user", "content": prompt}]
-        )
- 
-        raw = message.content[0].text.strip()
-        # JSON部分だけ抽出
-        start = raw.find("{")
-        end   = raw.rfind("}") + 1
-        if start >= 0 and end > start:
-            return json.loads(raw[start:end])
- 
-    except Exception as e:
-        st.error(f"解析エラー：{e}")
- 
-    return {}
- 
- 
+
+
 # =========================
 # スマホ向けグローバルCSS
 # =========================
