@@ -695,7 +695,7 @@ st.title("⛳ AIキャディ")
 goal_col1, goal_col2 = st.columns([1, 1])
 
 with goal_col1:
-    st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🎯 ラウンドスコア目標</div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">⛳ ラウンドスコア目標</div>', unsafe_allow_html=True)
 
 with goal_col2:
     target_score = st.selectbox(
@@ -764,7 +764,7 @@ st.markdown(
 st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
 
 # ---------- ホール選択（ラジオボタングリッド） ----------
-st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">📍 ホールを選択</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">⛳ ホールを選択</div>', unsafe_allow_html=True)
 hole = st.radio(
     "",
     list(st.session_state.course.keys()),
@@ -909,7 +909,7 @@ if use_danger:
 # 戦略表示
 # =========================
 
-st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">📋 ショット戦略</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">⛳ ショット戦略</div>', unsafe_allow_html=True)
 
 st.markdown(
     f"""
@@ -1049,7 +1049,7 @@ CLUB_SLIDER_RANGE = {
     "56°": ( 30, 120),
 }
 
-st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🎯 ショットの結果を入力</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">⛳ ショットの結果を入力</div>', unsafe_allow_html=True)
 
 st.markdown('<div class="ui-label-small">使ったクラブ</div>', unsafe_allow_html=True)
 actual_club = st.radio(
