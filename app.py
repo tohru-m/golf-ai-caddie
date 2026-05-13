@@ -464,7 +464,7 @@ div[data-testid="stRadio"] input[type="radio"] {
 # =========================
 
 PRESET_COURSES = {
-    "フロント": {
+    "大阪PG（フロント）": {
         "tee": "FRO",
         "holes": {
             1:  {"par": 4, "yard": 228},
@@ -487,7 +487,7 @@ PRESET_COURSES = {
             18: {"par": 4, "yard": 250},
         }
     },
-    "レディース": {
+    "大阪PG（レディース）": {
         "tee": "LADIES",
         "holes": {
             1:  {"par": 4, "yard": 223},
@@ -508,6 +508,29 @@ PRESET_COURSES = {
             16: {"par": 4, "yard": 298},
             17: {"par": 4, "yard": 234},
             18: {"par": 4, "yard": 250},
+        }
+    },
+    "宝塚GC新C（フロント）": {
+        "tee": "FRO",
+        "holes": {
+            1:  {"par": 5, "yard": 425},
+            2:  {"par": 4, "yard": 276},
+            3:  {"par": 3, "yard": 180},
+            4:  {"par": 5, "yard": 438},
+            5:  {"par": 4, "yard": 316},
+            6:  {"par": 4, "yard": 425},
+            7:  {"par": 3, "yard": 138},
+            8:  {"par": 4, "yard": 424},
+            9:  {"par": 4, "yard": 388},
+            10: {"par": 5, "yard": 457},
+            11: {"par": 4, "yard": 271},
+            12: {"par": 3, "yard": 134},
+            13: {"par": 4, "yard": 376},
+            14: {"par": 4, "yard": 423},
+            15: {"par": 3, "yard": 179},
+            16: {"par": 4, "yard": 320},
+            17: {"par": 5, "yard": 478},
+            18: {"par": 4, "yard": 408},
         }
     },
 }
