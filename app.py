@@ -273,12 +273,17 @@ div[data-testid="stRadio"]:has(> div:last-child > label:nth-child(8)):not(:has(>
 }
 
 /* ===== クラブ選択グリッド ===== */
+div[data-testid="element-container"]:has(div[data-testid="stRadio"]) {
+    width: 100% !important;
+    display: block !important;
+}
 div[data-testid="stRadio"] {
     border: none !important;
     box-shadow: none !important;
     background: transparent !important;
     padding: 0 !important;
     width: 100% !important;
+    display: block !important;
 }
 div[data-testid="stRadio"] [data-testid="stWidgetLabel"] {
     display: none !important;
