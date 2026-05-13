@@ -1476,6 +1476,22 @@ if st.button("✅ クラブ設定を更新", use_container_width=True):
  
 with st.expander("⛳ コース設定", expanded=False):
 
+    # ── プリセット選択 ──
+    preset_options = ["── プリセットを選択 ──"] + list(PRESET_COURSES.keys())
+    selected_preset = st.selectbox("プリセット選択", preset_options, key="preset_select")
+    if selected_preset != "── プリセットを選択 ──":
+        if st.button("↓ このプリセットを読み込む", key="btn_load_preset", use_container_width=True):
+            preset = PRESET_COURSES[selected_preset]
+            st.session_state.course      = preset["holes"].copy()
+            st.session_state.tee_type    = preset["tee"]
+            st.session_state.course_name = preset["name"]
+            for h, data in preset["holes"].items():
+                st.session_state[f"par_{h}"]  = data["par"]
+                st.session_state[f"yard_{h}"] = data["yard"]
+            st.rerun()
+
+    st.divider()
+
     course_col1, course_col2 = st.columns([3, 1])
     with course_col1:
         course_name = st.text_input("コース名",
