@@ -247,10 +247,16 @@ div:has(> #shot-float-btns) + div button {
 }
 
 /* ===== ホール選択ボタン（選択中のみネイビー） ===== */
-button[data-testid="baseButton-primary"] {
+button[kind="primary"] {
     background-color: #1a2e44 !important;
     color: white !important;
     border-color: #1a2e44 !important;
+    border: 2px solid #1a2e44 !important;
+}
+button[kind="secondary"] {
+    background-color: white !important;
+    color: #1a1a1a !important;
+    border: 2px solid #9ca3af !important;
 }
 
 /* ===== 目標スコアグリッド（4列×2行：8択） ===== */
