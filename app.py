@@ -269,9 +269,9 @@ div[data-testid="stSlider"] {
     }
 }
 
-/* ===== 結果グリッド（10択：5列×2行） ===== */
+/* ===== 結果グリッド（10択：4列×3行） ===== */
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(10)):not(:has(> label:nth-child(11))) {
-    grid-template-columns: repeat(5, 1fr) !important;
+    grid-template-columns: repeat(4, 1fr) !important;
     width: 100% !important;
 }
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(10)):not(:has(> label:nth-child(11))) label > *:first-child {
@@ -285,7 +285,7 @@ div[data-testid="stSlider"] {
         min-width: calc((100vw - 2rem - 4 * 6px) / 5) !important;
     }
     [data-testid="stRadio"] > div:last-child:has(> label:nth-child(10)):not(:has(> label:nth-child(11))) label {
-        min-width: calc((100vw - 2rem - 4 * 6px) / 5) !important;
+        min-width: calc((100vw - 2rem - 3 * 6px) / 4) !important;
     }
 }
 
