@@ -272,18 +272,6 @@ div[data-testid="stButton"] > button:active {
     transform: scale(0.97);
 }
  
-/* ===== プリセット選択セレクトボックス（小） ===== */
-div:has(#preset-select-anchor) + div [data-testid="stSelectbox"] > div > div,
-div:has(#preset-select-anchor) + div [data-testid="stSelectbox"] select {
-    font-size: 20px !important;
-    min-height: 28px !important;
-}
-div:has(#preset-select-anchor) + div [data-testid="stSelectbox"] span {
-    font-size: 20px !important;
-}
-div:has(#preset-select-anchor) + div [data-testid="stSelectbox"] label p {
-    font-size: 20px !important;
-}
 
 /* ===== セレクトボックス ===== */
 div[data-testid="stSelectbox"] {
@@ -1488,23 +1476,6 @@ if st.button("✅ クラブ設定を更新", use_container_width=True):
 # =========================
  
 with st.expander("⛳ コース設定", expanded=False):
-
-    # ── プリセット選択 ──
-    preset_options = ["コースを選択"] + list(PRESET_COURSES.keys())
-    st.markdown('<div id="preset-select-anchor"></div>', unsafe_allow_html=True)
-    selected_preset = st.selectbox("プリセット選択", preset_options, key="preset_select")
-    if selected_preset != "コースを選択":
-        if st.button("↓ このプリセットを読み込む", key="btn_load_preset", use_container_width=True):
-            preset = PRESET_COURSES[selected_preset]
-            st.session_state.course      = preset["holes"].copy()
-            st.session_state.tee_type    = preset["tee"]
-
-            for h, data in preset["holes"].items():
-                st.session_state[f"par_{h}"]  = data["par"]
-                st.session_state[f"yard_{h}"] = data["yard"]
-            st.rerun()
-
-    st.divider()
 
     tee_type = st.session_state.get("tee_type", "REG")
  
