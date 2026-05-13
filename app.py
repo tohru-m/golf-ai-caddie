@@ -914,7 +914,7 @@ st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-
 st.markdown(
     f"""
     <div class="remain-badge">
-        📍 現在の残り距離　{st.session_state.remaining}y
+        📍 現在の残り距離　<span style="font-size:32px; font-weight:900;">{st.session_state.remaining}y</span>
     </div>
     """,
     unsafe_allow_html=True
