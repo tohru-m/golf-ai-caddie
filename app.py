@@ -216,6 +216,11 @@ div:has(> #voice-apply-anchor) + div[data-testid="stButton"] > button {
     font-size: 38px !important;
 }
 
+/* ===== コース情報を読み込むボタン拡大 ===== */
+div:has(#load-preset-anchor) + div[data-testid="stButton"] > button {
+    font-size: 22px !important;
+}
+
 /* ===== ホール見出し ===== */
 .hole-header {
     background: linear-gradient(135deg, #1a2e44 0%, #2d4a6e 100%);
@@ -1504,6 +1509,7 @@ with st.expander("⛳ コース設定", expanded=False):
     st.markdown('<div id="preset-select-anchor"></div>', unsafe_allow_html=True)
     selected_preset = st.selectbox("プリセット選択", preset_options, key="preset_select", label_visibility="collapsed")
     if selected_preset != "コースを選択":
+        st.markdown('<div id="load-preset-anchor"></div>', unsafe_allow_html=True)
         if st.button("↓ コース情報を読み込む", key="btn_load_preset", use_container_width=True):
             preset = PRESET_COURSES[selected_preset]
             st.session_state.course      = preset["holes"].copy()
