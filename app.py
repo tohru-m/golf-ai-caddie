@@ -229,13 +229,18 @@ div[data-testid="stSlider"] {
 }
 
 /* ===== 反映・取消ボタン（primaryボタン） ===== */
-[data-testid="baseButton-primary"] {
+button[data-testid="baseButton-primary"],
+button[data-testid="baseButton-primary"]:hover,
+button[data-testid="baseButton-primary"]:focus,
+button[data-testid="baseButton-primary"]:active {
     font-size: 40px !important;
     height: 70px !important;
     font-weight: 700 !important;
     background-color: white !important;
+    background: white !important;
     color: #1a2e44 !important;
     border: 1px solid #9ca3af !important;
+    box-shadow: none !important;
 }
 
 /* ===== ホール選択グリッド（5列×4行：18択） ===== */
