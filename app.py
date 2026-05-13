@@ -63,7 +63,7 @@ html, body, [class*="css"] {
     border-radius: 8px;
     padding: 10px 14px;
     margin: 6px 0;
-    font-size: 20px;
+    font-size: 26px;
     line-height: 1.5;
 }
 
@@ -73,7 +73,7 @@ html, body, [class*="css"] {
     border-radius: 8px;
     padding: 10px 14px;
     margin: 6px 0;
-    font-size: 19px;
+    font-size: 26px;
     color: #1e40af;
     line-height: 1.5;
 }
@@ -84,7 +84,7 @@ html, body, [class*="css"] {
     border-radius: 8px;
     padding: 10px 14px;
     margin: 6px 0;
-    font-size: 20px;
+    font-size: 26px;
     line-height: 1.5;
 }
 
