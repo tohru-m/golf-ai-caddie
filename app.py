@@ -269,12 +269,12 @@ div[data-testid="stSlider"] {
     }
 }
 
-/* ===== 結果グリッド（6択：3列×2行） ===== */
-[data-testid="stRadio"] > div:last-child:has(> label:nth-child(6)):not(:has(> label:nth-child(7))) {
+/* ===== 結果グリッド（9択：3列×3行） ===== */
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(9)):not(:has(> label:nth-child(10))) {
     grid-template-columns: repeat(3, 1fr) !important;
     width: 100% !important;
 }
-[data-testid="stRadio"] > div:last-child:has(> label:nth-child(6)):not(:has(> label:nth-child(7))) label > *:first-child {
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(9)):not(:has(> label:nth-child(10))) label > *:first-child {
     display: none !important;
 }
 
@@ -284,7 +284,7 @@ div[data-testid="stSlider"] {
     [data-testid="stRadio"] > div:last-child:has(> label:nth-child(4)):not(:has(> label:nth-child(5))) label {
         min-width: calc((100vw - 2rem - 4 * 6px) / 5) !important;
     }
-    [data-testid="stRadio"] > div:last-child:has(> label:nth-child(6)):not(:has(> label:nth-child(7))) label {
+    [data-testid="stRadio"] > div:last-child:has(> label:nth-child(9)):not(:has(> label:nth-child(10))) label {
         min-width: calc((100vw - 2rem - 2 * 6px) / 3) !important;
     }
 }
@@ -924,12 +924,16 @@ st.markdown(
 current_shot = 1
 for h in st.session_state.history:
     result_text = {
-        "OB":   "OB（1打罰）",
-        "池":   "池（1打罰）",
-        "赤杭": "赤杭（1打罰）",
+        "OB":    "OB（1打罰）",
+        "池":    "池（1打罰）",
+        "赤杭":  "赤杭（1打罰）",
         "ロスト": "ロスト（2打罰）",
         "空振り": "空振り",
-    }.get(h.get("result", "通常"), "")
+        "FW":    "FW",
+        "ラフ":  "ラフ",
+        "プレ4": "プレ4（2打罰）",
+        "プレ3": "プレ3（1打罰）",
+    }.get(h.get("result", ""), "")
 
     green_on_mark = " <span style='font-size:20px;'>🚩グリーンオン</span>" if h.get("green_on") else ""
     suffix = f" ⚡ {result_text}" if result_text else ""
@@ -1099,7 +1103,7 @@ else:
 st.markdown('<div class="ui-label-small">結果</div>', unsafe_allow_html=True)
 shot_result = st.radio(
     "",
-    ["通常", "OB", "池", "赤杭", "ロスト", "空振り"],
+    ["FW", "ラフ", "OB", "池", "赤杭", "ロスト", "空振り", "プレ4", "プレ3"],
     key="shot_result_select",
     label_visibility="collapsed",
     horizontal=True,
@@ -1131,6 +1135,10 @@ if submitted:
         penalty = 2;  remain_adjust = dist_val
     elif shot_result == "空振り":
         remain_adjust = 0
+    elif shot_result == "プレ4":
+        penalty = 2;  remain_adjust = 0
+    elif shot_result == "プレ3":
+        penalty = 1;  remain_adjust = 0
 
     st.session_state.history.append({
         "club":     actual_club,
