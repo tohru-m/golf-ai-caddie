@@ -307,6 +307,9 @@ div[data-testid="stRadio"] label:has(input[type="radio"]:checked) span {
 div[data-testid="stRadio"] input[type="radio"] {
     display: none !important;
 }
+div[data-testid="stRadio"] label > div {
+    display: none !important;
+}
 
 </style>
 """, unsafe_allow_html=True)
