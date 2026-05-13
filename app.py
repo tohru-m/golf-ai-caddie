@@ -278,6 +278,14 @@ div:has(> #shot-float-btns) + div button {
     display: none !important;
 }
 
+/* ===== クラブ選択グリッド（11択：3列） ===== */
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(11)):not(:has(> label:nth-child(12))) label > *:first-child {
+    display: none !important;
+}
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(11)):not(:has(> label:nth-child(12))) label {
+    min-width: calc((100vw - 2rem - 2 * 6px) / 3) !important;
+}
+
 /* ===== クラブ選択グリッド ===== */
 div[data-testid="element-container"]:has(div[data-testid="stRadio"]) {
     width: 100% !important;
