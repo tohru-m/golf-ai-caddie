@@ -1552,19 +1552,7 @@ with st.expander("⛳ コース設定", expanded=False):
                 key=f"yard_{h}", label_visibility="collapsed")
  
         edited_course[h] = {"par": par, "yard": yard}
- 
-if st.button("✅ コース設定を更新", use_container_width=True):
-    st.session_state.course        = edited_course
-    st.session_state.tee_type      = tee_type
-    st.session_state.history       = []
-    st.session_state.green_on_flag = False
-    st.session_state.pop("hole_select", None)
-    st.session_state.remaining     = list(edited_course.values())[0]["yard"]
-    for h in edited_course.keys():
-        st.session_state.pop(f"actual_{h}", None)
-        st.session_state.pop(f"final_score_input_{h}", None)
-    st.rerun()
- 
+
 # =========================
 # OpenAI APIキー設定
 # =========================
