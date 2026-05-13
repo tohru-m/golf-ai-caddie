@@ -33,12 +33,55 @@ def transcribe_audio(audio_bytes: bytes) -> str:
  
 def parse_shot_from_text(text: str, club_names: list) -> dict:
     """
-    Anthropic Claude APIでテキストからショット情報を抽出する
+    OpenAI GPTでテキストからショット情報を抽出する
     戻り値: {"club": "7I", "dist": 150, "result": "FW"} など
     """
     try:
-        import anthropic
-        client = anthropic.Anthropic()
+        import openai
+        api_key = st.secrets.get("OPENAI_API_KEY", "")
+        if not api_key:
+            return {}
+        client = openai.OpenAI(api_key=api_key)
+
+        clubs_str = "、".join(club_names)
+        result_options = "FW、ラフ、OB、池、赤杭、ロスト、空振り、プレ4、プレ3、Gオン"
+
+        prompt = f"""
+以下の発話からゴルフのショット情報を抽出してください。
+
+発話：「{text}」
+
+利用可能なクラブ一覧：{clubs_str}
+結果の選択肢：{result_options}
+
+以下のJSON形式だけで返してください（説明文は不要）：
+{{"club": "クラブ名", "dist": 飛距離の数値, "result": "結果"}}
+
+判断のルール：
+- クラブは上記一覧から最も近いものを選ぶ（「セブン」→「7I」、「ピーダブ」→「PW」など）
+- 飛距離は数値のみ（単位なし）
+- 結果が明示されていない場合は「FW」とする
+- 「グリーンオン」「乗った」→「Gオン」
+- 「OB」「アウト」→「OB」
+- 飛距離が不明な場合は0とする
+"""
+
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=200,
+        )
+
+        raw = response.choices[0].message.content.strip()
+        start = raw.find("{")
+        end   = raw.rfind("}") + 1
+        if start >= 0 and end > start:
+            return json.loads(raw[start:end])
+
+    except Exception as e:
+        st.error(f"解析エラー：{e}")
+
+    return {}
  
         clubs_str = "、".join(club_names)
         result_options = "FW、ラフ、OB、池、赤杭、ロスト、空振り、プレ4、プレ3、Gオン"
