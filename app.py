@@ -1060,8 +1060,7 @@ st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-
  
 st.markdown(
     "<div class='voice-box'>"
-    "<div style='font-size:20px; font-weight:700; color:#166534; margin-bottom:8px;'>マイクボタンを押して話してください</div>"
-    "<div style='font-size:18px; color:#4b5563;'>例：「7番アイアン、150ヤード、フェアウェイ」</div>"
+        "<div style='font-size:18px; color:#4b5563;'>例：「7番アイアン、150ヤード、フェアウェイ」</div>"
     "<div style='font-size:18px; color:#4b5563;'>例：「ピーダブ、120、グリーンオン」</div>"
     "<div style='font-size:18px; color:#4b5563;'>例：「1W、180ヤード、OB」</div>"
     "</div>",
