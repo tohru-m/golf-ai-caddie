@@ -954,7 +954,7 @@ remaining_strokes = shot_strokes - used
 if st.session_state.remaining == 0:
     # すでにグリーンオン済み → パットのみ表示
     st.markdown(
-        f"<div class='shot-row'>🏌️ パット {putts}回</div>",
+        f"<div class='shot-row'><strong>パット {putts}回</strong></div>",
         unsafe_allow_html=True
     )
 
@@ -989,7 +989,7 @@ elif remaining_strokes > 0:
                     unsafe_allow_html=True
                 )
             st.markdown(
-                f"<div class='shot-row'>🏌️ パット {putts}回</div>",
+                f"<div class='shot-row'><strong>パット {putts}回</strong></div>",
                 unsafe_allow_html=True
             )
             break
