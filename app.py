@@ -1410,7 +1410,7 @@ with reset_col:
 if reset_all:
     st.session_state.history       = []
     st.session_state.green_on_flag = False
-    st.session_state.hole_select   = 1
+    st.session_state.pop("hole_select", None)
     st.session_state.remaining     = st.session_state.course[1]["yard"]
     # 各ホールの実績スコアをリセット
     for h in st.session_state.course.keys():
