@@ -1512,12 +1512,17 @@ with st.expander("⛳ コース設定", expanded=False):
         st.markdown('<div id="load-preset-anchor"></div>', unsafe_allow_html=True)
         if st.button("↓ コース情報を読み込む", key="btn_load_preset", use_container_width=True):
             preset = PRESET_COURSES[selected_preset]
-            st.session_state.course      = preset["holes"].copy()
-            st.session_state.tee_type    = preset["tee"]
-
+            st.session_state.course        = preset["holes"].copy()
+            st.session_state.tee_type      = preset["tee"]
+            st.session_state.history       = []
+            st.session_state.green_on_flag = False
+            st.session_state.pop("hole_select", None)
+            st.session_state.remaining     = list(preset["holes"].values())[0]["yard"]
             for h, data in preset["holes"].items():
                 st.session_state[f"par_{h}"]  = data["par"]
                 st.session_state[f"yard_{h}"] = data["yard"]
+                st.session_state.pop(f"actual_{h}", None)
+                st.session_state.pop(f"final_score_input_{h}", None)
             st.rerun()
 
     tee_type = st.session_state.get("tee_type", "REG")
