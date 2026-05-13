@@ -246,11 +246,6 @@ div:has(> #shot-float-btns) + div button {
     border-radius: 10px !important;
 }
 
-/* ===== ホール選択グリッド（6列×3行：18択） ===== */
-[data-testid="stRadio"] > div:last-child:has(> label:nth-child(18)):not(:has(> label:nth-child(19))) {
-    grid-template-columns: repeat(6, 1fr) !important;
-}
-
 /* ===== 目標スコアグリッド（4列×2行：8択） ===== */
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(8)):not(:has(> label:nth-child(9))) {
     grid-template-columns: repeat(4, 1fr) !important;
@@ -305,9 +300,6 @@ div[data-testid="stRadio"] label:has(input[type="radio"]:checked) span {
     color: white !important;
 }
 div[data-testid="stRadio"] input[type="radio"] {
-    display: none !important;
-}
-div[data-testid="stRadio"] label > div {
     display: none !important;
 }
 
@@ -719,15 +711,20 @@ st.markdown(
 
 st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
 
-# ---------- ホール選択 ----------
-st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">📍 ホールを選択</div>', unsafe_allow_html=True)
-hole = st.radio(
-    "",
-    list(st.session_state.course.keys()),
-    key="hole_select",
-    label_visibility="collapsed",
-    horizontal=True,
-)
+# ---------- ホール選択（大きなセレクト） ----------
+hole_label_col, hole_select_col = st.columns([2, 3])
+
+with hole_label_col:
+    st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">📍 ホールを選択</div>', unsafe_allow_html=True)
+
+with hole_select_col:
+    hole = st.selectbox(
+        "",
+        list(st.session_state.course.keys()),
+        key="hole_select",
+        label_visibility="collapsed",
+        format_func=lambda h: f"{h}番ホール"
+    )
 
 TOTAL_DIST = st.session_state.course[hole]["yard"]
 par_num    = st.session_state.course[hole]["par"]
