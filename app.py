@@ -236,8 +236,8 @@ div[data-testid="stSlider"] {
     padding: 0 !important;
 }
 [data-testid="stHorizontalBlock"]:has(#shot-float-btns) button {
-    font-size: 32px !important;
-    height: 62px !important;
+    font-size: 40px !important;
+    height: 70px !important;
 }
 
 /* ===== ホール選択グリッド（5列×4行：18択） ===== */
