@@ -778,6 +778,16 @@ target = st.radio(
     horizontal=True,
 )
 
+# 選択した打数のスコア名を表示
+sel_diff = target - par_num
+sel_label, sel_color = score_info(sel_diff)
+sel_label_text = sel_label.split(' ', 1)[1] if ' ' in sel_label else sel_label
+st.markdown(
+    f"<div style='font-size:24px; font-weight:700; color:{sel_color}; margin-top:6px; margin-bottom:2px;'>"
+    f"{target}打　{sel_label_text}</div>",
+    unsafe_allow_html=True
+)
+
 st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">🏌️ パット数は？</div>', unsafe_allow_html=True)
 putts = st.radio(
     "",
