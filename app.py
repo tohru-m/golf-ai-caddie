@@ -275,11 +275,14 @@ div[data-testid="stButton"] > button:active {
 /* ===== プリセット選択セレクトボックス（小） ===== */
 div:has(> #preset-select-anchor) + div[data-testid="stSelectbox"] select,
 div:has(> #preset-select-anchor) + div[data-testid="stSelectbox"] > div > div {
-    font-size: 16px !important;
-    min-height: 38px !important;
+    font-size: 12px !important;
+    min-height: 32px !important;
 }
 div:has(> #preset-select-anchor) + div[data-testid="stSelectbox"] span {
-    font-size: 16px !important;
+    font-size: 12px !important;
+}
+div:has(> #preset-select-anchor) + div[data-testid="stSelectbox"] label p {
+    font-size: 12px !important;
 }
 
 /* ===== セレクトボックス ===== */
