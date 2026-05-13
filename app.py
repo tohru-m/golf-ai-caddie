@@ -248,7 +248,7 @@ div:has(> #shot-float-btns) + div button {
 
 /* ===== ホール選択グリッド（5列×4行：18択） ===== */
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(18)):not(:has(> label:nth-child(19))) {
-    grid-template-columns: repeat(5, 1fr) !important;
+    grid-template-columns: repeat(6, 1fr) !important;
 }
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(18)):not(:has(> label:nth-child(19))) label > *:first-child {
     display: none !important;
