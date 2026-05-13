@@ -1096,8 +1096,6 @@ actual_club = st.radio(
     horizontal=True,
 )
 
-st.markdown('<div style="font-size:22px; font-weight:700; color:#4a5568; margin-top:8px; margin-bottom:4px;">飛距離（ヤード）</div>', unsafe_allow_html=True)
-
 if "green_on_flag" not in st.session_state:
     st.session_state.green_on_flag = False
 
@@ -1111,6 +1109,13 @@ smin, smax = CLUB_SLIDER_RANGE.get(actual_club, (10, 250))
 slider_key  = f"dist_slider_{actual_club}"
 if slider_key not in st.session_state:
     st.session_state[slider_key] = int(smax * 0.7)
+current_dist = st.session_state[slider_key]
+
+st.markdown(
+    f'<div style="font-size:22px; font-weight:700; color:#4a5568; margin-top:8px; margin-bottom:4px;">'
+    f'飛距離（ヤード）　<span style="font-size:28px; color:#1a2e44; font-weight:900;">{current_dist}y</span></div>',
+    unsafe_allow_html=True
+)
 
 # グリーンオンボタン
 if st.session_state.green_on_flag:
@@ -1124,11 +1129,6 @@ if st.session_state.green_on_flag:
         st.session_state.green_on_flag = False
         st.rerun()
 else:
-    current_dist = st.session_state[slider_key]
-    st.markdown(
-        f"<div style='font-size:36px; font-weight:700; color:#1a2e44; margin:4px 0;'>📏 {current_dist}y</div>",
-        unsafe_allow_html=True
-    )
     st.slider("", min_value=smin, max_value=smax, step=10,
               key=slider_key, label_visibility="collapsed")
     if st.button("🚩 グリーンオン！", key="green_on_btn", use_container_width=True):
