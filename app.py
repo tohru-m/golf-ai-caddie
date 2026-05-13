@@ -255,7 +255,7 @@ div:has(> #hole-grid-marker) + div [data-testid="stRadio"] {
 }
 div:has(> #hole-grid-marker) + div [data-testid="stRadio"] > div:last-child {
     display: grid !important;
-    grid-template-columns: repeat(6, 1fr) !important;
+    grid-template-columns: repeat(5, 1fr) !important;
     width: 100% !important;
     gap: 6px !important;
 }
