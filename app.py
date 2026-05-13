@@ -272,6 +272,20 @@ div:has(> #shot-float-btns) + div button {
     display: none !important;
 }
 
+/* ===== 最終スコアグリッド（16択：4列×4行） ===== */
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(16)):not(:has(> label:nth-child(17))) {
+    grid-template-columns: repeat(4, 1fr) !important;
+    width: 100% !important;
+}
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(16)):not(:has(> label:nth-child(17))) label > *:first-child {
+    display: none !important;
+}
+@media (max-width: 640px) {
+    [data-testid="stRadio"] > div:last-child:has(> label:nth-child(16)):not(:has(> label:nth-child(17))) label {
+        min-width: calc((100vw - 2rem - 3 * 6px) / 4) !important;
+    }
+}
+
 /* ===== 結果グリッド（6択：3列×2行） ===== */
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(6)):not(:has(> label:nth-child(7))) {
     grid-template-columns: repeat(3, 1fr) !important;
@@ -1162,13 +1176,6 @@ if undo:
 st.markdown("<div class='section-divider'></div>", unsafe_allow_html=True)
 st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:14px; margin-bottom:6px;">⛳ このホールの最終スコア</div>', unsafe_allow_html=True)
 
-score_labels = [f"{i}打" for i in range(1, 17)]
-
-def update_actual_score():
-    st.session_state[f"actual_{hole}"] = int(
-        st.session_state[f"final_score_input_{hole}"].replace("打", "")
-    )
-
 def get_score_name(score, par):
     diff = score - par
     if score == 1:
@@ -1188,26 +1195,28 @@ def get_score_name(score, par):
     else:
         return "トリプルボギー以上", "#7f1d1d"
 
-fs_col1, fs_col2 = st.columns([1, 1])
+current_score = st.session_state.get(f"final_score_input_{hole}", par_num)
+if isinstance(current_score, str):
+    current_score = int(current_score.replace("打", ""))
+sname, scolor = get_score_name(current_score, par_num)
+st.markdown(
+    f"<div style='font-size:24px; font-weight:700; color:{scolor}; margin-bottom:4px;'>{current_score}打　{sname}</div>",
+    unsafe_allow_html=True
+)
 
-with fs_col1:
-    st.selectbox(
-        "",
-        score_labels,
-        index=max(int(st.session_state.get(f"actual_{hole}", 1)) - 1, 0),
-        key=f"final_score_input_{hole}",
-        on_change=update_actual_score,
-        label_visibility="collapsed"
-    )
+def update_actual_score():
+    st.session_state[f"actual_{hole}"] = st.session_state[f"final_score_input_{hole}"]
 
-with fs_col2:
-    selected = st.session_state.get(f"final_score_input_{hole}", f"{par_num}打")
-    current_score = int(selected.replace("打", "")) if isinstance(selected, str) else par_num
-    sname, scolor = get_score_name(current_score, par_num)
-    st.markdown(
-        f"<div style='font-size:22px; font-weight:900; color:{scolor}; padding-top:10px;'>{sname}</div>",
-        unsafe_allow_html=True
-    )
+final_score = st.radio(
+    "",
+    list(range(1, 17)),
+    index=max(current_score - 1, 0),
+    key=f"final_score_input_{hole}",
+    label_visibility="collapsed",
+    horizontal=True,
+    on_change=update_actual_score,
+)
+st.session_state[f"actual_{hole}"] = final_score
 
 # =========================
 # クラブ設定
