@@ -140,7 +140,7 @@ html, body, [class*="css"] {
 div[data-testid="stFormSubmitButton"] > button,
 div[data-testid="stButton"] > button {
     height: 62px !important;
-    font-size: 26px !important;
+    font-size: 32px !important;
     font-weight: 700 !important;
     border-radius: 12px !important;
     width: 100% !important;
@@ -228,20 +228,6 @@ div[data-testid="stSlider"] {
     padding-top: 4px;
 }
 
-/* ===== 反映・取消ボタン（primaryボタン） ===== */
-button[data-testid="baseButton-primary"]:not(#_),
-button[data-testid="baseButton-primary"]:not(#_):hover,
-button[data-testid="baseButton-primary"]:not(#_):focus,
-button[data-testid="baseButton-primary"]:not(#_):active {
-    font-size: 40px !important;
-    height: 70px !important;
-    font-weight: 700 !important;
-    background-color: white !important;
-    background: white !important;
-    color: #1a2e44 !important;
-    border: 1px solid #9ca3af !important;
-    box-shadow: none !important;
-}
 
 /* ===== ホール選択グリッド（5列×4行：18択） ===== */
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(18)):not(:has(> label:nth-child(19))) {
@@ -1123,9 +1109,9 @@ shot_result = st.radio(
 # ─── ボタン ───
 btn1, btn2, _ = st.columns([1, 1, 1])
 with btn1:
-    submitted = st.button("✅ 反映", key="btn_submit_shot", use_container_width=True, type="primary")
+    submitted = st.button("✅ 反映", key="btn_submit_shot", use_container_width=True)
 with btn2:
-    undo = st.button("↩️ 取消", key="btn_undo_shot", use_container_width=True, type="primary")
+    undo = st.button("↩️ 取消", key="btn_undo_shot", use_container_width=True)
 
 if submitted:
     penalty   = 0
