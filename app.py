@@ -277,6 +277,10 @@ div[data-testid="stSlider"] {
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(10)):not(:has(> label:nth-child(11))) label > *:first-child {
     display: none !important;
 }
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(10)):not(:has(> label:nth-child(11))) label p,
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(10)):not(:has(> label:nth-child(11))) label span {
+    font-size: 18px !important;
+}
 
 /* ===== モバイルのみ：ボタン最小幅を強制 ===== */
 @media (max-width: 640px) {
