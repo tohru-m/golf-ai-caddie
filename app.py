@@ -1113,7 +1113,7 @@ current_dist = st.session_state[slider_key]
 
 st.markdown(
     f'<div style="font-size:22px; font-weight:700; color:#4a5568; margin-top:8px; margin-bottom:4px;">'
-    f'飛距離（ヤード）　<span style="font-size:28px; color:#1a2e44; font-weight:900;">{current_dist}y</span></div>',
+    f'飛距離　<span style="font-size:42px; color:#1a2e44; font-weight:900;">{current_dist}y</span></div>',
     unsafe_allow_html=True
 )
 
