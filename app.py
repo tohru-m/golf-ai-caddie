@@ -216,6 +216,13 @@ div:has(> #voice-apply-anchor) + div[data-testid="stButton"] > button {
     font-size: 38px !important;
 }
 
+/* ===== 実績をすべてリセットボタン ===== */
+div:has(#reset-all-anchor) + div[data-testid="stButton"] > button {
+    background-color: #fed7aa !important;
+    border-color: #fb923c !important;
+    color: #7c2d12 !important;
+}
+
 /* ===== コース情報を読み込むボタン拡大 ===== */
 div:has(#load-preset-anchor) + div[data-testid="stButton"] > button {
     font-size: 22px !important;
@@ -1410,6 +1417,7 @@ st.session_state[f"actual_{hole}"] = final_score
  
 reset_col, _, __ = st.columns([1, 1, 1])
 with reset_col:
+    st.markdown('<div id="reset-all-anchor"></div>', unsafe_allow_html=True)
     reset_all = st.button("✖ 実績をすべてリセット", key="btn_reset_all", use_container_width=True)
  
 if reset_all:
