@@ -196,6 +196,7 @@ html, body, [class*="css"] {
 [data-testid="stAudioInput"] label p {
     font-size: 26px !important;
     font-weight: 700 !important;
+    color: #b91c1c !important;
 }
 [data-testid="stAudioInput"] button {
     width: 72px !important;
