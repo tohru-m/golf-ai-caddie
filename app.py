@@ -221,6 +221,7 @@ div:has(> #voice-apply-anchor) + div[data-testid="stButton"] > button {
     background-color: #fed7aa !important;
     border-color: #fb923c !important;
     color: #7c2d12 !important;
+    font-size: 22px !important;
 }
 
 /* ===== コース情報を読み込むボタン拡大 ===== */
