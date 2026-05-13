@@ -180,7 +180,7 @@ html, body, [class*="css"] {
     padding: 14px 16px;
     margin: 10px 0 14px 0;
 }
- 
+
 .voice-result {
     background: #fefce8;
     border: 2px solid #fde68a;
@@ -190,6 +190,23 @@ html, body, [class*="css"] {
     font-weight: 700;
     color: #92400e;
     margin-top: 8px;
+}
+
+/* ===== 音声入力ウィジェット拡大 ===== */
+[data-testid="stAudioInput"] label p {
+    font-size: 26px !important;
+    font-weight: 700 !important;
+}
+[data-testid="stAudioInput"] button {
+    width: 72px !important;
+    height: 72px !important;
+    min-width: 72px !important;
+    min-height: 72px !important;
+    border-radius: 50% !important;
+}
+[data-testid="stAudioInput"] button svg {
+    width: 38px !important;
+    height: 38px !important;
 }
  
 /* ===== ホール見出し ===== */
