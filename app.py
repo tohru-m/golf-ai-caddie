@@ -1495,7 +1495,7 @@ with st.expander("⛳ コース設定", expanded=False):
             preset = PRESET_COURSES[selected_preset]
             st.session_state.course      = preset["holes"].copy()
             st.session_state.tee_type    = preset["tee"]
-            st.session_state.course_name = preset["name"]
+
             for h, data in preset["holes"].items():
                 st.session_state[f"par_{h}"]  = data["par"]
                 st.session_state[f"yard_{h}"] = data["yard"]
@@ -1503,9 +1503,6 @@ with st.expander("⛳ コース設定", expanded=False):
 
     st.divider()
 
-    course_name = st.text_input("コース名",
-        value=st.session_state.get("course_name", ""),
-        placeholder="例：宝塚ゴルフ倶楽部")
     tee_type = st.session_state.get("tee_type", "REG")
  
     st.divider()
@@ -1537,9 +1534,8 @@ with st.expander("⛳ コース設定", expanded=False):
         edited_course[h] = {"par": par, "yard": yard}
  
 if st.button("✅ コース設定を更新", use_container_width=True):
-    st.session_state.course      = edited_course
-    st.session_state.course_name = course_name
-    st.session_state.tee_type    = tee_type
+    st.session_state.course    = edited_course
+    st.session_state.tee_type  = tee_type
     st.rerun()
  
 # =========================
