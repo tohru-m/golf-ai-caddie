@@ -235,21 +235,28 @@ div:has(> #shot-float-btns) + div {
     left: 10px !important;
     right: 10px !important;
     z-index: 999 !important;
-}
-div:has(> #shot-float-btns) + div > div,
-div:has(> #shot-float-btns) + div [data-testid="stHorizontalBlock"] {
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: nowrap !important;
     gap: 10px !important;
+    padding: 0 !important;
+    background: none !important;
 }
-div:has(> #shot-float-btns) + div > div > div,
-div:has(> #shot-float-btns) + div [data-testid="column"] {
-    flex: 1 !important;
+div:has(> #shot-float-btns) + div [data-testid="column"],
+div:has(> #shot-float-btns) + div > div {
+    flex: 1 1 0 !important;
     min-width: 0 !important;
-    width: 50% !important;
+    max-width: 50% !important;
+    width: 0 !important;
+    padding: 0 !important;
+}
+div:has(> #shot-float-btns) + div [data-testid="stButton"],
+div:has(> #shot-float-btns) + div > div > div {
+    width: 100% !important;
+    padding: 0 !important;
 }
 div:has(> #shot-float-btns) + div button {
+    width: 100% !important;
     height: 70px !important;
     font-size: 28px !important;
     font-weight: 700 !important;
@@ -257,6 +264,8 @@ div:has(> #shot-float-btns) + div button {
     color: white !important;
     border: none !important;
     border-radius: 10px !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* ===== ホール選択グリッド（5列×4行：18択） ===== */
