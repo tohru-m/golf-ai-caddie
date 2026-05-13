@@ -281,6 +281,10 @@ div[data-testid="stSlider"] {
 [data-testid="stRadio"] > div:last-child:has(> label:nth-child(10)):not(:has(> label:nth-child(11))) label span {
     font-size: 18px !important;
 }
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(10)):not(:has(> label:nth-child(11))) label:nth-child(10) p,
+[data-testid="stRadio"] > div:last-child:has(> label:nth-child(10)):not(:has(> label:nth-child(11))) label:nth-child(10) span {
+    color: #e53e3e !important;
+}
 
 /* ===== モバイルのみ：ボタン最小幅を強制 ===== */
 @media (max-width: 640px) {
@@ -1082,7 +1086,7 @@ st.slider("", min_value=smin, max_value=smax, step=10,
 st.markdown('<div class="ui-label-small">結果</div>', unsafe_allow_html=True)
 shot_result = st.radio(
     "",
-    ["FW", "ラフ", "OB", "池", "赤杭", "ロスト", "空振り", "プレ4", "プレ3", "🚩Gオン"],
+    ["FW", "ラフ", "OB", "池", "赤杭", "ロスト", "空振り", "プレ4", "プレ3", "Gオン"],
     key="shot_result_select",
     label_visibility="collapsed",
     horizontal=True,
@@ -1098,7 +1102,7 @@ with btn2:
 
 if submitted:
     penalty   = 0
-    green_on  = (shot_result == "🚩Gオン")
+    green_on  = (shot_result == "Gオン")
     _, _smax = CLUB_SLIDER_RANGE.get(actual_club, (10, 250))
     dist_val  = st.session_state.remaining if green_on else st.session_state.get(f"dist_slider_{actual_club}", int(_smax * 0.7))
     remain_adjust = dist_val
