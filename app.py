@@ -1149,7 +1149,7 @@ st.markdown("<div style='padding-bottom: 110px;'></div>", unsafe_allow_html=True
 
 # ─── フローティングボタン（固定表示）───
 st.markdown('<div id="shot-float-btns"></div>', unsafe_allow_html=True)
-btn1, btn2 = st.columns([1, 2])
+btn1, btn2 = st.columns([1, 1])
 with btn1:
     submitted = st.button("✅ 反映", key="btn_submit_shot", use_container_width=True)
 with btn2:
