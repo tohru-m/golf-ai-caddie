@@ -217,7 +217,7 @@ div:has(> #voice-apply-anchor) + div[data-testid="stButton"] > button {
 }
 
 /* ===== 実績をすべてリセットボタン ===== */
-div:has(#reset-all-anchor) + div[data-testid="stButton"] > button {
+[data-testid="stColumn"]:has(#reset-all-anchor) button {
     background-color: #fed7aa !important;
     border-color: #fb923c !important;
     color: #7c2d12 !important;
