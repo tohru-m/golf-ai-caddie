@@ -464,7 +464,7 @@ div[data-testid="stRadio"] input[type="radio"] {
 # =========================
 
 PRESET_COURSES = {
-    "大阪PG（フロント）": {
+    "大阪パブリックゴルフ場（フロント）": {
         "tee": "FRO",
         "holes": {
             1:  {"par": 4, "yard": 228},
@@ -487,7 +487,7 @@ PRESET_COURSES = {
             18: {"par": 4, "yard": 250},
         }
     },
-    "大阪PG（レディース）": {
+    "大阪パブリックゴルフ場（レディース）": {
         "tee": "LADIES",
         "holes": {
             1:  {"par": 4, "yard": 223},
@@ -510,7 +510,7 @@ PRESET_COURSES = {
             18: {"par": 4, "yard": 250},
         }
     },
-    "宝塚GC新C（フロント）": {
+    "宝塚ゴルフ倶楽部新C（フロント）": {
         "tee": "FRO",
         "holes": {
             1:  {"par": 5, "yard": 425},
