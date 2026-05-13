@@ -228,16 +228,11 @@ div[data-testid="stSlider"] {
     padding-top: 4px;
 }
 
-/* ===== 反映・取消ボタン ===== */
-[data-testid="stHorizontalBlock"]:has(#shot-float-btns) [data-testid="stMarkdownContainer"]:has(#shot-float-btns) {
-    height: 0 !important;
-    overflow: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-[data-testid="stHorizontalBlock"]:has(#shot-float-btns) button {
+/* ===== 反映・取消ボタン（primaryボタン） ===== */
+[data-testid="baseButton-primary"] {
     font-size: 40px !important;
     height: 70px !important;
+    font-weight: 700 !important;
 }
 
 /* ===== ホール選択グリッド（5列×4行：18択） ===== */
@@ -1120,10 +1115,9 @@ shot_result = st.radio(
 # ─── ボタン ───
 btn1, btn2, _ = st.columns([1, 1, 1])
 with btn1:
-    st.markdown('<span id="shot-float-btns" style="display:none"></span>', unsafe_allow_html=True)
-    submitted = st.button("✅ 反映", key="btn_submit_shot", use_container_width=True)
+    submitted = st.button("✅ 反映", key="btn_submit_shot", use_container_width=True, type="primary")
 with btn2:
-    undo = st.button("↩️ 取消", key="btn_undo_shot", use_container_width=True)
+    undo = st.button("↩️ 取消", key="btn_undo_shot", use_container_width=True, type="primary")
 
 if submitted:
     penalty   = 0
