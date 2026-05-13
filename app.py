@@ -1116,10 +1116,6 @@ with btn1:
 with btn2:
     undo = st.button("↩️ 取消", key="btn_undo_shot", use_container_width=True)
 
-reset_col, _, __ = st.columns([1, 1, 1])
-with reset_col:
-    reset_all = st.button("✖ 実績をすべてリセット", key="btn_reset_all", use_container_width=True)
-
 if submitted:
     penalty   = 0
     green_on  = st.session_state.get("green_on_flag", False)
@@ -1214,6 +1210,10 @@ final_score = st.radio(
     on_change=update_actual_score,
 )
 st.session_state[f"actual_{hole}"] = final_score
+
+reset_col, _, __ = st.columns([1, 1, 1])
+with reset_col:
+    reset_all = st.button("✖ 実績をすべてリセット", key="btn_reset_all", use_container_width=True)
 
 # =========================
 # クラブ設定
