@@ -986,7 +986,15 @@ def render_score_table(holes, hole_targets):
 # アプリ本体
 # ============================================================
  
-st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-bottom:6px;">⛳ AIキャディLite</div>', unsafe_allow_html=True)
+import base64 as _b64, os as _os
+_logo_path = _os.path.join(_os.path.dirname(__file__), "rogo.png")
+if _os.path.exists(_logo_path):
+    with open(_logo_path, "rb") as _f:
+        _logo_b64 = _b64.b64encode(_f.read()).decode()
+    _logo_tag = f"<img src='data:image/png;base64,{_logo_b64}' style='height:48px; vertical-align:middle; margin-right:8px;'>"
+else:
+    _logo_tag = "⛳"
+st.markdown(f'<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-bottom:6px; display:flex; align-items:center;">{_logo_tag}AIキャディLite</div>', unsafe_allow_html=True)
  
 # ---------- ラウンド目標 ----------
 goal_col1, goal_col2 = st.columns([1, 1])
