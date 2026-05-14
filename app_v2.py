@@ -218,9 +218,9 @@ div:has(> #voice-apply-anchor) + div[data-testid="stButton"] > button {
 
 /* ===== 実績をすべてリセットボタン ===== */
 [data-testid="stColumn"]:has(#reset-all-anchor) button {
-    background-color: #fed7aa !important;
-    border-color: #fb923c !important;
-    color: #7c2d12 !important;
+    background-color: #fce7f3 !important;
+    border-color: #f472b6 !important;
+    color: #9d174d !important;
     font-size: 22px !important;
 }
 
@@ -1166,7 +1166,7 @@ if st.button("入力", key="btn_confirm_score", use_container_width=True):
 reset_col, _, __ = st.columns([1, 1, 1])
 with reset_col:
     st.markdown('<div id="reset-all-anchor"></div>', unsafe_allow_html=True)
-    reset_all = st.button("✖ 実績をすべてリセット", key="btn_reset_all", use_container_width=True)
+    reset_all = st.button("全てリセット", key="btn_reset_all", use_container_width=True)
  
 if reset_all:
     st.session_state.history       = []
