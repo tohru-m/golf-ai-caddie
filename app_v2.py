@@ -1164,8 +1164,6 @@ else:
 # 🎤 音声入力セクション
 # =========================
  
-st.markdown('<div style="font-size:26px; font-weight:700; color:#1a2e44; margin-top:20px; margin-bottom:6px;">🎤 音声で結果を入力</div>', unsafe_allow_html=True)
- 
 st.markdown(
     "<div class='voice-box'>"
         "<div style='font-size:18px; color:#4b5563;'>例：「7番アイアン、150ヤード、フェアウェイ」</div>"
@@ -1181,7 +1179,7 @@ if "voice_result" not in st.session_state: st.session_state.voice_result = None
 if "voice_text"   not in st.session_state: st.session_state.voice_text   = ""
  
 # 音声ファイルアップロード（スマホではマイク録音として機能する）
-audio_file = st.audio_input("🎤 タップして録音", key="voice_input")
+audio_file = st.audio_input("", key="voice_input", label_visibility="collapsed")
  
 if audio_file is not None:
     with st.spinner("🎤 音声を認識中..."):
