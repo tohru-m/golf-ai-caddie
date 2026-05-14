@@ -218,7 +218,7 @@ div:has(> #voice-apply-anchor) + div[data-testid="stButton"] > button {
 
 /* ===== 入力ボタン ===== */
 div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button {
-    font-size: 32px !important;
+    font-size: 22px !important;
     font-weight: 900 !important;
 }
 
@@ -277,7 +277,7 @@ div:has(#load-preset-anchor) + div[data-testid="stButton"] > button {
 div[data-testid="stFormSubmitButton"] > button,
 div[data-testid="stButton"] > button {
     height: 62px !important;
-    font-size: 32px !important;
+    font-size: 22px !important;
     font-weight: 700 !important;
     border-radius: 12px !important;
     width: 100% !important;
@@ -365,7 +365,7 @@ div[data-testid="stExpander"] summary,
 div[data-testid="stExpander"] summary p,
 div[data-testid="stExpander"] summary span,
 div[data-testid="stExpander"] details summary {
-    font-size: 32px !important;
+    font-size: 22px !important;
     font-weight: 900 !important;
     line-height: 1.2 !important;
 }
