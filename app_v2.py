@@ -960,9 +960,23 @@ st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
  
 # ---------- ホール選択 ----------
 st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;">⛳ ホールを選択</div>', unsafe_allow_html=True)
+
+# 実績済みホールを黄色にする動的CSS
+_hole_keys = list(st.session_state.course.keys())
+_done_css  = ""
+for _idx, _h in enumerate(_hole_keys, start=1):
+    if st.session_state.get(f"actual_{_h}", "") != "":
+        _done_css += (
+            f"div:has(#hole-select-anchor) + div [data-testid='stRadio'] > div:last-child"
+            f" > label:nth-child({_idx}) {{ background:#fef9c3 !important; border-radius:8px !important; }}\n"
+        )
+if _done_css:
+    st.markdown(f"<style>{_done_css}</style>", unsafe_allow_html=True)
+
+st.markdown('<div id="hole-select-anchor"></div>', unsafe_allow_html=True)
 hole = st.radio(
     "",
-    list(st.session_state.course.keys()),
+    _hole_keys,
     key="hole_select",
     label_visibility="collapsed",
     horizontal=True,
