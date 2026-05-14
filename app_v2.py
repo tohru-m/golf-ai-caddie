@@ -249,7 +249,7 @@ div:has(#load-preset-anchor) + div[data-testid="stButton"] > button {
     white-space: nowrap;
 }
 .hole-header .sub {
-    font-size: 36px;
+    font-size: 30px;
     font-weight: 900;
     color: #93c5fd;
     white-space: nowrap;
