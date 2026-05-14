@@ -1005,12 +1005,10 @@ with goal_col2:
     )
  
 # adjust_plan: 当初目標達成に向けて残りホールを再配分するかどうか
-if "adjust_plan"       not in st.session_state: st.session_state.adjust_plan       = False
-if "adjust_plan_asked" not in st.session_state: st.session_state.adjust_plan_asked = False
+if "adjust_plan" not in st.session_state: st.session_state.adjust_plan = False
 # 目標スコアが変わったらフラグをリセット
 if st.session_state.get("_last_target_score") != target_score:
-    st.session_state.adjust_plan       = False
-    st.session_state.adjust_plan_asked = False
+    st.session_state.adjust_plan = False
     st.session_state["_last_target_score"] = target_score
 
 # ショット戦略用の hole_targets
@@ -1070,7 +1068,7 @@ for _i in range(len(_completed_holes) - 2):
         _trigger = True
         break
 
-if _trigger and not st.session_state.adjust_plan:
+if _trigger:
     remaining_count = 18 - completed_count
     if remaining_count > 0:
         st.markdown(
@@ -1085,12 +1083,10 @@ if _trigger and not st.session_state.adjust_plan:
         yes_col, no_col, _ = st.columns([1, 1, 1])
         with yes_col:
             if st.button("はい（計画を変更）", key="btn_adjust_yes", use_container_width=True):
-                st.session_state.adjust_plan       = True
-                st.session_state.adjust_plan_asked = True
+                st.session_state.adjust_plan = True
                 st.rerun()
         with no_col:
             if st.button("いいえ（このまま）", key="btn_adjust_no", use_container_width=True):
-                st.session_state.adjust_plan_asked = True
                 st.rerun()
 
 # 計画変更中の表示
@@ -1336,8 +1332,7 @@ if st.session_state.reset_confirm:
             st.session_state.history           = []
             st.session_state.green_on_flag     = False
             st.session_state.reset_confirm     = False
-            st.session_state.adjust_plan       = False
-            st.session_state.adjust_plan_asked = False
+            st.session_state.adjust_plan = False
             st.session_state.pop("hole_select", None)
             st.session_state.remaining         = st.session_state.course[1]["yard"]
             for h in st.session_state.course.keys():
