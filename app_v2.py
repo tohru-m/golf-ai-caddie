@@ -1051,8 +1051,20 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# 乖離が大きい場合：計画変更を提案
-if completed_count > 0 and diff_from_target > 2 and not st.session_state.adjust_plan:
+# 連続3ホールで目標比+6以上の場合：計画変更を提案
+_completed_holes = [h for h in holes if st.session_state.get(f"actual_{h}", "") != ""]
+_trigger = False
+for _i in range(len(_completed_holes) - 2):
+    _window = _completed_holes[_i:_i + 3]
+    _window_dev = sum(
+        int(st.session_state.get(f"actual_{h}", 0)) - original_targets[h]
+        for h in _window
+    )
+    if _window_dev >= 6:
+        _trigger = True
+        break
+
+if _trigger and not st.session_state.adjust_plan:
     remaining_count = 18 - completed_count
     if remaining_count > 0:
         st.markdown(
