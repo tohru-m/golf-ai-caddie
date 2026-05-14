@@ -356,7 +356,7 @@ div[data-testid="stCheckbox"] input[type="checkbox"] {
  
 /* ===== Expander ===== */
 div[data-testid="stExpander"] summary {
-    font-size: 40px !important;
+    font-size: 50px !important;
     font-weight: 700;
 }
  
