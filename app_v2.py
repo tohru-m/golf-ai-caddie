@@ -1126,9 +1126,6 @@ st.markdown(
     unsafe_allow_html=True
 )
  
-def update_actual_score():
-    st.session_state[f"actual_{hole}"] = st.session_state[f"final_score_input_{hole}"]
- 
 final_score = st.radio(
     "",
     list(range(1, 17)),
@@ -1136,10 +1133,12 @@ final_score = st.radio(
     key=f"final_score_input_{hole}",
     label_visibility="collapsed",
     horizontal=True,
-    on_change=update_actual_score,
 )
-st.session_state[f"actual_{hole}"] = final_score
- 
+
+if st.button("入力", key="btn_confirm_score", use_container_width=True):
+    st.session_state[f"actual_{hole}"] = final_score
+    st.rerun()
+
 reset_col, _, __ = st.columns([1, 1, 1])
 with reset_col:
     st.markdown('<div id="reset-all-anchor"></div>', unsafe_allow_html=True)
