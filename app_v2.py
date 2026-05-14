@@ -228,6 +228,7 @@ div:has(#adjust-btn-anchor) ~ div [data-testid="stColumn"] button {
 div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button {
     font-size: 22px !important;
     font-weight: 900 !important;
+    border: 3px solid #555 !important;
 }
 
 /* ===== 実績をすべてリセットボタン ===== */
