@@ -2,6 +2,8 @@ import streamlit as st
 import tempfile
 import os
 import json
+from streamlit_local_storage import LocalStorage
+_localS = LocalStorage()
  
 # =========================
 # OpenAI Whisper + GPT による音声解析
@@ -619,9 +621,10 @@ CLUB_OPTIONS = [
 ]
  
 if "clubs" not in st.session_state:
-    st.session_state.clubs = CLUBS.copy()
+    _saved_clubs = _localS.getItem("golf_ai_clubs")
+    st.session_state.clubs = _saved_clubs if _saved_clubs else CLUBS.copy()
 if "selected_club" not in st.session_state:
-    st.session_state.selected_club = CLUBS[0]["name"]
+    st.session_state.selected_club = st.session_state.clubs[0]["name"]
  
 if "course" not in st.session_state:
     st.session_state.course = {
@@ -1369,6 +1372,7 @@ with st.expander("⚙️ クラブ設定", expanded=False):
  
     if st.button("クラブ設定を初期に戻す", use_container_width=True):
         st.session_state.clubs = CLUBS.copy()
+        _localS.removeItem("golf_ai_clubs")
         for k in list(st.session_state.keys()):
             if k.startswith(("name_", "dist_", "miss_")):
                 del st.session_state[k]
@@ -1426,6 +1430,7 @@ if st.button("✅ クラブ設定を更新", use_container_width=True):
         "52°": 17, "56°": 18, "58°": 19, "60°": 20,
     }
     st.session_state.clubs = sorted(edited_clubs, key=lambda x: club_order.get(x["name"], 999))
+    _localS.setItem("golf_ai_clubs", st.session_state.clubs)
     st.session_state.pop("name_0", None)
     st.rerun()
  
