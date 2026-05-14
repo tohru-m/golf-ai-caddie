@@ -225,12 +225,17 @@ div:has(#adjust-btn-anchor) ~ div [data-testid="stColumn"] button {
 }
 
 /* ===== 入力ボタン ===== */
-div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button {
+div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button,
+div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button:hover,
+div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button:focus {
     font-size: 22px !important;
     font-weight: 900 !important;
     border: 3px solid #1a56a0 !important;
+    border-color: #1a56a0 !important;
+    background: #d0e8ff !important;
     background-color: #d0e8ff !important;
     color: #1a2e44 !important;
+    outline: 3px solid #1a56a0 !important;
 }
 
 /* ===== 実績をすべてリセットボタン ===== */
