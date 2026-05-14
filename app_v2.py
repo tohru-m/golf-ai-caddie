@@ -1175,7 +1175,7 @@ if "voice_text"   not in st.session_state: st.session_state.voice_text   = ""
 audio_file = st.audio_input("", key="voice_input", label_visibility="collapsed")
  
 if audio_file is not None:
-    with st.spinner("🎤 音声を認識中..."):
+    with st.spinner("音声を認識中..."):
         audio_bytes = audio_file.read()
         text = transcribe_audio(audio_bytes)
  
