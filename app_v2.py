@@ -1071,7 +1071,7 @@ if _trigger and not st.session_state.adjust_plan:
             f"<div style='background:#fef2f2; border:2px solid #fca5a5; border-radius:10px; "
             f"padding:10px 16px; margin-top:8px; font-size:22px; font-weight:700; color:#991b1b;'>"
             f"⚠️ 目標達成が難しくなっています（見込み {projected_total}）。<br>"
-            f"目標{target_score}達成のために今後の計画を変更しますか？"
+            f"目標{target_score}達成のために今後の計画を攻めのゴルフに変更しますか？"
             f"</div>",
             unsafe_allow_html=True
         )
