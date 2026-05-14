@@ -1264,21 +1264,38 @@ if st.button("入力", key="btn_confirm_score", use_container_width=True):
     st.session_state[f"actual_{hole}"] = final_score
     st.rerun()
 
+if "reset_confirm" not in st.session_state:
+    st.session_state.reset_confirm = False
+
 reset_col, _, __ = st.columns([1, 1, 1])
 with reset_col:
     st.markdown('<div id="reset-all-anchor"></div>', unsafe_allow_html=True)
-    reset_all = st.button("全てリセット", key="btn_reset_all", use_container_width=True)
- 
-if reset_all:
-    st.session_state.history       = []
-    st.session_state.green_on_flag = False
-    st.session_state.pop("hole_select", None)
-    st.session_state.remaining     = st.session_state.course[1]["yard"]
-    # 各ホールの実績スコアをリセット
-    for h in st.session_state.course.keys():
-        st.session_state.pop(f"actual_{h}", None)
-        st.session_state.pop(f"final_score_input_{h}", None)
-    st.rerun()
+    if st.button("全てリセット", key="btn_reset_all", use_container_width=True):
+        st.session_state.reset_confirm = True
+
+if st.session_state.reset_confirm:
+    st.markdown(
+        "<div style='background:#fef2f2; border:2px solid #fca5a5; border-radius:10px; "
+        "padding:10px 16px; margin-top:8px; font-size:22px; font-weight:700; color:#991b1b;'>"
+        "⚠️ ほんとにリセットしますか？</div>",
+        unsafe_allow_html=True
+    )
+    yes_col, no_col, _ = st.columns([1, 1, 1])
+    with yes_col:
+        if st.button("はい", key="btn_reset_yes", use_container_width=True):
+            st.session_state.history       = []
+            st.session_state.green_on_flag = False
+            st.session_state.reset_confirm = False
+            st.session_state.pop("hole_select", None)
+            st.session_state.remaining     = st.session_state.course[1]["yard"]
+            for h in st.session_state.course.keys():
+                st.session_state.pop(f"actual_{h}", None)
+                st.session_state.pop(f"final_score_input_{h}", None)
+            st.rerun()
+    with no_col:
+        if st.button("いいえ", key="btn_reset_no", use_container_width=True):
+            st.session_state.reset_confirm = False
+            st.rerun()
  
 # =========================
 # クラブ設定
