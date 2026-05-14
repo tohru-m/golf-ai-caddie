@@ -1016,7 +1016,6 @@ for i in range(1, 3):
 # ショット戦略表示
 # =========================
  
-st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;">⛳ ショット戦略</div>', unsafe_allow_html=True)
  
 st.markdown(
     f"<div style='font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;'>ショット戦略　<span style='color:#e53e3e;'>{recommended_score}打／{label_text}</span></div>",
