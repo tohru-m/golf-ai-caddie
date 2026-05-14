@@ -309,7 +309,7 @@ div:has(#target-score-anchor) + div [data-testid="stSelectbox"] span {
 }
 [data-testid="stSelectboxVirtualDropdown"] li,
 [data-testid="stSelectboxVirtualDropdown"] li span {
-    font-size: 30px !important;
+    font-size: 16px !important;
 }
 
 /* ===== プリセット選択セレクトボックス（小） ===== */
