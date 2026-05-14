@@ -239,7 +239,7 @@ div:has(#load-preset-anchor) + div[data-testid="stButton"] > button {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 8px;
+    gap: 2px;
 }
 .hole-header h2 {
     margin: 0;
