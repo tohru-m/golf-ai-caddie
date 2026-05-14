@@ -1318,21 +1318,3 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
                 key=f"yard_{h}", label_visibility="collapsed")
  
         edited_course[h] = {"par": par, "yard": yard}
-
-# =========================
-# OpenAI APIキー設定
-# =========================
- 
-with st.expander("🔑 APIキー設定", expanded=False):
-    st.markdown(
-        "<div style='font-size:18px; color:#4a5568; margin-bottom:8px;'>"
-        "音声入力にはOpenAI APIキーが必要です。<br>"
-        "Streamlit CloudのSecretsに <code>OPENAI_API_KEY</code> を設定してください。"
-        "</div>",
-        unsafe_allow_html=True
-    )
-    # 設定済みかどうか表示
-    if st.secrets.get("OPENAI_API_KEY", ""):
-        st.success("✅ APIキーは設定済みです")
-    else:
-        st.warning("⚠️ APIキーが未設定です。Streamlit CloudのSecretsに設定してください。")
