@@ -1008,15 +1008,16 @@ with st.expander(f"目標{target_score}の計画＆実績", expanded=False):
 # ---------- 現状の見込み ----------
 holes = sorted(st.session_state.course.keys())
 total_par       = sum(st.session_state.course[h]["par"] for h in holes)
+original_targets = calc_hole_targets(target_score)  # 元の計画値（見込み計算用）
 projected_total = 0
 completed_count = 0
 for h in holes:
     actual = st.session_state.get(f"actual_{h}", "")
     if actual != "":
-        projected_total += int(actual)
+        projected_total += int(actual)          # 実績済み：実績値を使用
         completed_count += 1
     else:
-        projected_total += hole_targets[h]
+        projected_total += original_targets[h]  # 未入力：元の計画値を使用
  
 diff_from_target = projected_total - target_score
 diff_from_par    = projected_total - total_par
