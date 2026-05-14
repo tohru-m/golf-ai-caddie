@@ -1018,7 +1018,10 @@ for i in range(1, 3):
  
  
 st.markdown(
-    f"<div style='font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;'>ショット戦略　<span style='color:#e53e3e;'>{recommended_score}打／{label_text}</span></div>",
+    f"<div style='background:linear-gradient(135deg,#064e3b,#065f46); color:white; border-radius:20px; padding:20px 18px; margin:10px 0 20px 0; display:flex; align-items:center; gap:8px;'>"
+    f"<span style='font-size:24px; font-weight:900; white-space:nowrap;'>ショット戦略</span>"
+    f"<span style='font-size:24px; font-weight:900; color:#6ee7b7; white-space:nowrap;'>{recommended_score}打／{label_text}</span>"
+    f"</div>",
     unsafe_allow_html=True
 )
  
