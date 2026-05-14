@@ -285,6 +285,17 @@ div[data-testid="stButton"] > button:active {
     transform: scale(0.97);
 }
  
+/* ===== ラウンドスコア目標セレクトボックス ===== */
+div:has(#target-score-anchor) + div [data-testid="stSelectbox"] > div > div,
+div:has(#target-score-anchor) + div [data-testid="stSelectbox"] select {
+    font-size: 22px !important;
+    font-weight: 700 !important;
+}
+div:has(#target-score-anchor) + div [data-testid="stSelectbox"] span {
+    font-size: 22px !important;
+    font-weight: 700 !important;
+}
+
 /* ===== プリセット選択セレクトボックス（小） ===== */
 div:has(#preset-select-anchor) + div [data-testid="stSelectbox"] > div > div,
 div:has(#preset-select-anchor) + div [data-testid="stSelectbox"] select {
@@ -893,6 +904,7 @@ with goal_col1:
     st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;">⛳ ラウンドスコア目標</div>', unsafe_allow_html=True)
  
 with goal_col2:
+    st.markdown('<div id="target-score-anchor"></div>', unsafe_allow_html=True)
     target_score = st.selectbox(
         "",
         list(range(60, 151)),
