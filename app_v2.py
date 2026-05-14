@@ -920,7 +920,7 @@ with goal_col2:
 hole_targets = calc_hole_targets(target_score)
  
 # ---------- ラウンドスコア戦略（折りたたみ） ----------
-with st.expander(f"🧠 目標スコア{target_score}のラウンド戦略", expanded=False):
+with st.expander(f"目標{target_score}の計画＆実績", expanded=False):
     holes = sorted(st.session_state.course.keys())
     render_score_table(holes, hole_targets)
  
