@@ -986,7 +986,7 @@ label, rec_color  = score_info(diff)
  
 label_text = label.split(' ', 1)[1] if ' ' in label else label
 st.markdown(
-    f"<div style='font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;'>スコア目標（AI推奨）{recommended_score}打／{label_text}</div>",
+    f"<div style='font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;'>スコア目標（AI推奨）<span style='color:#e53e3e;'>{recommended_score}打／{label_text}</span></div>",
     unsafe_allow_html=True
 )
  
