@@ -1129,8 +1129,8 @@ else:
 # 最終スコア入力
 # =========================
  
-st.markdown("<div class='section-divider'></div>", unsafe_allow_html=True)
-st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;">⛳ このホールの最終スコア</div>', unsafe_allow_html=True)
+st.markdown("<div class='section-divider' style='margin:8px 0;'></div>", unsafe_allow_html=True)
+st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:4px; margin-bottom:6px;">⛳ このホールの最終スコア</div>', unsafe_allow_html=True)
  
 def get_score_name(score, par):
     diff = score - par
