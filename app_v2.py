@@ -1288,84 +1288,84 @@ CLUB_SLIDER_RANGE = {
     "56°": ( 30, 120),
 }
  
-st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;">✏️ 手動でショットを入力</div>', unsafe_allow_html=True)
- 
-st.markdown('<div class="ui-label-small">使ったクラブ</div>', unsafe_allow_html=True)
-actual_club = st.radio(
-    "",
-    [c["name"] for c in st.session_state.clubs],
-    key="selected_club",
-    label_visibility="collapsed",
-    horizontal=True,
-)
- 
-smin, smax = CLUB_SLIDER_RANGE.get(actual_club, (10, 250))
-slider_key  = f"dist_slider_{actual_club}"
-if slider_key not in st.session_state:
-    st.session_state[slider_key] = int(smax * 0.7)
-current_dist = st.session_state[slider_key]
- 
-st.markdown(
-    f'<div style="font-size:22px; font-weight:700; color:#4a5568; margin-top:8px; margin-bottom:4px;">'
-    f'飛距離　<span style="font-size:42px; color:#1a2e44; font-weight:900;">{current_dist}y</span></div>',
-    unsafe_allow_html=True
-)
-st.slider("", min_value=smin, max_value=smax, step=10,
-          key=slider_key, label_visibility="collapsed")
- 
-st.markdown('<div class="ui-label-small">結果</div>', unsafe_allow_html=True)
-shot_result = st.radio(
-    "",
-    ["FW", "ラフ", "OB", "池", "赤杭", "ロスト", "空振り", "プレ4", "プレ3", "Gオン"],
-    key="shot_result_select",
-    label_visibility="collapsed",
-    horizontal=True,
-)
- 
-btn1, btn2, _ = st.columns([1, 1, 1])
-with btn1:
-    submitted = st.button("✅ 反映", key="btn_submit_shot", use_container_width=True)
-with btn2:
-    undo = st.button("↩️ 取消", key="btn_undo_shot", use_container_width=True)
- 
-if submitted:
-    penalty   = 0
-    green_on  = (shot_result == "Gオン")
-    _, _smax  = CLUB_SLIDER_RANGE.get(actual_club, (10, 250))
-    dist_val  = st.session_state.remaining if green_on else st.session_state.get(f"dist_slider_{actual_club}", int(_smax * 0.7))
-    remain_adjust = dist_val
- 
-    if shot_result == "OB":
-        penalty = 1;  remain_adjust = 0
-    elif shot_result == "池":
-        penalty = 1;  remain_adjust = dist_val
-    elif shot_result == "赤杭":
-        penalty = 1;  remain_adjust = dist_val
-    elif shot_result == "ロスト":
-        penalty = 2;  remain_adjust = dist_val
-    elif shot_result == "空振り":
-        remain_adjust = 0
-    elif shot_result == "プレ4":
-        penalty = 2;  remain_adjust = 0
-    elif shot_result == "プレ3":
-        penalty = 1;  remain_adjust = 0
- 
-    st.session_state.history.append({
-        "club":     actual_club,
-        "dist":     dist_val,
-        "result":   shot_result,
-        "penalty":  penalty,
-        "green_on": green_on,
-    })
-    st.session_state.remaining = max(st.session_state.remaining - remain_adjust, 0)
-    st.rerun()
- 
-if undo:
-    if st.session_state.history:
-        last      = st.session_state.history.pop()
-        back_dist = 0 if last["result"] in ("OB", "空振り") else last["dist"]
-        st.session_state.remaining += back_dist
+with st.expander("✏️ 手動でショットを入力", expanded=False):
+
+    st.markdown('<div class="ui-label-small">使ったクラブ</div>', unsafe_allow_html=True)
+    actual_club = st.radio(
+        "",
+        [c["name"] for c in st.session_state.clubs],
+        key="selected_club",
+        label_visibility="collapsed",
+        horizontal=True,
+    )
+
+    smin, smax = CLUB_SLIDER_RANGE.get(actual_club, (10, 250))
+    slider_key  = f"dist_slider_{actual_club}"
+    if slider_key not in st.session_state:
+        st.session_state[slider_key] = int(smax * 0.7)
+    current_dist = st.session_state[slider_key]
+
+    st.markdown(
+        f'<div style="font-size:22px; font-weight:700; color:#4a5568; margin-top:8px; margin-bottom:4px;">'
+        f'飛距離　<span style="font-size:42px; color:#1a2e44; font-weight:900;">{current_dist}y</span></div>',
+        unsafe_allow_html=True
+    )
+    st.slider("", min_value=smin, max_value=smax, step=10,
+              key=slider_key, label_visibility="collapsed")
+
+    st.markdown('<div class="ui-label-small">結果</div>', unsafe_allow_html=True)
+    shot_result = st.radio(
+        "",
+        ["FW", "ラフ", "OB", "池", "赤杭", "ロスト", "空振り", "プレ4", "プレ3", "Gオン"],
+        key="shot_result_select",
+        label_visibility="collapsed",
+        horizontal=True,
+    )
+
+    btn1, btn2, _ = st.columns([1, 1, 1])
+    with btn1:
+        submitted = st.button("✅ 反映", key="btn_submit_shot", use_container_width=True)
+    with btn2:
+        undo = st.button("↩️ 取消", key="btn_undo_shot", use_container_width=True)
+
+    if submitted:
+        penalty   = 0
+        green_on  = (shot_result == "Gオン")
+        _, _smax  = CLUB_SLIDER_RANGE.get(actual_club, (10, 250))
+        dist_val  = st.session_state.remaining if green_on else st.session_state.get(f"dist_slider_{actual_club}", int(_smax * 0.7))
+        remain_adjust = dist_val
+
+        if shot_result == "OB":
+            penalty = 1;  remain_adjust = 0
+        elif shot_result == "池":
+            penalty = 1;  remain_adjust = dist_val
+        elif shot_result == "赤杭":
+            penalty = 1;  remain_adjust = dist_val
+        elif shot_result == "ロスト":
+            penalty = 2;  remain_adjust = dist_val
+        elif shot_result == "空振り":
+            remain_adjust = 0
+        elif shot_result == "プレ4":
+            penalty = 2;  remain_adjust = 0
+        elif shot_result == "プレ3":
+            penalty = 1;  remain_adjust = 0
+
+        st.session_state.history.append({
+            "club":     actual_club,
+            "dist":     dist_val,
+            "result":   shot_result,
+            "penalty":  penalty,
+            "green_on": green_on,
+        })
+        st.session_state.remaining = max(st.session_state.remaining - remain_adjust, 0)
         st.rerun()
+
+    if undo:
+        if st.session_state.history:
+            last      = st.session_state.history.pop()
+            back_dist = 0 if last["result"] in ("OB", "空振り") else last["dist"]
+            st.session_state.remaining += back_dist
+            st.rerun()
  
 # =========================
 # 最終スコア入力
