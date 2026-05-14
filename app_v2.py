@@ -1159,107 +1159,6 @@ elif remaining_strokes == 0:
 else:
     st.error("ショット数が不足しています")
  
- 
-# =========================
-# 🎤 音声入力セクション
-# =========================
- 
- 
-# セッション変数の初期化
-if "voice_club"   not in st.session_state: st.session_state.voice_club   = None
-if "voice_dist"   not in st.session_state: st.session_state.voice_dist   = None
-if "voice_result" not in st.session_state: st.session_state.voice_result = None
-if "voice_text"   not in st.session_state: st.session_state.voice_text   = ""
- 
-# 音声ファイルアップロード（スマホではマイク録音として機能する）
-audio_file = st.audio_input("", key="voice_input", label_visibility="collapsed")
- 
-if audio_file is not None:
-    with st.spinner("音声を認識中..."):
-        audio_bytes = audio_file.read()
-        text = transcribe_audio(audio_bytes)
- 
-    if text:
-        st.session_state.voice_text = text
-        st.markdown(
-            f"<div class='voice-result'>🗣️ 認識結果：{text}</div>",
-            unsafe_allow_html=True
-        )
- 
-        with st.spinner("🤖 内容を解析中..."):
-            club_names = [c["name"] for c in st.session_state.clubs]
-            parsed = parse_shot_from_text(text, club_names)
- 
-        if parsed:
-            # 解析結果をセッションに保存（入力欄に反映させる）
-            if parsed.get("club") and parsed["club"] in club_names:
-                st.session_state.voice_club   = parsed["club"]
-                st.session_state.selected_club = parsed["club"]
-            if parsed.get("dist", 0) > 0:
-                st.session_state.voice_dist = parsed["dist"]
-                # スライダーのkeyも更新
-                slider_key = f"dist_slider_{st.session_state.selected_club}"
-                st.session_state[slider_key] = parsed["dist"]
-            if parsed.get("result"):
-                st.session_state.voice_result = parsed["result"]
- 
-            st.markdown(
-                f"<div style='background:#dbeafe; border:2px solid #93c5fd; border-radius:10px; padding:12px 20px; margin-top:8px; font-size:22px; font-weight:700;'>"
-                f"✅ 解析結果：{parsed.get('club','?')} ／ {parsed.get('dist','?')}y ／ {parsed.get('result','?')}"
-                f"</div>",
-                unsafe_allow_html=True
-            )
- 
-            # そのまま反映ボタン
-            st.markdown('<div id="voice-apply-anchor"></div>', unsafe_allow_html=True)
-            if st.button("✅ この内容で反映する", key="btn_voice_apply", use_container_width=True):
-                club_name = parsed.get("club", "")
-                dist_val  = parsed.get("dist", 0)
-                result    = parsed.get("result", "FW")
- 
-                penalty       = 0
-                green_on      = (result == "Gオン")
-                remain_adjust = dist_val
- 
-                if result == "OB":
-                    penalty = 1;  remain_adjust = 0
-                elif result == "池":
-                    penalty = 1;  remain_adjust = dist_val
-                elif result == "赤杭":
-                    penalty = 1;  remain_adjust = dist_val
-                elif result == "ロスト":
-                    penalty = 2;  remain_adjust = dist_val
-                elif result == "空振り":
-                    remain_adjust = 0
-                elif result == "プレ4":
-                    penalty = 2;  remain_adjust = 0
-                elif result == "プレ3":
-                    penalty = 1;  remain_adjust = 0
-                elif green_on:
-                    remain_adjust = st.session_state.remaining
- 
-                st.session_state.history.append({
-                    "club":     club_name,
-                    "dist":     dist_val,
-                    "result":   result,
-                    "penalty":  penalty,
-                    "green_on": green_on,
-                })
-                st.session_state.remaining = max(st.session_state.remaining - remain_adjust, 0)
- 
-                # 音声入力結果をリセット
-                st.session_state.voice_club   = None
-                st.session_state.voice_dist   = None
-                st.session_state.voice_result = None
-                st.session_state.voice_text   = ""
- 
-                st.rerun()
-        else:
-            st.warning("クラブ・飛距離・結果を認識できませんでした。もう一度話してみてください。")
- 
-    elif text == "" and audio_file is not None:
-        st.warning("音声を認識できませんでした。もう少しはっきり話してみてください。")
- 
  # =========================
 # 最終スコア入力
 # =========================
@@ -1323,11 +1222,6 @@ if reset_all:
     for h in st.session_state.course.keys():
         st.session_state.pop(f"actual_{h}", None)
         st.session_state.pop(f"final_score_input_{h}", None)
-    # 音声入力をリセット
-    st.session_state.voice_club   = None
-    st.session_state.voice_dist   = None
-    st.session_state.voice_result = None
-    st.session_state.voice_text   = ""
     st.rerun()
  
 # =========================
