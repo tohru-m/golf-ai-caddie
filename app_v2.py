@@ -840,7 +840,76 @@ def calc_hole_targets(target_score):
             idx += 1
  
     return hole_targets
- 
+
+def calc_remaining_targets(target_score):
+    """実績済みホールを固定し、残りホールに残予算を配分する"""
+    holes = sorted(st.session_state.course.keys())
+
+    actual_sum      = 0
+    remaining_holes = []
+    for h in holes:
+        actual = st.session_state.get(f"actual_{h}", "")
+        if actual != "":
+            actual_sum += int(actual)
+        else:
+            remaining_holes.append(h)
+
+    # 全ホール未入力なら通常計算
+    if not remaining_holes or actual_sum == 0:
+        return calc_hole_targets(target_score)
+
+    remaining_budget = target_score - actual_sum
+    remaining_par    = sum(st.session_state.course[h]["par"] for h in remaining_holes)
+
+    # 残りホールの難易度
+    hole_difficulty = {}
+    for h in remaining_holes:
+        data  = st.session_state.course[h]
+        yard  = data["yard"]
+        par   = data["par"]
+        score = yard / 100
+        if par == 5:  score -= 3
+        elif par == 3: score += 1
+        if par == 4 and yard > 380: score += 1.5
+        hole_difficulty[h] = score
+
+    sorted_remaining = sorted(hole_difficulty.items(), key=lambda x: x[1])
+
+    average_diff = (remaining_budget - remaining_par) / len(remaining_holes) if remaining_holes else 0
+    base_diff    = int(average_diff)
+
+    hole_targets = {}
+    for h in holes:
+        actual = st.session_state.get(f"actual_{h}", "")
+        if actual != "":
+            hole_targets[h] = int(actual)
+        else:
+            hole_targets[h] = st.session_state.course[h]["par"] + base_diff
+
+    # 残りホールのみ調整
+    current_remaining_total = sum(hole_targets[h] for h in remaining_holes)
+    diff_total = remaining_budget - current_remaining_total
+
+    if diff_total < 0:
+        idx = 0
+        while diff_total < 0 and idx < len(sorted_remaining):
+            h = sorted_remaining[idx][0]
+            if hole_targets[h] > st.session_state.course[h]["par"]:
+                hole_targets[h] -= 1
+                diff_total += 1
+            else:
+                idx += 1
+    elif diff_total > 0:
+        harder = sorted_remaining[::-1]
+        idx = 0
+        while diff_total > 0 and idx < len(harder):
+            h = harder[idx][0]
+            hole_targets[h] += 1
+            diff_total -= 1
+            idx += 1
+
+    return hole_targets
+
 # =========================
 # スコア名・色ヘルパー
 # =========================
@@ -927,7 +996,7 @@ with goal_col2:
         label_visibility="collapsed"
     )
  
-hole_targets = calc_hole_targets(target_score)
+hole_targets = calc_remaining_targets(target_score)
  
 # ---------- ラウンドスコア戦略（折りたたみ） ----------
 with st.expander(f"目標{target_score}の計画＆実績", expanded=False):
@@ -965,6 +1034,27 @@ st.markdown(
     f"</div>",
     unsafe_allow_html=True
 )
+
+# 乖離が大きい場合に目標見直しを提案
+if completed_count > 0 and diff_from_target > 2:
+    remaining_count = 18 - completed_count
+    if remaining_count > 0:
+        actual_sum_now = sum(
+            int(st.session_state.get(f"actual_{h}", 0))
+            for h in holes if st.session_state.get(f"actual_{h}", "") != ""
+        )
+        avg_per_hole = actual_sum_now / completed_count
+        suggested = round(actual_sum_now + avg_per_hole * remaining_count)
+        suggested = max(suggested, target_score + 1)
+        st.markdown(
+            f"<div style='background:#fef2f2; border:2px solid #fca5a5; border-radius:10px; "
+            f"padding:10px 16px; margin-top:8px; font-size:22px; font-weight:700; color:#991b1b;'>"
+            f"⚠️ 目標達成が難しくなっています。<br>"
+            f"目標スコアを <b>{suggested}</b> に変更して残りホールの計画を再設定しましょう。<br>"
+            f"（上の「ラウンドスコア目標」から変更できます）"
+            f"</div>",
+            unsafe_allow_html=True
+        )
  
 st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
  
