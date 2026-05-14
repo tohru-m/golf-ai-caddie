@@ -361,9 +361,13 @@ div[data-testid="stCheckbox"] input[type="checkbox"] {
 }
  
 /* ===== Expander ===== */
-div[data-testid="stExpander"] summary {
+div[data-testid="stExpander"] summary,
+div[data-testid="stExpander"] summary p,
+div[data-testid="stExpander"] summary span,
+div[data-testid="stExpander"] details summary {
     font-size: 60px !important;
     font-weight: 900 !important;
+    line-height: 1.2 !important;
 }
  
 /* ===== フォームのパディング削減 ===== */
