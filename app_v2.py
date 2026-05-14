@@ -216,6 +216,12 @@ div:has(> #voice-apply-anchor) + div[data-testid="stButton"] > button {
     font-size: 38px !important;
 }
 
+/* ===== 計画変更はい/いいえボタン ===== */
+div:has(#adjust-btn-anchor) ~ div [data-testid="stColumn"] button {
+    font-size: 26px !important;
+    font-weight: 700 !important;
+}
+
 /* ===== 入力ボタン ===== */
 div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button {
     font-size: 22px !important;
@@ -1075,6 +1081,7 @@ if _trigger and not st.session_state.adjust_plan:
             f"</div>",
             unsafe_allow_html=True
         )
+        st.markdown('<div id="adjust-btn-anchor"></div>', unsafe_allow_html=True)
         yes_col, no_col, _ = st.columns([1, 1, 1])
         with yes_col:
             if st.button("はい（計画を変更）", key="btn_adjust_yes", use_container_width=True):
