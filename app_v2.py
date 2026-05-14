@@ -878,11 +878,13 @@ def calc_remaining_targets(target_score):
     average_diff = (remaining_budget - remaining_par) / len(remaining_holes) if remaining_holes else 0
     base_diff    = int(average_diff)
 
+    # 実績済みホールは元の計画値を維持（表示用）、残りホールは新たに配分
+    original_targets = calc_hole_targets(target_score)
     hole_targets = {}
     for h in holes:
         actual = st.session_state.get(f"actual_{h}", "")
         if actual != "":
-            hole_targets[h] = int(actual)
+            hole_targets[h] = original_targets[h]  # 計画は元の値を維持
         else:
             hole_targets[h] = st.session_state.course[h]["par"] + base_diff
 
