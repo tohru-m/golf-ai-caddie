@@ -997,40 +997,10 @@ putts        = 2
 shot_strokes = target - putts
  
  
-# ---------- 要注意エリア ----------
-st.markdown("<div style='margin-top:10px'></div>", unsafe_allow_html=True)
- 
-use_danger = st.checkbox("⚠️ 要注意エリアを設定する", key=f"use_danger_{hole}")
- 
-if not use_danger:
-    for i in range(1, 3):
-        st.session_state[f"danger_type_{hole}_{i}"]  = "未入力"
-        st.session_state[f"danger_start_{hole}_{i}"] = 0
-        st.session_state[f"danger_end_{hole}_{i}"]   = 0
- 
-if use_danger:
-    danger_options = ["未入力", "バンカー", "池", "OBゾーン", "谷越え", "ドッグレッグ"]
-    yard_options   = ["未入力", 0, 50, 100, 150, 170, 200, 230, 250, 300, 350, 400, 450, 500]
-    default_danger = ["未入力", "未入力"]
-    default_start  = [0, 0]
-    default_end    = [0, 0]
- 
-    for i in range(1, 3):
-        st.markdown(f"**エリア {i}**")
-        st.selectbox("種類", danger_options,
-            index=danger_options.index(default_danger[i - 1]),
-            key=f"danger_type_{hole}_{i}")
-        ca, cb = st.columns(2)
-        with ca:
-            st.selectbox("開始（y）", yard_options,
-                index=yard_options.index(default_start[i - 1]),
-                key=f"danger_start_{hole}_{i}")
-        with cb:
-            st.selectbox("終了（y）", yard_options,
-                index=yard_options.index(default_end[i - 1]),
-                key=f"danger_end_{hole}_{i}")
-        if i < 2:
-            st.markdown("<div class='section-divider'></div>", unsafe_allow_html=True)
+for i in range(1, 3):
+    st.session_state[f"danger_type_{hole}_{i}"]  = "未入力"
+    st.session_state[f"danger_start_{hole}_{i}"] = 0
+    st.session_state[f"danger_end_{hole}_{i}"]   = 0
  
 # =========================
 # ショット戦略表示
