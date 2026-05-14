@@ -998,35 +998,48 @@ with goal_col2:
         label_visibility="collapsed"
     )
  
-hole_targets = calc_remaining_targets(target_score)
- 
+# adjust_plan: 当初目標達成に向けて残りホールを再配分するかどうか
+if "adjust_plan"       not in st.session_state: st.session_state.adjust_plan       = False
+if "adjust_plan_asked" not in st.session_state: st.session_state.adjust_plan_asked = False
+# 目標スコアが変わったらフラグをリセット
+if st.session_state.get("_last_target_score") != target_score:
+    st.session_state.adjust_plan       = False
+    st.session_state.adjust_plan_asked = False
+    st.session_state["_last_target_score"] = target_score
+
+# ショット戦略用の hole_targets
+if st.session_state.adjust_plan:
+    hole_targets = calc_remaining_targets(target_score)   # 当初目標に向けて再配分
+else:
+    hole_targets = calc_hole_targets(target_score)        # 元の計画
+
 # ---------- ラウンドスコア戦略（折りたたみ） ----------
 with st.expander(f"目標{target_score}の計画＆実績", expanded=False):
     holes = sorted(st.session_state.course.keys())
     render_score_table(holes, hole_targets)
- 
+
 # ---------- 現状の見込み ----------
-holes = sorted(st.session_state.course.keys())
+holes           = sorted(st.session_state.course.keys())
 total_par       = sum(st.session_state.course[h]["par"] for h in holes)
-original_targets = calc_hole_targets(target_score)  # 元の計画値（見込み計算用）
+original_targets = calc_hole_targets(target_score)
 projected_total = 0
 completed_count = 0
 for h in holes:
     actual = st.session_state.get(f"actual_{h}", "")
     if actual != "":
-        projected_total += int(actual)          # 実績済み：実績値を使用
+        projected_total += int(actual)
         completed_count += 1
     else:
-        projected_total += original_targets[h]  # 未入力：元の計画値を使用
- 
+        projected_total += original_targets[h]
+
 diff_from_target = projected_total - target_score
 diff_from_par    = projected_total - total_par
- 
+
 target_str   = f"+{diff_from_target}" if diff_from_target > 0 else ("±0" if diff_from_target == 0 else str(diff_from_target))
 target_color = "#dc2626" if diff_from_target > 0 else ("#2563eb" if diff_from_target < 0 else "#1a1a1a")
 par_str      = f"+{diff_from_par}" if diff_from_par > 0 else ("±0" if diff_from_par == 0 else str(diff_from_par))
 par_color    = "#dc2626" if diff_from_par > 0 else ("#2563eb" if diff_from_par < 0 else "#1a1a1a")
- 
+
 st.markdown(
     f"<div style='background:#f0f9ff; border:2px solid #7dd3fc; border-radius:10px; padding:12px 16px; margin-top:8px;'>"
     f"<div style='font-size:24px; font-weight:700; color:#1a1a1a;'>現状の見込みスコア　<b style='font-size:28px;'>{projected_total}</b></div>"
@@ -1038,26 +1051,41 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# 乖離が大きい場合に目標見直しを提案
-if completed_count > 0 and diff_from_target > 2:
+# 乖離が大きい場合：計画変更を提案
+if completed_count > 0 and diff_from_target > 2 and not st.session_state.adjust_plan:
     remaining_count = 18 - completed_count
     if remaining_count > 0:
-        actual_sum_now = sum(
-            int(st.session_state.get(f"actual_{h}", 0))
-            for h in holes if st.session_state.get(f"actual_{h}", "") != ""
-        )
-        avg_per_hole = actual_sum_now / completed_count
-        suggested = round(actual_sum_now + avg_per_hole * remaining_count)
-        suggested = max(suggested, target_score + 1)
         st.markdown(
             f"<div style='background:#fef2f2; border:2px solid #fca5a5; border-radius:10px; "
             f"padding:10px 16px; margin-top:8px; font-size:22px; font-weight:700; color:#991b1b;'>"
-            f"⚠️ 目標達成が難しくなっています。<br>"
-            f"目標スコアを <b>{suggested}</b> に変更して残りホールの計画を再設定しましょう。<br>"
-            f"（上の「ラウンドスコア目標」から変更できます）"
+            f"⚠️ 目標達成が難しくなっています（見込み {projected_total}）。<br>"
+            f"目標{target_score}達成のために今後の計画を変更しますか？"
             f"</div>",
             unsafe_allow_html=True
         )
+        yes_col, no_col, _ = st.columns([1, 1, 1])
+        with yes_col:
+            if st.button("はい（計画を変更）", key="btn_adjust_yes", use_container_width=True):
+                st.session_state.adjust_plan       = True
+                st.session_state.adjust_plan_asked = True
+                st.rerun()
+        with no_col:
+            if st.button("いいえ（このまま）", key="btn_adjust_no", use_container_width=True):
+                st.session_state.adjust_plan_asked = True
+                st.rerun()
+
+# 計画変更中の表示
+if st.session_state.adjust_plan:
+    st.markdown(
+        f"<div style='background:#f0fdf4; border:2px solid #86efac; border-radius:10px; "
+        f"padding:8px 16px; margin-top:8px; font-size:20px; font-weight:700; color:#166534;'>"
+        f"✅ 目標{target_score}達成に向けて残りホールの計画を再設定しました"
+        f"</div>",
+        unsafe_allow_html=True
+    )
+    if st.button("元の計画に戻す", key="btn_adjust_cancel", use_container_width=False):
+        st.session_state.adjust_plan = False
+        st.rerun()
  
 st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
  
