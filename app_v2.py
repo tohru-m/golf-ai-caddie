@@ -216,6 +216,12 @@ div:has(> #voice-apply-anchor) + div[data-testid="stButton"] > button {
     font-size: 38px !important;
 }
 
+/* ===== 入力ボタン ===== */
+div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button {
+    font-size: 32px !important;
+    font-weight: 900 !important;
+}
+
 /* ===== 実績をすべてリセットボタン ===== */
 [data-testid="stColumn"]:has(#reset-all-anchor) button {
     background-color: #fce7f3 !important;
@@ -1159,6 +1165,7 @@ final_score = st.radio(
     horizontal=True,
 )
 
+st.markdown('<div id="confirm-score-anchor"></div>', unsafe_allow_html=True)
 if st.button("入力", key="btn_confirm_score", use_container_width=True):
     st.session_state[f"actual_{hole}"] = final_score
     st.rerun()
