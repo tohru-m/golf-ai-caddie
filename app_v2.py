@@ -1001,11 +1001,7 @@ diff              = recommended_score - par_num
 label, rec_color  = score_info(diff)
  
 label_text = label.split(' ', 1)[1] if ' ' in label else label
-st.markdown(
-    f"<div style='font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;'>スコア目標（AI推奨）<span style='color:#e53e3e;'>{recommended_score}打／{label_text}</span></div>",
-    unsafe_allow_html=True
-)
- 
+
 target       = recommended_score
 putts        = 2
 shot_strokes = target - putts
@@ -1023,11 +1019,7 @@ for i in range(1, 3):
 st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;">⛳ ショット戦略</div>', unsafe_allow_html=True)
  
 st.markdown(
-    f"""
-    <div class="remain-badge">
-        📍 現在の残り距離　<span style="font-size:32px; font-weight:900;">{st.session_state.remaining}y</span>
-    </div>
-    """,
+    f"<div style='font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;'>スコア目標（AI推奨）<span style='color:#e53e3e;'>{recommended_score}打／{label_text}</span></div>",
     unsafe_allow_html=True
 )
  
