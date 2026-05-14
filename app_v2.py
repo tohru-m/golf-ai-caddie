@@ -992,46 +992,10 @@ st.markdown(
     unsafe_allow_html=True
 )
  
-default_target  = max(1, min(recommended_score, 8)) - 1
-current_target  = st.session_state.get(f"target_select_{hole}", default_target + 1)
-sel_diff        = current_target - par_num
-sel_label, sel_color = score_info(sel_diff)
-sel_label_text  = sel_label.split(' ', 1)[1] if ' ' in sel_label else sel_label
-st.markdown(
-    f"<div style='font-size:24px; font-weight:700; color:{sel_color}; margin-top:6px; margin-bottom:2px;'>"
-    f"{current_target}打　{sel_label_text}</div>",
-    unsafe_allow_html=True
-)
- 
-target = st.radio(
-    "",
-    list(range(1, 9)),
-    index=default_target,
-    key=f"target_select_{hole}",
-    label_visibility="collapsed",
-    horizontal=True,
-)
- 
-st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;">🏌️ パット数は？</div>', unsafe_allow_html=True)
-putts = st.radio(
-    "",
-    [1, 2, 3, 4],
-    index=1,
-    key="putt_select",
-    label_visibility="collapsed",
-    horizontal=True,
-)
- 
+target       = recommended_score
+putts        = 2
 shot_strokes = target - putts
  
-st.markdown(
-    f"<div style='font-size:22px; font-weight:700; color:#e53e3e; margin-top:6px;'>ショット{shot_strokes}回＋パット{putts}回</div>",
-    unsafe_allow_html=True
-)
- 
-if target < par_num - 1:
-    st.error("それは無謀です！")
-    st.stop()
  
 # ---------- 要注意エリア ----------
 st.markdown("<div style='margin-top:10px'></div>", unsafe_allow_html=True)
