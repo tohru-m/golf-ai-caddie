@@ -225,17 +225,9 @@ div:has(#adjust-btn-anchor) ~ div [data-testid="stColumn"] button {
 }
 
 /* ===== 入力ボタン ===== */
-div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button,
-div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button:hover,
-div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button:focus {
+div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button {
     font-size: 22px !important;
     font-weight: 900 !important;
-    border: 3px solid #1a56a0 !important;
-    border-color: #1a56a0 !important;
-    background: #d0e8ff !important;
-    background-color: #d0e8ff !important;
-    color: #1a2e44 !important;
-    outline: 3px solid #1a56a0 !important;
 }
 
 /* ===== 実績をすべてリセットボタン ===== */
@@ -1612,7 +1604,20 @@ final_score = st.radio(
     horizontal=True,
 )
 
-st.markdown('<div id="confirm-score-anchor"></div>', unsafe_allow_html=True)
+st.markdown('''<style>
+div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button {
+    border: 3px solid #1a56a0 !important;
+    background: #d0e8ff !important;
+    background-color: #d0e8ff !important;
+    color: #1a2e44 !important;
+}
+div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button:hover {
+    border: 3px solid #1a56a0 !important;
+    background: #b3d7ff !important;
+    background-color: #b3d7ff !important;
+    color: #1a2e44 !important;
+}
+</style><div id="confirm-score-anchor"></div>''', unsafe_allow_html=True)
 if st.button("入力", key="btn_confirm_score", use_container_width=True):
     st.session_state[f"actual_{hole}"] = final_score
     st.rerun()
