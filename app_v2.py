@@ -1019,7 +1019,7 @@ for i in range(1, 3):
  
 st.markdown(
     f"<div style='background:linear-gradient(135deg,#064e3b,#065f46); color:white; border-radius:20px; padding:20px 18px; margin:10px 0 20px 0; display:flex; align-items:center; gap:8px;'>"
-    f"<span style='font-size:24px; font-weight:900; white-space:nowrap;'>ショット戦略</span>"
+    f"<span style='font-size:24px; font-weight:900; white-space:nowrap; margin-right:16px;'>ショット戦略</span>"
     f"<span style='font-size:24px; font-weight:900; color:#6ee7b7; white-space:nowrap;'>{recommended_score}打／{label_text}</span>"
     f"</div>",
     unsafe_allow_html=True
