@@ -1005,10 +1005,12 @@ with goal_col2:
     )
  
 # adjust_plan: 当初目標達成に向けて残りホールを再配分するかどうか
-if "adjust_plan" not in st.session_state: st.session_state.adjust_plan = False
+if "adjust_plan"          not in st.session_state: st.session_state.adjust_plan          = False
+if "dismissed_triggers"   not in st.session_state: st.session_state.dismissed_triggers   = set()
 # 目標スコアが変わったらフラグをリセット
 if st.session_state.get("_last_target_score") != target_score:
-    st.session_state.adjust_plan = False
+    st.session_state.adjust_plan        = False
+    st.session_state.dismissed_triggers = set()
     st.session_state["_last_target_score"] = target_score
 
 # ショット戦略用の hole_targets
@@ -1056,19 +1058,21 @@ st.markdown(
 )
 
 # 連続3ホールで目標比+6以上の場合：計画変更を提案
-_completed_holes = [h for h in holes if st.session_state.get(f"actual_{h}", "") != ""]
-_trigger = False
+_completed_holes  = [h for h in holes if st.session_state.get(f"actual_{h}", "") != ""]
+_trigger          = False
+_trigger_window   = None
 for _i in range(len(_completed_holes) - 2):
-    _window = _completed_holes[_i:_i + 3]
+    _window     = tuple(_completed_holes[_i:_i + 3])
     _window_dev = sum(
         int(st.session_state.get(f"actual_{h}", 0)) - original_targets[h]
         for h in _window
     )
-    if _window_dev >= 6:
-        _trigger = True
+    if _window_dev >= 6 and _window not in st.session_state.dismissed_triggers:
+        _trigger        = True
+        _trigger_window = _window
         break
 
-if _trigger:
+if _trigger and _trigger_window is not None:
     remaining_count = 18 - completed_count
     if remaining_count > 0:
         st.markdown(
@@ -1084,9 +1088,11 @@ if _trigger:
         with yes_col:
             if st.button("はい（計画を変更）", key="btn_adjust_yes", use_container_width=True):
                 st.session_state.adjust_plan = True
+                st.session_state.dismissed_triggers.add(_trigger_window)
                 st.rerun()
         with no_col:
             if st.button("いいえ（このまま）", key="btn_adjust_no", use_container_width=True):
+                st.session_state.dismissed_triggers.add(_trigger_window)
                 st.rerun()
 
 # 計画変更中の表示
@@ -1331,8 +1337,9 @@ if st.session_state.reset_confirm:
         if st.button("はい", key="btn_reset_yes", use_container_width=True):
             st.session_state.history           = []
             st.session_state.green_on_flag     = False
-            st.session_state.reset_confirm     = False
-            st.session_state.adjust_plan = False
+            st.session_state.reset_confirm      = False
+            st.session_state.adjust_plan        = False
+            st.session_state.dismissed_triggers = set()
             st.session_state.pop("hole_select", None)
             st.session_state.remaining         = st.session_state.course[1]["yard"]
             for h in st.session_state.course.keys():
