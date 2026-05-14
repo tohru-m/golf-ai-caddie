@@ -288,11 +288,11 @@ div[data-testid="stButton"] > button:active {
 /* ===== ラウンドスコア目標セレクトボックス ===== */
 div:has(#target-score-anchor) + div [data-testid="stSelectbox"] > div > div,
 div:has(#target-score-anchor) + div [data-testid="stSelectbox"] select {
-    font-size: 22px !important;
+    font-size: 30px !important;
     font-weight: 700 !important;
 }
 div:has(#target-score-anchor) + div [data-testid="stSelectbox"] span {
-    font-size: 22px !important;
+    font-size: 30px !important;
     font-weight: 700 !important;
 }
 
