@@ -884,7 +884,7 @@ def render_score_table(holes, hole_targets):
 # アプリ本体
 # ============================================================
  
-st.title("⛳ AIキャディ")
+st.title("⛳ AIキャディLite")
  
 # ---------- ラウンド目標 ----------
 goal_col1, goal_col2 = st.columns([1, 1])
