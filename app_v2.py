@@ -1164,13 +1164,6 @@ else:
 # 🎤 音声入力セクション
 # =========================
  
-st.markdown(
-    "<div class='voice-box'>"
-        "<div style='font-size:18px; color:#4b5563;'>例：「7番アイアン、150ヤード、フェアウェイ」</div>"
-    "<div style='font-size:18px; color:#4b5563;'>例：「1W、180ヤード、OB」</div>"
-    "</div>",
-    unsafe_allow_html=True
-)
  
 # セッション変数の初期化
 if "voice_club"   not in st.session_state: st.session_state.voice_club   = None
