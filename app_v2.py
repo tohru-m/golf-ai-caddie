@@ -1605,16 +1605,16 @@ final_score = st.radio(
 )
 
 st.markdown('''<style>
-div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button {
-    border: 3px solid #1a56a0 !important;
-    background: #d0e8ff !important;
-    background-color: #d0e8ff !important;
+div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button[kind="secondary"] {
+    outline: 3px solid #1a56a0 !important;
+    outline-offset: -1px !important;
+    box-shadow: inset 0 0 0 1000px #d0e8ff !important;
     color: #1a2e44 !important;
 }
-div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button:hover {
-    border: 3px solid #1a56a0 !important;
-    background: #b3d7ff !important;
-    background-color: #b3d7ff !important;
+div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button[kind="secondary"]:hover {
+    outline: 3px solid #0d3d82 !important;
+    outline-offset: -1px !important;
+    box-shadow: inset 0 0 0 1000px #b3d7ff !important;
     color: #1a2e44 !important;
 }
 </style><div id="confirm-score-anchor"></div>''', unsafe_allow_html=True)
