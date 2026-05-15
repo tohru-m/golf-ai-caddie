@@ -2,4 +2,3 @@ streamlit
 openai
 anthropic
 streamlit-local-storage
-Pillow

@@ -2,14 +2,10 @@ import streamlit as st
 import tempfile
 import os
 import json
-from PIL import Image as _PILImage
-
-_icon_path = os.path.join(os.path.dirname(__file__), "rogo.png")
-_page_icon = _PILImage.open(_icon_path) if os.path.exists(_icon_path) else "⛳"
 
 st.set_page_config(
     page_title="AIキャディ",
-    page_icon=_page_icon
+    page_icon="⛳"
 )
 
 from streamlit_local_storage import LocalStorage
