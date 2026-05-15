@@ -229,7 +229,7 @@ div:has(#adjust-btn-anchor) ~ div [data-testid="stColumn"] button {
     font-size: 22px !important;
     font-weight: 900 !important;
     background-color: #d0e8ff !important;
-    border: 3px solid #1a56a0 !important;
+    border: 2px solid #1a56a0 !important;
     color: #1a2e44 !important;
 }
 
