@@ -1286,12 +1286,28 @@ if _os.path.exists(_logo_path):
     with open(_logo_path, "rb") as _f:
         _logo_b64 = _b64.b64encode(_f.read()).decode()
     _logo_tag = f"<img src='data:image/png;base64,{_logo_b64}' style='height:80px; vertical-align:middle; margin-right:12px;'>"
-    st.markdown(f'''
-<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,{_logo_b64}">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="AIキャディ">
-''', unsafe_allow_html=True)
+    import streamlit.components.v1 as _components
+    _components.html(f"""
+<script>
+(function() {{
+    var doc = parent.document;
+    doc.querySelectorAll('link[rel*="apple-touch-icon"], link[rel="shortcut icon"]').forEach(function(el) {{ el.parentNode.removeChild(el); }});
+    var link = doc.createElement('link');
+    link.rel = 'apple-touch-icon';
+    link.setAttribute('sizes', '180x180');
+    link.href = 'data:image/png;base64,{_logo_b64}';
+    doc.head.appendChild(link);
+    var m1 = doc.createElement('meta');
+    m1.name = 'apple-mobile-web-app-capable';
+    m1.content = 'yes';
+    doc.head.appendChild(m1);
+    var m2 = doc.createElement('meta');
+    m2.name = 'apple-mobile-web-app-title';
+    m2.content = 'AIキャディ';
+    doc.head.appendChild(m2);
+}})();
+</script>
+""", height=0, scrolling=False)
 else:
     _logo_tag = "⛳"
 st.markdown(f'<div style="font-size:40px; font-weight:900; color:#1a2e44; margin-bottom:6px; display:flex; align-items:center;">{_logo_tag}AIキャディLite</div>', unsafe_allow_html=True)
