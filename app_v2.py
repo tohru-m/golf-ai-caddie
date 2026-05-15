@@ -225,9 +225,12 @@ div:has(#adjust-btn-anchor) ~ div [data-testid="stColumn"] button {
 }
 
 /* ===== 入力ボタン ===== */
-div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button {
+[data-testid="stColumn"]:has(#confirm-score-anchor) button {
     font-size: 22px !important;
     font-weight: 900 !important;
+    background-color: #d0e8ff !important;
+    border: 3px solid #1a56a0 !important;
+    color: #1a2e44 !important;
 }
 
 /* ===== 実績をすべてリセットボタン ===== */
@@ -1604,23 +1607,12 @@ final_score = st.radio(
     horizontal=True,
 )
 
-st.markdown('''<style>
-div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button[kind="secondary"] {
-    outline: 3px solid #1a56a0 !important;
-    outline-offset: -1px !important;
-    box-shadow: inset 0 0 0 1000px #d0e8ff !important;
-    color: #1a2e44 !important;
-}
-div:has(#confirm-score-anchor) + div[data-testid="stButton"] > button[kind="secondary"]:hover {
-    outline: 3px solid #0d3d82 !important;
-    outline-offset: -1px !important;
-    box-shadow: inset 0 0 0 1000px #b3d7ff !important;
-    color: #1a2e44 !important;
-}
-</style><div id="confirm-score-anchor"></div>''', unsafe_allow_html=True)
-if st.button("入力", key="btn_confirm_score", use_container_width=True):
-    st.session_state[f"actual_{hole}"] = final_score
-    st.rerun()
+_confirm_col, = st.columns([1])
+with _confirm_col:
+    st.markdown('<div id="confirm-score-anchor"></div>', unsafe_allow_html=True)
+    if st.button("入力", key="btn_confirm_score", use_container_width=True):
+        st.session_state[f"actual_{hole}"] = final_score
+        st.rerun()
 
 if "reset_confirm" not in st.session_state:
     st.session_state.reset_confirm = False
