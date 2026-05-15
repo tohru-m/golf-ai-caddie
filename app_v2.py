@@ -1286,6 +1286,12 @@ if _os.path.exists(_logo_path):
     with open(_logo_path, "rb") as _f:
         _logo_b64 = _b64.b64encode(_f.read()).decode()
     _logo_tag = f"<img src='data:image/png;base64,{_logo_b64}' style='height:80px; vertical-align:middle; margin-right:12px;'>"
+    st.markdown(f'''
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,{_logo_b64}">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="AIキャディ">
+''', unsafe_allow_html=True)
 else:
     _logo_tag = "⛳"
 st.markdown(f'<div style="font-size:40px; font-weight:900; color:#1a2e44; margin-bottom:6px; display:flex; align-items:center;">{_logo_tag}AIキャディLite</div>', unsafe_allow_html=True)
