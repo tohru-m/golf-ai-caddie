@@ -2,10 +2,14 @@ import streamlit as st
 import tempfile
 import os
 import json
+from PIL import Image as _PILImage
+
+_icon_path = os.path.join(os.path.dirname(__file__), "rogo.png")
+_page_icon = _PILImage.open(_icon_path) if os.path.exists(_icon_path) else "⛳"
 
 st.set_page_config(
     page_title="AIキャディ",
-    page_icon="rogo.png"
+    page_icon=_page_icon
 )
 
 from streamlit_local_storage import LocalStorage
@@ -1286,28 +1290,6 @@ if _os.path.exists(_logo_path):
     with open(_logo_path, "rb") as _f:
         _logo_b64 = _b64.b64encode(_f.read()).decode()
     _logo_tag = f"<img src='data:image/png;base64,{_logo_b64}' style='height:80px; vertical-align:middle; margin-right:12px;'>"
-    import streamlit.components.v1 as _components
-    _components.html(f"""
-<script>
-(function() {{
-    var doc = parent.document;
-    doc.querySelectorAll('link[rel*="apple-touch-icon"], link[rel="shortcut icon"]').forEach(function(el) {{ el.parentNode.removeChild(el); }});
-    var link = doc.createElement('link');
-    link.rel = 'apple-touch-icon';
-    link.setAttribute('sizes', '180x180');
-    link.href = 'data:image/png;base64,{_logo_b64}';
-    doc.head.appendChild(link);
-    var m1 = doc.createElement('meta');
-    m1.name = 'apple-mobile-web-app-capable';
-    m1.content = 'yes';
-    doc.head.appendChild(m1);
-    var m2 = doc.createElement('meta');
-    m2.name = 'apple-mobile-web-app-title';
-    m2.content = 'AIキャディ';
-    doc.head.appendChild(m2);
-}})();
-</script>
-""", height=0, scrolling=False)
 else:
     _logo_tag = "⛳"
 st.markdown(f'<div style="font-size:40px; font-weight:900; color:#1a2e44; margin-bottom:6px; display:flex; align-items:center;">{_logo_tag}AIキャディLite</div>', unsafe_allow_html=True)
