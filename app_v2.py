@@ -1288,7 +1288,7 @@ if _os.path.exists(_logo_path):
     _logo_tag = f"<img src='data:image/png;base64,{_logo_b64}' style='height:80px; vertical-align:middle; margin-right:12px;'>"
 else:
     _logo_tag = "⛳"
-st.markdown(f'<div style="font-size:40px; font-weight:900; color:#1a2e44; margin-bottom:6px; display:flex; align-items:center;">{_logo_tag}AIキャディLites</div>', unsafe_allow_html=True)
+st.markdown(f'<div style="font-size:40px; font-weight:900; color:#1a2e44; margin-bottom:6px; display:flex; align-items:center;">{_logo_tag}AIキャディLite</div>', unsafe_allow_html=True)
  
 # ---------- ラウンド目標 ----------
 goal_col1, goal_col2 = st.columns([1, 1])
