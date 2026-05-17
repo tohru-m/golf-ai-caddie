@@ -32,10 +32,23 @@ def transcribe_audio(audio_bytes: bytes) -> str:
                 model="whisper-1",
                 file=f,
                 language="ja",
-                prompt="ゴルフ、ドライバー、1W、3W、5W、7W、アイアン、3番、4番、5番、6番、7番、8番、9番、PW、AW、SW、パター、フェアウェイ、ラフ、バンカー、グリーン、OB、ピン、パー、バーディー、ボギー、ヤード、残り、距離"
+                prompt="ゴルフ、ドライバー、ワンウッド、1W、3W、5W、7W、アイアン、3番、4番、5番、6番、7番、8番、9番、PW、AW、SW、パター、フェアウェイ、ラフ、バンカー、グリーン、OB、ピン、パー、バーディー、ボギー、ヤード、残り、距離"
             )
         os.unlink(tmp_path)
-        return transcript.text
+        text = transcript.text
+        # 既知の誤認識を修正
+        _corrections = {
+            "イチバット": "1W", "いちばっと": "1W", "1バット": "1W", "一バット": "1W",
+            "ワンバット": "1W", "ワンウッド": "1W",
+            "スリーバット": "3W", "3バット": "3W", "スリーウッド": "3W",
+            "ファイブバット": "5W", "5バット": "5W", "ファイブウッド": "5W",
+            "ユーティリティー": "UT", "ユーティリティ": "UT",
+            "ピーダブリュー": "PW", "ピーダブル": "PW",
+            "エーダブリュー": "AW", "エスダブリュー": "SW",
+        }
+        for wrong, correct in _corrections.items():
+            text = text.replace(wrong, correct)
+        return text
     except Exception as e:
         st.error(f"音声認識エラー：{e}")
         return ""
