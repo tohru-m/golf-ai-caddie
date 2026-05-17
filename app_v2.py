@@ -1118,7 +1118,7 @@ if "caddy_result_cache" not in st.session_state: st.session_state.caddy_result_c
 caddy_audio = st.audio_input("🎤 キャディに話しかける", key="caddy_voice_input")
 
 st.markdown(
-    "<div style='font-size:26px; font-weight:900; color:#1a2e44; margin-top:16px; margin-bottom:6px;'>"
+    "<div style='font-size:26px; font-weight:900; color:#1a2e44; margin-top:4px; margin-bottom:6px;'>"
     "🎤 キャディの回答を聞く</div>", unsafe_allow_html=True)
 
 # 直近のキャディ返答表示
