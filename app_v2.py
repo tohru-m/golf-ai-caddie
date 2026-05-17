@@ -1127,28 +1127,6 @@ if "last_audio_id"      not in st.session_state: st.session_state.last_audio_id 
 if "caddy_result_cache" not in st.session_state: st.session_state.caddy_result_cache = None
 
 # 直近のキャディ返答表示
-def _render_audio_player(audio_bytes):
-    import base64 as _b64
-    import streamlit.components.v1 as _cv1
-    _b64str = _b64.b64encode(audio_bytes).decode()
-    _cv1.html(f"""<!DOCTYPE html>
-<html><head><style>
-body{{margin:0;padding:6px;background:transparent;}}
-#pb{{width:64px;height:64px;border-radius:50%;background:#1a2e44;
-     border:2px solid #3b82f6;cursor:pointer;font-size:28px;color:white;
-     display:flex;align-items:center;justify-content:center;}}
-#pb:active{{background:#2d4a6e;}}
-</style></head>
-<body>
-<audio id="a" src="data:audio/mp3;base64,{_b64str}"></audio>
-<button id="pb" onclick="t()">▶</button>
-<script>
-var a=document.getElementById('a'),b=document.getElementById('pb');
-function t(){{if(a.paused){{a.play();b.innerHTML='⏸';}}else{{a.pause();b.innerHTML='▶';}}}}
-a.onended=function(){{b.innerHTML='▶';}};
-</script>
-</body></html>""", height=80, scrolling=False)
-
 if st.session_state.last_caddy_message:
     st.markdown(
         f"<div class='caddy-bubble'>{st.session_state.last_caddy_message}</div>",
@@ -1156,14 +1134,13 @@ if st.session_state.last_caddy_message:
     _ab = get_tts_bytes(st.session_state.last_caddy_message)
     if _ab:
         st.session_state.caddy_audio_bytes = _ab
+        st.audio(_ab, format="audio/mp3")
     else:
         speak_with_browser(st.session_state.last_caddy_message)
         st.session_state.caddy_audio_bytes = None
     st.session_state.last_caddy_message = ""
-
-if st.session_state.get("caddy_audio_bytes"):
+elif st.session_state.get("caddy_audio_bytes"):
     st.audio(st.session_state.caddy_audio_bytes, format="audio/mp3")
-    _render_audio_player(st.session_state.caddy_audio_bytes)
 
 caddy_audio = st.audio_input("🎤 タップして話しかける", key="caddy_voice_input")
 
