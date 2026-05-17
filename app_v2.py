@@ -128,7 +128,7 @@ def speak_with_openai_tts(text: str):
             input=text,
         )
         audio_bytes = response.content
-        st.audio(audio_bytes, format="audio/mp3", autoplay=True)
+        st.audio(audio_bytes, format="audio/mp3")
     except Exception:
         speak_with_browser(text)
 
