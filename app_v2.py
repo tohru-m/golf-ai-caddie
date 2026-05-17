@@ -114,13 +114,12 @@ JSONのみ返してください（説明文・マークダウン不要）。
 # OpenAI TTS による音声読み上げ
 # =========================
 
-def speak_with_openai_tts(text: str):
+def get_tts_bytes(text: str) -> bytes | None:
     try:
         import openai
         api_key = st.secrets.get("OPENAI_API_KEY", "")
         if not api_key:
-            speak_with_browser(text)
-            return
+            return None
         client = openai.OpenAI(api_key=api_key)
         response = client.audio.speech.create(
             model="tts-1",
@@ -128,10 +127,9 @@ def speak_with_openai_tts(text: str):
             speed=1.2,
             input=text,
         )
-        audio_bytes = response.content
-        st.audio(audio_bytes, format="audio/mp3")
+        return response.content
     except Exception:
-        speak_with_browser(text)
+        return None
 
 
 def speak_with_browser(text: str):
@@ -643,6 +641,8 @@ if "caddy_log" not in st.session_state:
     st.session_state.caddy_log = []
 if "last_caddy_message" not in st.session_state:
     st.session_state.last_caddy_message = ""
+if "caddy_audio_bytes" not in st.session_state:
+    st.session_state.caddy_audio_bytes = None
 
 if "course" not in st.session_state:
     st.session_state.course = {
@@ -1129,9 +1129,16 @@ if st.session_state.last_caddy_message:
     st.markdown(
         f"<div class='caddy-bubble'>{st.session_state.last_caddy_message}</div>",
         unsafe_allow_html=True)
-    speak_with_openai_tts(st.session_state.last_caddy_message)
-    # 表示後にクリア（再表示・再生防止）
+    _ab = get_tts_bytes(st.session_state.last_caddy_message)
+    if _ab:
+        st.session_state.caddy_audio_bytes = _ab
+    else:
+        speak_with_browser(st.session_state.last_caddy_message)
+        st.session_state.caddy_audio_bytes = None
     st.session_state.last_caddy_message = ""
+
+if st.session_state.caddy_audio_bytes:
+    st.audio(st.session_state.caddy_audio_bytes, format="audio/mp3")
 
 caddy_audio = st.audio_input("🎤 タップして話しかける", key="caddy_voice_input")
 
@@ -1178,6 +1185,7 @@ if caddy_audio is not None:
             elif result.get("mode") == "caddy":
                 message = result.get("message", "")
                 st.session_state.last_caddy_message = message
+                st.session_state.caddy_audio_bytes = None
                 st.session_state.caddy_log.append({"q": text, "a": message})
                 st.rerun()
 
@@ -1218,6 +1226,7 @@ if st.session_state.caddy_result_cache:
                 resp    = client.chat.completions.create(model="gpt-4o-mini", messages=[{"role":"user","content":comment_prompt}], max_tokens=100)
                 comment = resp.choices[0].message.content.strip()
                 st.session_state.last_caddy_message = comment
+                st.session_state.caddy_audio_bytes = None
         except: pass
 
         st.session_state.caddy_result_cache = None
