@@ -84,7 +84,7 @@ def transcribe_audio(audio_bytes: bytes) -> str:
 # GPT：ショット入力 or キャディへの質問を自動判断
 # =========================
 
-def handle_voice_input(text: str, club_names: list, context: dict) -> dict:
+def handle_voice_input(text: str, clubs: list, context: dict) -> dict:
     try:
         import openai
         api_key = st.secrets.get("OPENAI_API_KEY", "")
@@ -92,11 +92,11 @@ def handle_voice_input(text: str, club_names: list, context: dict) -> dict:
             return {"mode": "caddy", "message": "APIキーが設定されていません。"}
         client = openai.OpenAI(api_key=api_key)
 
-        clubs_str      = "、".join(club_names)
+        clubs_str      = "、".join([f"{c['name']}（{c['dist']}y）" for c in clubs])
+        club_names_str = "、".join([c["name"] for c in clubs])
         result_options = "FW、ラフ、OB、池、赤杭、ロスト、空振り、プレ4、プレ3、Gオン"
         hole_memo      = context.get("hole_memo", "")
-
-        plan_text  = context.get("plan_text", "なし")
+        plan_text      = context.get("plan_text", "なし")
 
         situation = f"""
 現在の状況：
@@ -115,7 +115,8 @@ def handle_voice_input(text: str, club_names: list, context: dict) -> dict:
 
 【発話】「{text}」
 
-【利用可能なクラブ】{clubs_str}
+【利用可能なクラブと飛距離】{clubs_str}
+【クラブ名一覧（ショット入力用）】{club_names_str}
 【ショット結果の選択肢】{result_options}
 
 {situation}
@@ -131,7 +132,8 @@ def handle_voice_input(text: str, club_names: list, context: dict) -> dict:
 - 数字や図ではなく、自然な会話で答える
 - 2〜4文程度でまとめる
 - 「えーっと」「うーん」など曖昧な発話でも、現在の状況から意図を読み取って答える
-- 戦略・攻め方・ショットプランを聞かれた場合は「残り全打の戦略プラン」をそのまま自然な会話に変換して答える
+- 戦略・攻め方・ショットプランを聞かれた場合は「残り全打の戦略プラン」を自然な会話に変換して答える
+- 「○ヤードしか飛ばなかった」「○ヤード打った」など実際の飛距離が発話に含まれる場合は、残り距離（{context['remaining']}y）からその距離を引いた値を新しい残り距離として計算し、その距離に最も近いクラブを「利用可能なクラブと飛距離」から選んで推奨する
 
 JSONのみ返してください（説明文・マークダウン不要）。
 """
@@ -139,7 +141,7 @@ JSONのみ返してください（説明文・マークダウン不要）。
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
-            max_tokens=150,
+            max_tokens=200,
         )
 
         raw   = response.choices[0].message.content.strip()
@@ -1234,7 +1236,7 @@ if caddy_audio is not None:
             }
 
             with st.spinner("🤖 キャディが考え中..."):
-                result = handle_voice_input(text, [c["name"] for c in st.session_state.clubs], context)
+                result = handle_voice_input(text, st.session_state.clubs, context)
 
             if result.get("mode") == "shot":
                 parsed = result
