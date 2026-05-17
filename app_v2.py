@@ -1115,7 +1115,7 @@ if "voice_text"         not in st.session_state: st.session_state.voice_text    
 if "last_audio_id"      not in st.session_state: st.session_state.last_audio_id      = None
 if "caddy_result_cache" not in st.session_state: st.session_state.caddy_result_cache = None
 
-caddy_audio = st.audio_input("🎤 タップして話しかける", key="caddy_voice_input")
+caddy_audio = st.audio_input("🎤 キャディに話しかける", key="caddy_voice_input")
 
 st.markdown(
     "<div style='font-size:26px; font-weight:900; color:#1a2e44; margin-top:16px; margin-bottom:6px;'>"
