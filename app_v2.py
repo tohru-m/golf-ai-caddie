@@ -124,7 +124,8 @@ def speak_with_openai_tts(text: str):
         client = openai.OpenAI(api_key=api_key)
         response = client.audio.speech.create(
             model="tts-1",
-            voice="onyx",
+            voice="nova",
+            speed=1.2,
             input=text,
         )
         audio_bytes = response.content
