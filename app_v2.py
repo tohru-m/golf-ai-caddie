@@ -1009,12 +1009,6 @@ st.markdown(
         <div class="sub">{TOTAL_DIST}y ／ Par {par_num}</div>
     </div>""", unsafe_allow_html=True)
 
-# ホールメモ表示
-if hole_memo:
-    st.markdown(
-        f"<div style='background:#fefce8; border-left:4px solid #fbbf24; border-radius:8px; "
-        f"padding:10px 16px; margin-bottom:12px; font-size:20px; color:#78350f;'>"
-        f"📋 {hole_memo}</div>", unsafe_allow_html=True)
 
 if "prev_hole" not in st.session_state:
     st.session_state.prev_hole = hole
