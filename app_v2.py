@@ -1118,94 +1118,109 @@ st.markdown(
     "例：「今何打目だっけ？」"
     "</div></div>", unsafe_allow_html=True)
 
-if "voice_text" not in st.session_state: st.session_state.voice_text = ""
+if "voice_text"         not in st.session_state: st.session_state.voice_text         = ""
+if "last_audio_id"      not in st.session_state: st.session_state.last_audio_id      = None
+if "caddy_result_cache" not in st.session_state: st.session_state.caddy_result_cache = None
 
 # 直近のキャディ返答表示
 if st.session_state.last_caddy_message:
     st.markdown(
         f"<div class='caddy-bubble'>{st.session_state.last_caddy_message}</div>",
         unsafe_allow_html=True)
+    speak_with_openai_tts(st.session_state.last_caddy_message)
+    # 表示後にクリア（再表示・再生防止）
+    st.session_state.last_caddy_message = ""
 
 caddy_audio = st.audio_input("🎤 タップして話しかける", key="caddy_voice_input")
 
 if caddy_audio is not None:
-    with st.spinner("🎤 聞き取り中..."):
-        audio_bytes = caddy_audio.read()
-        text = transcribe_audio(audio_bytes)
+    # 同じ音声を2回処理しないようにIDで管理
+    audio_id = hash(caddy_audio.read())
+    caddy_audio.seek(0)
 
-    if text:
-        st.markdown(f"<div class='voice-result'>🗣️ 「{text}」</div>", unsafe_allow_html=True)
+    if audio_id != st.session_state.last_audio_id:
+        st.session_state.last_audio_id = audio_id
 
-        history_text = "なし"
-        if st.session_state.history:
-            history_text = "、".join([f"{h['club']} {h['dist']}y ({h['result']})" for h in st.session_state.history])
+        with st.spinner("🎤 聞き取り中..."):
+            audio_bytes = caddy_audio.read()
+            text = transcribe_audio(audio_bytes)
 
-        context = {
-            "hole": hole, "par": par_num, "yard": TOTAL_DIST,
-            "remaining": st.session_state.remaining,
-            "target": target, "remaining_strokes": remaining_strokes,
-            "history_text": history_text,
-            "next_club": next_club_name, "next_dist": next_club_dist,
-            "hole_memo": hole_memo,
-        }
+        if text:
+            st.markdown(f"<div class='voice-result'>🗣️ 「{text}」</div>", unsafe_allow_html=True)
 
-        with st.spinner("🤖 キャディが考え中..."):
-            result = handle_voice_input(text, [c["name"] for c in st.session_state.clubs], context)
+            history_text = "なし"
+            if st.session_state.history:
+                history_text = "、".join([f"{h['club']} {h['dist']}y ({h['result']})" for h in st.session_state.history])
 
-        if result.get("mode") == "shot":
-            parsed = result
-            st.markdown(
-                f"<div style='background:#dbeafe; border:2px solid #93c5fd; border-radius:10px; "
-                f"padding:12px 20px; margin-top:8px; font-size:22px; font-weight:700;'>"
-                f"✅ ショット入力：{parsed.get('club','?')} ／ {parsed.get('dist','?')}y ／ {parsed.get('result','?')}"
-                f"</div>", unsafe_allow_html=True)
+            context = {
+                "hole": hole, "par": par_num, "yard": TOTAL_DIST,
+                "remaining": st.session_state.remaining,
+                "target": target, "remaining_strokes": remaining_strokes,
+                "history_text": history_text,
+                "next_club": next_club_name, "next_dist": next_club_dist,
+                "hole_memo": hole_memo,
+            }
 
-            st.markdown('<div id="voice-apply-anchor"></div>', unsafe_allow_html=True)
-            if st.button("✅ この内容で反映する", key="btn_caddy_apply", use_container_width=True):
-                club_name = parsed.get("club", "")
-                dist_val  = parsed.get("dist", 0)
-                result_s  = parsed.get("result", "FW")
-                penalty = 0; green_on = (result_s == "Gオン"); remain_adjust = dist_val
-                if result_s == "OB":    penalty = 1; remain_adjust = 0
-                elif result_s == "池":  penalty = 1
-                elif result_s == "赤杭": penalty = 1
-                elif result_s == "ロスト": penalty = 2
-                elif result_s == "空振り": remain_adjust = 0
-                elif result_s == "プレ4": penalty = 2; remain_adjust = 0
-                elif result_s == "プレ3": penalty = 1; remain_adjust = 0
-                elif green_on: remain_adjust = st.session_state.remaining
+            with st.spinner("🤖 キャディが考え中..."):
+                result = handle_voice_input(text, [c["name"] for c in st.session_state.clubs], context)
 
-                st.session_state.history.append({
-                    "club": club_name, "dist": dist_val,
-                    "result": result_s, "penalty": penalty, "green_on": green_on,
-                })
-                st.session_state.remaining = max(st.session_state.remaining - remain_adjust, 0)
+            if result.get("mode") == "shot":
+                parsed = result
+                st.session_state.caddy_result_cache = parsed
+                st.markdown(
+                    f"<div style='background:#dbeafe; border:2px solid #93c5fd; border-radius:10px; "
+                    f"padding:12px 20px; margin-top:8px; font-size:22px; font-weight:700;'>"
+                    f"✅ ショット入力：{parsed.get('club','?')} ／ {parsed.get('dist','?')}y ／ {parsed.get('result','?')}"
+                    f"</div>", unsafe_allow_html=True)
 
-                # ショット後のコメント生成
-                try:
-                    import openai
-                    api_key = st.secrets.get("OPENAI_API_KEY", "")
-                    if api_key:
-                        client = openai.OpenAI(api_key=api_key)
-                        comment_prompt = f"あなたはゴルフキャディです。プレーヤーが{club_name}で{dist_val}ヤード打って{result_s}でした。残り距離は{st.session_state.remaining}ヤードです。ひとこと自然にコメントしてください（1〜2文、キャディらしい口調で）。"
-                        resp    = client.chat.completions.create(model="gpt-4o-mini", messages=[{"role":"user","content":comment_prompt}], max_tokens=100)
-                        comment = resp.choices[0].message.content.strip()
-                        st.session_state.last_caddy_message = comment
-                        speak_with_openai_tts(comment)
-                except: pass
-
-                st.session_state.voice_text = ""
+            elif result.get("mode") == "caddy":
+                message = result.get("message", "")
+                st.session_state.last_caddy_message = message
+                st.session_state.caddy_log.append({"q": text, "a": message})
                 st.rerun()
 
-        elif result.get("mode") == "caddy":
-            message = result.get("message", "")
-            st.session_state.last_caddy_message = message
-            st.session_state.caddy_log.append({"q": text, "a": message})
-            speak_with_openai_tts(message)
-            st.rerun()
+        elif text == "":
+            st.warning("音声を認識できませんでした。もう少しはっきり話してみてください。")
 
-    elif text == "" and caddy_audio is not None:
-        st.warning("音声を認識できませんでした。もう少しはっきり話してみてください。")
+# ショット反映ボタン（キャッシュから表示）
+if st.session_state.caddy_result_cache:
+    parsed = st.session_state.caddy_result_cache
+    st.markdown('<div id="voice-apply-anchor"></div>', unsafe_allow_html=True)
+    if st.button("✅ この内容で反映する", key="btn_caddy_apply", use_container_width=True):
+        club_name = parsed.get("club", "")
+        dist_val  = parsed.get("dist", 0)
+        result_s  = parsed.get("result", "FW")
+        penalty = 0; green_on = (result_s == "Gオン"); remain_adjust = dist_val
+        if result_s == "OB":     penalty = 1; remain_adjust = 0
+        elif result_s == "池":   penalty = 1
+        elif result_s == "赤杭": penalty = 1
+        elif result_s == "ロスト": penalty = 2
+        elif result_s == "空振り": remain_adjust = 0
+        elif result_s == "プレ4": penalty = 2; remain_adjust = 0
+        elif result_s == "プレ3": penalty = 1; remain_adjust = 0
+        elif green_on: remain_adjust = st.session_state.remaining
+
+        st.session_state.history.append({
+            "club": club_name, "dist": dist_val,
+            "result": result_s, "penalty": penalty, "green_on": green_on,
+        })
+        st.session_state.remaining = max(st.session_state.remaining - remain_adjust, 0)
+
+        # ショット後のコメント生成
+        try:
+            import openai
+            api_key = st.secrets.get("OPENAI_API_KEY", "")
+            if api_key:
+                client = openai.OpenAI(api_key=api_key)
+                comment_prompt = f"あなたはゴルフキャディです。プレーヤーが{club_name}で{dist_val}ヤード打って{result_s}でした。残り距離は{st.session_state.remaining}ヤードです。ひとこと自然にコメントしてください（1〜2文、キャディらしい口調で）。"
+                resp    = client.chat.completions.create(model="gpt-4o-mini", messages=[{"role":"user","content":comment_prompt}], max_tokens=100)
+                comment = resp.choices[0].message.content.strip()
+                st.session_state.last_caddy_message = comment
+        except: pass
+
+        st.session_state.caddy_result_cache = None
+        st.session_state.voice_text = ""
+        st.rerun()
 
 
 # =========================
