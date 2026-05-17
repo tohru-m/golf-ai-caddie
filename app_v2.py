@@ -31,7 +31,8 @@ def transcribe_audio(audio_bytes: bytes) -> str:
             transcript = client.audio.transcriptions.create(
                 model="whisper-1",
                 file=f,
-                language="ja"
+                language="ja",
+                prompt="ゴルフ、ドライバー、1W、3W、5W、7W、アイアン、3番、4番、5番、6番、7番、8番、9番、PW、AW、SW、パター、フェアウェイ、ラフ、バンカー、グリーン、OB、ピン、パー、バーディー、ボギー、ヤード、残り、距離"
             )
         os.unlink(tmp_path)
         return transcript.text
@@ -95,7 +96,7 @@ JSONのみ返してください（説明文・マークダウン不要）。
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
-            max_tokens=300,
+            max_tokens=150,
         )
 
         raw   = response.choices[0].message.content.strip()
