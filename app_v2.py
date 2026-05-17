@@ -68,8 +68,11 @@ def transcribe_audio(audio_bytes: bytes) -> str:
         }
         for wrong, correct in _corrections.items():
             text = text.replace(wrong, correct)
-        # 話し言葉の「度」を°に変換してクラブ名と一致させる（52度 → 52°）
         import re
+        # 「イチ/ワン/1/一 + バット/バッド/パット系」→ 1W（Whisperの誤認識を正規表現で一括処理）
+        text = re.sub(r'[iイ][tチ][iイ]?\s*[bバぱパ][aァ]?[tッっ][tトドど]', '1W', text, flags=re.IGNORECASE)
+        text = re.sub(r'(イチ|ワン|1|１|一)\s*[バパぱ][ッっ][トドど]', '1W', text)
+        # 話し言葉の「度」を°に変換してクラブ名と一致させる（52度 → 52°）
         text = re.sub(r'(\d+)\s*度', lambda m: m.group(1) + "°", text)
         return text
     except Exception as e:
