@@ -180,6 +180,9 @@ html, body, [class*="css"] {
 [data-testid="stAudioInput"] button { width:72px !important; height:72px !important; min-width:72px !important; min-height:72px !important; border-radius:50% !important; }
 [data-testid="stAudioInput"] button svg { width:38px !important; height:38px !important; }
 
+/* ===== 音声再生プレーヤー：再生ボタンのみ表示 ===== */
+[data-testid="stAudio"] audio { width:54px !important; height:54px !important; }
+
 
 div:has(> #voice-apply-anchor) + div[data-testid="stButton"] > button { height:80px !important; font-size:38px !important; }
 div:has(#adjust-btn-anchor) ~ div [data-testid="stColumn"] button { font-size:26px !important; font-weight:700 !important; }
