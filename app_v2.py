@@ -2,7 +2,6 @@ import streamlit as st
 import tempfile
 import os
 import json
-import base64
 
 st.set_page_config(
     page_title="AIキャディ",
