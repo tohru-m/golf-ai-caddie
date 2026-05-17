@@ -1128,9 +1128,6 @@ if "caddy_result_cache" not in st.session_state: st.session_state.caddy_result_c
 
 # 直近のキャディ返答表示
 if st.session_state.last_caddy_message:
-    st.markdown(
-        f"<div class='caddy-bubble'>{st.session_state.last_caddy_message}</div>",
-        unsafe_allow_html=True)
     _ab = get_tts_bytes(st.session_state.last_caddy_message)
     if _ab:
         st.session_state.caddy_audio_bytes = _ab
