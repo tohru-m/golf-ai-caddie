@@ -154,6 +154,23 @@ JSONのみ返してください（説明文・マークダウン不要）。
 # OpenAI TTS による音声読み上げ
 # =========================
 
+def _normalize_for_tts(text: str) -> str:
+    _tts = {
+        "1W": "ドライバー", "2W": "2番ウッド", "3W": "3番ウッド",
+        "4W": "4番ウッド", "5W": "5番ウッド", "7W": "7番ウッド",
+        "3U": "3番ユーティリティ", "4U": "4番ユーティリティ",
+        "5U": "5番ユーティリティ", "6U": "6番ユーティリティ",
+        "3I": "3番アイアン", "4I": "4番アイアン", "5I": "5番アイアン",
+        "6I": "6番アイアン", "7I": "7番アイアン", "8I": "8番アイアン", "9I": "9番アイアン",
+        "PW": "ピッチングウェッジ", "UW": "アンダーウェッジ",
+        "AW": "アプローチウェッジ", "SW": "サンドウェッジ",
+        "°": "度",
+    }
+    for abbr, spoken in _tts.items():
+        text = text.replace(abbr, spoken)
+    return text
+
+
 def get_tts_bytes(text: str):
     try:
         import openai
@@ -165,7 +182,7 @@ def get_tts_bytes(text: str):
             model="tts-1",
             voice="nova",
             speed=1.2,
-            input=text,
+            input=_normalize_for_tts(text),
         )
         return response.content
     except Exception as _e:
