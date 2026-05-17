@@ -1116,11 +1116,7 @@ st.markdown(
 st.markdown(
     "<div class='voice-box-caddy'>"
     "<div style='font-size:18px; color:#1e40af;'>💬 なんでも話しかけてください</div>"
-    "<div style='font-size:16px; color:#4b5563; margin-top:4px;'>"
-    "例：「えーっと、ここどう攻めればいい？」<br>"
-    "例：「7番で150ヤード、フェアウェイ」<br>"
-    "例：「今何打目だっけ？」"
-    "</div></div>", unsafe_allow_html=True)
+    "</div>", unsafe_allow_html=True)
 
 if "voice_text"         not in st.session_state: st.session_state.voice_text         = ""
 if "last_audio_id"      not in st.session_state: st.session_state.last_audio_id      = None
