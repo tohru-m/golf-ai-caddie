@@ -130,13 +130,9 @@ def speak_with_openai_tts(text: str):
         audio_bytes = response.content
         audio_b64   = base64.b64encode(audio_bytes).decode()
         st.markdown(
-             f"""<script>
-                (function() {{
-                    var a = new Audio('data:audio/mp3;base64,{audio_b64}');
-                    a.play().catch(function(e) {{ console.log(e); }});
-                }})();
-            </script>
-
+            f"""<audio autoplay style="display:none;">
+                <source src="data:audio/mp3;base64,{audio_b64}" type="audio/mp3">
+            </audio>""",
             unsafe_allow_html=True,
         )
     except Exception:
