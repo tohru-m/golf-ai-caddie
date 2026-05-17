@@ -181,13 +181,6 @@ html, body, [class*="css"] {
 [data-testid="stAudioInput"] button { width:72px !important; height:72px !important; min-width:72px !important; min-height:72px !important; border-radius:50% !important; }
 [data-testid="stAudioInput"] button svg { width:38px !important; height:38px !important; }
 
-/* ===== 音声再生プレーヤー ===== */
-[data-testid="stAudio"] audio::-webkit-media-controls-timeline { display:none !important; }
-[data-testid="stAudio"] audio::-webkit-media-controls-current-time-display { display:none !important; }
-[data-testid="stAudio"] audio::-webkit-media-controls-time-remaining-display { display:none !important; }
-[data-testid="stAudio"] audio::-webkit-media-controls-mute-button { display:none !important; }
-[data-testid="stAudio"] audio::-webkit-media-controls-volume-slider { display:none !important; }
-[data-testid="stAudio"] audio::-webkit-media-controls-play-button { width:60px !important; height:60px !important; }
 
 div:has(> #voice-apply-anchor) + div[data-testid="stButton"] > button { height:80px !important; font-size:38px !important; }
 div:has(#adjust-btn-anchor) ~ div [data-testid="stColumn"] button { font-size:26px !important; font-weight:700 !important; }
