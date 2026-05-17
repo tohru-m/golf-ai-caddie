@@ -1110,13 +1110,16 @@ else:
 # =========================
 
 st.markdown("<div class='section-divider'></div>", unsafe_allow_html=True)
-st.markdown(
-    "<div style='font-size:26px; font-weight:900; color:#1a2e44; margin-top:16px; margin-bottom:6px;'>"
-    "🎤 キャディの回答を聞く</div>", unsafe_allow_html=True)
 
 if "voice_text"         not in st.session_state: st.session_state.voice_text         = ""
 if "last_audio_id"      not in st.session_state: st.session_state.last_audio_id      = None
 if "caddy_result_cache" not in st.session_state: st.session_state.caddy_result_cache = None
+
+caddy_audio = st.audio_input("🎤 タップして話しかける", key="caddy_voice_input")
+
+st.markdown(
+    "<div style='font-size:26px; font-weight:900; color:#1a2e44; margin-top:16px; margin-bottom:6px;'>"
+    "🎤 キャディの回答を聞く</div>", unsafe_allow_html=True)
 
 # 直近のキャディ返答表示
 if st.session_state.last_caddy_message:
@@ -1130,8 +1133,6 @@ if st.session_state.last_caddy_message:
     st.session_state.last_caddy_message = ""
 elif st.session_state.get("caddy_audio_bytes"):
     st.audio(st.session_state.caddy_audio_bytes, format="audio/mp3")
-
-caddy_audio = st.audio_input("🎤 タップして話しかける", key="caddy_voice_input")
 
 if caddy_audio is not None:
     # 同じ音声を2回処理しないようにIDで管理
