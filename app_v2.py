@@ -96,6 +96,8 @@ def handle_voice_input(text: str, club_names: list, context: dict) -> dict:
         result_options = "FW、ラフ、OB、池、赤杭、ロスト、空振り、プレ4、プレ3、Gオン"
         hole_memo      = context.get("hole_memo", "")
 
+        plan_text  = context.get("plan_text", "なし")
+
         situation = f"""
 現在の状況：
 - ホール：{context['hole']}番ホール  Par{context['par']}  {context['yard']}ヤード
@@ -104,6 +106,7 @@ def handle_voice_input(text: str, club_names: list, context: dict) -> dict:
 - 残りショット数：{context['remaining_strokes']}回
 - これまでのショット履歴：{context['history_text']}
 - 次のAI推奨クラブ：{context['next_club']}（{context['next_dist']}ヤード）
+- 残り全打の戦略プラン：{plan_text}
 - ホールのメモ：{hole_memo if hole_memo else "特になし"}
 """
 
@@ -128,6 +131,7 @@ def handle_voice_input(text: str, club_names: list, context: dict) -> dict:
 - 数字や図ではなく、自然な会話で答える
 - 2〜4文程度でまとめる
 - 「えーっと」「うーん」など曖昧な発話でも、現在の状況から意図を読み取って答える
+- 戦略・攻め方・ショットプランを聞かれた場合は「残り全打の戦略プラン」をそのまま自然な会話に変換して答える
 
 JSONのみ返してください（説明文・マークダウン不要）。
 """
@@ -1204,6 +1208,21 @@ if caddy_audio is not None:
             if st.session_state.history:
                 history_text = "、".join([f"{h['club']} {h['dist']}y ({h['result']})" for h in st.session_state.history])
 
+            # 残りショット全体の戦略テキストを生成
+            if st.session_state.remaining > 0 and remaining_strokes > 0:
+                _plan = plan(st.session_state.remaining, remaining_strokes, used, par_num, hole)
+                _plan_parts = []
+                for _i, _p in enumerate(_plan):
+                    _d = min(_p["dist"], _p["before"])
+                    _label = f"第{_i+1}打" if _i > 0 else "第1打（ティーショット）" if used == 0 else f"第{used+_i+1}打"
+                    if _p["remain"] == 0:
+                        _plan_parts.append(f"{_label}：{_p['club']}で{_d}ヤード（グリーンオン）")
+                    else:
+                        _plan_parts.append(f"{_label}：{_p['club']}で{_d}ヤード（残り{_p['remain']}ヤード）")
+                plan_text = "、".join(_plan_parts)
+            else:
+                plan_text = "なし"
+
             context = {
                 "hole": hole, "par": par_num, "yard": TOTAL_DIST,
                 "remaining": st.session_state.remaining,
@@ -1211,6 +1230,7 @@ if caddy_audio is not None:
                 "history_text": history_text,
                 "next_club": next_club_name, "next_dist": next_club_dist,
                 "hole_memo": hole_memo,
+                "plan_text": plan_text,
             }
 
             with st.spinner("🤖 キャディが考え中..."):
