@@ -68,8 +68,9 @@ def transcribe_audio(audio_bytes: bytes) -> str:
         }
         for wrong, correct in _corrections.items():
             text = text.replace(wrong, correct)
-        # 度記号を統一（52° → 52度）
-        text = text.replace("°", "度")
+        # 話し言葉の「度」を°に変換してクラブ名と一致させる（52度 → 52°）
+        import re
+        text = re.sub(r'(\d+)\s*度', lambda m: m.group(1) + "°", text)
         return text
     except Exception as e:
         st.error(f"音声認識エラー：{e}")
@@ -655,10 +656,10 @@ CLUBS = [
     {"name": "7I",  "dist": 150, "miss": 0.20, "favorite": 0},
     {"name": "8I",  "dist": 140, "miss": 0.18, "favorite": 140},
     {"name": "9I",  "dist": 130, "miss": 0.15, "favorite": 130},
-    {"name": "PW",   "dist": 120, "miss": 0.15, "favorite": 120},
-    {"name": "UW",   "dist": 110, "miss": 0.15, "favorite": 110},
-    {"name": "52度", "dist": 100, "miss": 0.15, "favorite": 100},
-    {"name": "56度", "dist":  80, "miss": 0.15, "favorite":  80},
+    {"name": "PW",  "dist": 120, "miss": 0.15, "favorite": 120},
+    {"name": "UW",  "dist": 110, "miss": 0.15, "favorite": 110},
+    {"name": "52°", "dist": 100, "miss": 0.15, "favorite": 100},
+    {"name": "56°", "dist":  80, "miss": 0.15, "favorite":  80},
 ]
 
 CLUB_OPTIONS = [
@@ -667,7 +668,7 @@ CLUB_OPTIONS = [
     "3U", "4U", "5U", "6U",
     "5I", "6I", "7I", "8I", "9I",
     "PW", "AW", "UW",
-    "SW", "52度", "56度", "58度", "60度"
+    "SW", "52°", "56°", "58°", "60°"
 ]
 
 if "clubs" not in st.session_state:
