@@ -114,7 +114,7 @@ JSONのみ返してください（説明文・マークダウン不要）。
 # OpenAI TTS による音声読み上げ
 # =========================
 
-def get_tts_bytes(text: str) -> bytes | None:
+def get_tts_bytes(text: str):
     try:
         import openai
         api_key = st.secrets.get("OPENAI_API_KEY", "")
@@ -128,7 +128,8 @@ def get_tts_bytes(text: str) -> bytes | None:
             input=text,
         )
         return response.content
-    except Exception:
+    except Exception as _e:
+        st.warning(f"音声生成エラー: {_e}")
         return None
 
 
@@ -1132,12 +1133,12 @@ if st.session_state.last_caddy_message:
     _ab = get_tts_bytes(st.session_state.last_caddy_message)
     if _ab:
         st.session_state.caddy_audio_bytes = _ab
+        st.audio(_ab, format="audio/mp3")
     else:
         speak_with_browser(st.session_state.last_caddy_message)
         st.session_state.caddy_audio_bytes = None
     st.session_state.last_caddy_message = ""
-
-if st.session_state.caddy_audio_bytes:
+elif st.session_state.get("caddy_audio_bytes"):
     st.audio(st.session_state.caddy_audio_bytes, format="audio/mp3")
 
 caddy_audio = st.audio_input("🎤 タップして話しかける", key="caddy_voice_input")
