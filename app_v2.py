@@ -1162,6 +1162,7 @@ if st.session_state.last_caddy_message:
     st.session_state.last_caddy_message = ""
 
 if st.session_state.get("caddy_audio_bytes"):
+    st.audio(st.session_state.caddy_audio_bytes, format="audio/mp3")
     _render_audio_player(st.session_state.caddy_audio_bytes)
 
 caddy_audio = st.audio_input("🎤 タップして話しかける", key="caddy_voice_input")
