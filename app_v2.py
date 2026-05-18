@@ -115,19 +115,6 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
                     parts.append(f"{prefix}{c}で{d}ヤード")
             return "、".join(parts)
 
-        # 安全重視モードの切り替え検出
-        safety_match = _re.search(r'安全|保守|慎重|短いクラブ|リスク.*避', text)
-        normal_match = _re.search(r'通常.*戻|元に戻|リセット|安全.*解除|普通.*戻', text)
-        if safety_match:
-            st.session_state.safety_extra_shots = 1
-            safe_strokes = context["remaining_strokes_base"] + 1
-            safe_plan = plan(remaining, safe_strokes, context["used"], context["par"], context["hole"])
-            return f"安全重視に変更しました。残り{remaining}ヤードを{safe_strokes}打で攻めます。{_plan_to_voice(safe_plan)}。"
-        if normal_match:
-            st.session_state.safety_extra_shots = 0
-            base_plan = plan(remaining, context["remaining_strokes_base"], context["used"], context["par"], context["hole"])
-            return f"通常の戦略に戻しました。{_plan_to_voice(base_plan)}でいきましょう。"
-
         # 発話に「○ヤード飛んだ／飛ばなかった」が含まれる場合はPythonで計算してゲーム状態を更新
         shot_match = _re.search(r'(\d+)\s*ヤード.{0,6}(飛|打|だった|でした)', text)
         if shot_match:
@@ -744,10 +731,6 @@ if "pending_speech_text" not in st.session_state:
     st.session_state.pending_speech_text = ""
 if "caddy_audio_bytes" not in st.session_state:
     st.session_state.caddy_audio_bytes = None
-if "safety_extra_shots" not in st.session_state:
-    st.session_state.safety_extra_shots = 0
-if "safety_hole" not in st.session_state:
-    st.session_state.safety_hole = None
 
 if "course" not in st.session_state:
     st.session_state.course = {
@@ -1165,13 +1148,8 @@ for h in st.session_state.history:
         unsafe_allow_html=True)
     current_shot += 1 + h.get("penalty", 0)
 
-used                   = sum(1 + h.get("penalty", 0) for h in st.session_state.history)
-remaining_strokes_base = shot_strokes - used
-# ホールが変わったら安全モードをリセット
-if st.session_state.safety_hole != hole:
-    st.session_state.safety_extra_shots = 0
-    st.session_state.safety_hole = hole
-remaining_strokes = remaining_strokes_base + st.session_state.safety_extra_shots
+used              = sum(1 + h.get("penalty", 0) for h in st.session_state.history)
+remaining_strokes = shot_strokes - used
 
 # 次のショット推奨クラブを計算（キャディ応答用）
 next_club_name = "なし"; next_club_dist = 0
@@ -1207,20 +1185,6 @@ elif remaining_strokes == 0:
 else:
     st.error("ショット数が不足しています")
 
-
-# 安全重視モード表示
-if st.session_state.safety_extra_shots > 0:
-    col_s1, col_s2 = st.columns([4, 1])
-    with col_s1:
-        st.markdown(
-            "<div style='background:#dbeafe; border-left:4px solid #3b82f6; border-radius:8px; "
-            "padding:8px 14px; margin-top:6px; font-size:15px; color:#1e40af;'>"
-            "🛡 安全重視モード（短めのクラブで計画中）</div>",
-            unsafe_allow_html=True)
-    with col_s2:
-        if st.button("通常に戻す", key="btn_reset_safety"):
-            st.session_state.safety_extra_shots = 0
-            st.rerun()
 
 # =========================
 # 🎤 キャディの回答を聞く（新機能）
@@ -1283,9 +1247,7 @@ if caddy_audio is not None:
                 "hole": hole, "par": par_num, "yard": TOTAL_DIST,
                 "remaining": st.session_state.remaining,
                 "target": target, "remaining_strokes": remaining_strokes,
-                "remaining_strokes_base": remaining_strokes_base,
-                "used": used,
-                "history_text": history_text,
+"history_text": history_text,
                 "next_club": next_club_name, "next_dist": next_club_dist,
                 "hole_memo": hole_memo,
                 "plan_text": plan_text,
