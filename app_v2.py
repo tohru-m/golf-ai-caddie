@@ -263,6 +263,8 @@ html, body, [class*="css"] {
 [data-testid="stAudioInput"] label p { font-size:26px !important; font-weight:700 !important; color:#b91c1c !important; }
 [data-testid="stAudioInput"] button { width:72px !important; height:72px !important; min-width:72px !important; min-height:72px !important; border-radius:50% !important; }
 [data-testid="stAudioInput"] button svg { width:38px !important; height:38px !important; }
+[data-testid="stAudioInput"] button svg rect { display:none !important; }
+[data-testid="stAudioInput"] button:has(svg rect) { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z'/%3E%3C/svg%3E") !important; background-repeat:no-repeat !important; background-position:center !important; background-size:38px 38px !important; }
 
 
 
@@ -1261,35 +1263,6 @@ if "last_audio_id"      not in st.session_state: st.session_state.last_audio_id 
 if "caddy_result_cache" not in st.session_state: st.session_state.caddy_result_cache = None
 
 caddy_audio = st.audio_input("🎤 キャディに話しかける", key="caddy_voice_input")
-
-import streamlit.components.v1 as _components
-_components.html("""
-<script>
-(function() {
-  const MIC_PATH = 'M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z';
-  function patchBtn() {
-    const frame = window.parent.document;
-    const btn = frame.querySelector('[data-testid="stAudioInput"] button');
-    if (!btn) return;
-    const rect = btn.querySelector('svg rect');
-    if (rect && !btn.dataset.patched) {
-      btn.dataset.patched = '1';
-      rect.remove();
-      const svg = btn.querySelector('svg');
-      svg.setAttribute('viewBox', '0 0 24 24');
-      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      path.setAttribute('fill', 'white');
-      path.setAttribute('d', MIC_PATH);
-      svg.appendChild(path);
-    }
-    if (!rect) { btn.dataset.patched = ''; }
-  }
-  const obs = new MutationObserver(patchBtn);
-  obs.observe(window.parent.document.body, {childList: true, subtree: true});
-  patchBtn();
-})();
-</script>
-""", height=0)
 
 st.markdown(
     "<div style='font-size:26px; font-weight:900; color:#1a2e44; margin-top:-12px; margin-bottom:6px;'>"
