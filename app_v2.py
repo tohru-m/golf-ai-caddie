@@ -1147,25 +1147,23 @@ st.markdown(
 
 st.markdown("""
 <style>
-div[data-testid="stSlider"] div[data-testid="stTickBarMin"],
-div[data-testid="stSlider"] div[data-testid="stTickBarMax"],
-div[data-testid="stSlider"] p {
+div[data-testid="stRadio"] label {
     font-size: 20px !important;
     font-weight: 700 !important;
 }
-div[data-testid="stSlider"] input[type="range"] {
-    margin-top: 36px !important;
-}
 </style>
 """, unsafe_allow_html=True)
-st.session_state.safety_margin = st.select_slider(
+_margin_labels = ["標準", "安全度 +1", "安全度 +2", "安全度 +3", "安全度 +4"]
+_margin_values = [0, 5, 10, 15, 20]
+_margin_idx = _margin_values.index(st.session_state.safety_margin)
+_selected = st.radio(
     "安全マージン",
-    options=[0, 5, 10, 15, 20],
-    value=st.session_state.safety_margin,
-    format_func=lambda x: "標準" if x == 0 else f"安全度 +{x // 5}",
-    key="safety_margin_slider",
+    options=_margin_labels,
+    index=_margin_idx,
+    horizontal=True,
     label_visibility="collapsed",
 )
+st.session_state.safety_margin = _margin_values[_margin_labels.index(_selected)]
 
 current_shot = 1
 for h in st.session_state.history:
