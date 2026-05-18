@@ -1113,10 +1113,10 @@ if st.session_state.adjust_plan:
         st.session_state.adjust_plan = False
         st.rerun()
 
-st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-top:2px'></div>", unsafe_allow_html=True)
 
 # ---------- ホール選択 ----------
-st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:6px;">⛳ ホールを選択</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:4px; margin-bottom:6px;">⛳ ホールを選択</div>', unsafe_allow_html=True)
 
 _hole_keys = list(st.session_state.course.keys())
 _done_css  = ""
