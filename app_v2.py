@@ -1152,11 +1152,9 @@ div[data-testid="stSlider"] div[data-testid="stTickBarMax"],
 div[data-testid="stSlider"] p {
     font-size: 20px !important;
     font-weight: 700 !important;
-    margin-bottom: 20px !important;
-    padding-bottom: 10px !important;
 }
-div[data-testid="stSlider"] > div:last-child {
-    padding-top: 16px !important;
+div[data-testid="stSlider"] input[type="range"] {
+    margin-top: 20px !important;
 }
 </style>
 """, unsafe_allow_html=True)
