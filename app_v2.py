@@ -765,8 +765,8 @@ def get_valid_clubs(margin=None):
 
 def choose_club(remaining, shots_left, is_first_shot, par_num, hole):
     safety_m = st.session_state.get("safety_margin", 0)
-    # 最終打（グリーンオン）はマージン分だけ距離をブースト、それ以外は短め
-    effective_margin = -safety_m if shots_left == 1 else safety_m
+    # 早打ち（非アプローチ）はマージンで短め、アプローチはplan()側で上書きするので0
+    effective_margin = 0 if shots_left == 1 else safety_m
     valid_clubs = get_valid_clubs(margin=effective_margin)
     if not valid_clubs:
         return {"name": "なし", "dist": 0, "miss": 1.0}
@@ -864,8 +864,10 @@ def plan(total_dist, strokes, used, par_num, hole):
         is_first_shot = (used + i == 0)
         club = choose_club(remaining, shots_left, is_first_shot, par_num, hole)
         if len(result) == strokes - 1:
+            # アプローチ：早打ち(strokes-1)本分のマージンをブースト
             safety_m = st.session_state.get("safety_margin", 0)
-            reachable = [c for c in get_valid_clubs(margin=-safety_m) if c["dist"] >= remaining]
+            approach_boost = safety_m * (strokes - 1)
+            reachable = [c for c in get_valid_clubs(margin=-approach_boost) if c["dist"] >= remaining]
             if reachable:
                 club = min(reachable, key=lambda c: c["dist"])
         shot_dist = club["dist"]
