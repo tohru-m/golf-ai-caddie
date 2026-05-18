@@ -1152,6 +1152,7 @@ div[data-testid="stSlider"] div[data-testid="stTickBarMax"],
 div[data-testid="stSlider"] p {
     font-size: 20px !important;
     font-weight: 700 !important;
+    margin-bottom: 8px !important;
 }
 </style>
 """, unsafe_allow_html=True)
