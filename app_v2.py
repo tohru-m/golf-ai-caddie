@@ -92,9 +92,10 @@ def _best_club(remaining: int, clubs: list) -> dict:
 
 
 def _revised_plan(remaining: int, strokes: int, clubs: list) -> str:
-    """残り距離と残りショット数から修正プランを文字列で返す"""
+    """残り距離と残りショット数から修正プランを文字列で返す（第2打以降なのでドライバー除外）"""
     if strokes <= 0 or remaining <= 0:
         return f"残り{remaining}y"
+    clubs = [c for c in clubs if c["name"] != "1W"] or clubs
     parts = []
     rem = remaining
     for i in range(strokes):
