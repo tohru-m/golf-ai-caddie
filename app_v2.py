@@ -1028,7 +1028,7 @@ st.markdown(f'<div style="font-size:40px; font-weight:900; color:#1a2e44; margin
 # ---------- ラウンド目標 ----------
 goal_col1, goal_col2 = st.columns([1, 1])
 with goal_col1:
-    st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:0px;">⛳ ラウンドスコア目標</div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-size:22px; font-weight:900; color:#1a2e44; margin-top:20px; margin-bottom:-14px;">⛳ ラウンドスコア目標</div>', unsafe_allow_html=True)
 with goal_col2:
     st.markdown('<div id="target-score-anchor"></div>', unsafe_allow_html=True)
     target_score = st.selectbox("", list(range(60, 151)), index=40, key="target_score", label_visibility="collapsed")
