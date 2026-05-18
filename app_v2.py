@@ -1145,21 +1145,16 @@ st.markdown(
     f"<span style='font-size:24px; font-weight:900; color:#6ee7b7; white-space:nowrap;'>{recommended_score}打／{label_text}</span>"
     f"</div>", unsafe_allow_html=True)
 
-st.markdown("""
-<style>
-div[data-testid="stRadio"] label { font-size: 20px !important; font-weight: 700 !important; }
-div[data-testid="stRadio"] label > div:first-child { display: none !important; }
-</style>
-""", unsafe_allow_html=True)
-_margin_labels = ["標準", "+1", "+2", "+3"]
-_margin_values = [0, 5, 10, 15]
-_cur_idx = _margin_values.index(st.session_state.safety_margin) if st.session_state.safety_margin in _margin_values else 0
-_col_txt, _col_rad = st.columns([1, 4])
-with _col_txt:
-    st.markdown("<div style='font-size:20px; font-weight:700; color:red; margin-top:2px;'>安全度</div>", unsafe_allow_html=True)
-with _col_rad:
-    _selected = st.radio("安全度", _margin_labels, index=_cur_idx, horizontal=True, label_visibility="collapsed")
-st.session_state.safety_margin = _margin_values[_margin_labels.index(_selected)]
+_s_col0, _s_col1, _s_col2, _s_col3, _s_col4 = st.columns([2, 2, 1, 1, 1])
+with _s_col0:
+    st.markdown("<div style='font-size:20px; font-weight:700; color:red; padding-top:8px;'>安全度</div>", unsafe_allow_html=True)
+for _col, _label, _val in [(_s_col1,"標準",0),(_s_col2,"+1",5),(_s_col3,"+2",10),(_s_col4,"+3",15)]:
+    with _col:
+        if st.button(_label, key=f"sbtn_{_val}",
+                     type="primary" if st.session_state.safety_margin == _val else "secondary",
+                     use_container_width=True):
+            st.session_state.safety_margin = _val
+            st.rerun()
 
 current_shot = 1
 for h in st.session_state.history:
