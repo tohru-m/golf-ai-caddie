@@ -744,8 +744,9 @@ if "course" not in st.session_state:
 # クラブ選択ロジック（app_v2と同一）
 # =========================
 
-def get_valid_clubs():
-    margin = st.session_state.get("safety_margin", 0)
+def get_valid_clubs(margin=None):
+    if margin is None:
+        margin = st.session_state.get("safety_margin", 0)
     valid = [c for c in st.session_state.clubs if c["dist"] > 0 and c["name"] != "なし"]
     if margin == 0 or not valid:
         return valid
@@ -758,7 +759,9 @@ def get_valid_clubs():
     ]
 
 def choose_club(remaining, shots_left, is_first_shot, par_num, hole):
-    valid_clubs = get_valid_clubs()
+    # グリーン近くの最終打はマージンなし、第1・2打はマージン適用
+    effective_margin = 0 if shots_left == 1 else st.session_state.get("safety_margin", 0)
+    valid_clubs = get_valid_clubs(margin=effective_margin)
     if not valid_clubs:
         return {"name": "なし", "dist": 0, "miss": 1.0}
 
@@ -855,7 +858,7 @@ def plan(total_dist, strokes, used, par_num, hole):
         is_first_shot = (used + i == 0)
         club = choose_club(remaining, shots_left, is_first_shot, par_num, hole)
         if len(result) == strokes - 1:
-            reachable = [c for c in st.session_state.clubs if c["dist"] >= remaining]
+            reachable = [c for c in get_valid_clubs(margin=0) if c["dist"] >= remaining]
             if reachable:
                 club = min(reachable, key=lambda c: c["dist"])
         shot_dist = club["dist"]
