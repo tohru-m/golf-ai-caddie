@@ -746,10 +746,15 @@ if "course" not in st.session_state:
 
 def get_valid_clubs():
     margin = st.session_state.get("safety_margin", 0)
+    valid = [c for c in st.session_state.clubs if c["dist"] > 0 and c["name"] != "なし"]
+    if margin == 0 or not valid:
+        return valid
+    max_dist = max(c["dist"] for c in valid)
+    min_dist = min(c["dist"] for c in valid)
+    dist_range = max_dist - min_dist or 1
     return [
-        {**c, "dist": max(c["dist"] - margin, 1)}
-        for c in st.session_state.clubs
-        if c["dist"] > 0 and c["name"] != "なし"
+        {**c, "dist": max(round(c["dist"] - margin * (c["dist"] - min_dist) / dist_range), 1)}
+        for c in valid
     ]
 
 def choose_club(remaining, shots_left, is_first_shot, par_num, hole):
