@@ -1154,7 +1154,7 @@ div[data-testid="stSlider"] p {
     font-weight: 700 !important;
 }
 div[data-testid="stSlider"] input[type="range"] {
-    margin-top: 20px !important;
+    margin-top: 36px !important;
 }
 </style>
 """, unsafe_allow_html=True)
