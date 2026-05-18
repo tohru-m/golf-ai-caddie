@@ -1182,10 +1182,18 @@ st.markdown(
     "<div style='font-size:26px; font-weight:900; color:#1a2e44; margin-top:-12px; margin-bottom:6px;'>"
     "🎤 キャディの回答を聞く</div>", unsafe_allow_html=True)
 
-# 直近のキャディ返答をブラウザ読み上げで再生
+# 直近のキャディ返答表示
 if st.session_state.last_caddy_message:
-    speak_with_browser(st.session_state.last_caddy_message)
+    _ab = get_tts_bytes(st.session_state.last_caddy_message)
+    if _ab:
+        st.session_state.caddy_audio_bytes = _ab
+        st.audio(_ab, format="audio/mp3")
+    else:
+        speak_with_browser(st.session_state.last_caddy_message)
+        st.session_state.caddy_audio_bytes = None
     st.session_state.last_caddy_message = ""
+elif st.session_state.get("caddy_audio_bytes"):
+    st.audio(st.session_state.caddy_audio_bytes, format="audio/mp3")
 
 if caddy_audio is not None:
     # 同じ音声を2回処理しないようにIDで管理
