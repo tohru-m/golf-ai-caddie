@@ -1149,7 +1149,7 @@ st.session_state.safety_margin = st.select_slider(
     "安全マージン",
     options=[0, 5, 10, 15, 20],
     value=st.session_state.safety_margin,
-    format_func=lambda x: "標準（0y）" if x == 0 else f"安全 −{x}y",
+    format_func=lambda x: "標準" if x == 0 else f"安全度 +{x // 5}",
     key="safety_margin_slider",
     label_visibility="collapsed",
 )
