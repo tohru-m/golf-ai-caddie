@@ -118,7 +118,9 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
             return "、".join(parts)
 
         # 発話に「○ヤード飛んだ／飛ばなかった」が含まれる場合はゲーム状態を更新してプランを返す
-        shot_match = _re.search(r'(\d+)\s*ヤード.{0,6}(飛|打|だった|でした)', text)
+        _shot_dist = _re.search(r'(\d+)\s*ヤード', text)
+        _shot_ctx  = _re.search(r'(飛|打った|打ち|打ちました|だった|でした|しか|だけ|届か|飛ばなかった|飛んだ|飛びました)', text)
+        shot_match = _shot_dist if (_shot_dist and _shot_ctx) else None
         if shot_match:
             actual = int(shot_match.group(1))
             new_remaining = max(remaining - actual, 0)
