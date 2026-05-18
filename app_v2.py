@@ -1145,6 +1145,16 @@ st.markdown(
     f"<span style='font-size:24px; font-weight:900; color:#6ee7b7; white-space:nowrap;'>{recommended_score}打／{label_text}</span>"
     f"</div>", unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+div[data-testid="stSlider"] div[data-testid="stTickBarMin"],
+div[data-testid="stSlider"] div[data-testid="stTickBarMax"],
+div[data-testid="stSlider"] p {
+    font-size: 20px !important;
+    font-weight: 700 !important;
+}
+</style>
+""", unsafe_allow_html=True)
 st.session_state.safety_margin = st.select_slider(
     "安全マージン",
     options=[0, 5, 10, 15, 20],
