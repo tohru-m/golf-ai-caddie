@@ -99,7 +99,7 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
 
 【状況】{context['hole']}番ホール Par{context['par']} {context['yard']}y／残り{context['remaining']}y／残りショット{context['remaining_strokes']}回／目標{context['target']}打／履歴：{context['history_text']}
 【戦略プラン】{plan_text}
-【クラブと飛距離】{clubs_str}
+【このプレーヤーのクラブと飛距離（必ずこのリストだけを使うこと）】{clubs_str}
 【ホールメモ】{hole_memo if hole_memo else "なし"}
 
 【質問】{text}
@@ -107,7 +107,8 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
 ルール：
 - 「〜ですよ」「〜しましょう」など親しみやすいキャディ口調
 - 戦略を聞かれたら「戦略プラン」を自然な会話に変換して答える
-- 「○ヤード飛んだ／飛ばなかった」という情報があれば、残り{context['remaining']}yからその距離を引いて新しい残り距離を計算し、最適なクラブを推奨する
+- 「○ヤード飛んだ／飛ばなかった」という情報があれば、残り{context['remaining']}yからその距離を引いて新しい残り距離を計算する
+- クラブを推奨する際は【重要】一般的なゴルフの飛距離は絶対に使わず、必ず上記リストの飛距離のみを参照すること。推奨距離に届くクラブの中で、最も飛距離が近いものを選ぶこと（届かないクラブは選ばない）
 - 回答のみ返す（前置き不要）"""
 
         response = client.chat.completions.create(
