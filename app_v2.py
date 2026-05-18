@@ -197,14 +197,18 @@ def get_tts_bytes(text: str):
 
 
 def speak_with_browser(text: str):
-    escaped = text.replace("'", "\\'").replace("\n", " ")
-    st.markdown(
+    text = _normalize_for_tts(text)
+    escaped = text.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ")
+    import streamlit.components.v1 as components
+    components.html(
         f"""<script>
-            const u = new SpeechSynthesisUtterance('{escaped}');
+            window.speechSynthesis.cancel();
+            var u = new SpeechSynthesisUtterance("{escaped}");
             u.lang = 'ja-JP';
+            u.rate = 1.1;
             window.speechSynthesis.speak(u);
         </script>""",
-        unsafe_allow_html=True,
+        height=0,
     )
 
 
@@ -1178,18 +1182,10 @@ st.markdown(
     "<div style='font-size:26px; font-weight:900; color:#1a2e44; margin-top:-12px; margin-bottom:6px;'>"
     "🎤 キャディの回答を聞く</div>", unsafe_allow_html=True)
 
-# 直近のキャディ返答表示
+# 直近のキャディ返答をブラウザ読み上げで再生
 if st.session_state.last_caddy_message:
-    _ab = get_tts_bytes(st.session_state.last_caddy_message)
-    if _ab:
-        st.session_state.caddy_audio_bytes = _ab
-        st.audio(_ab, format="audio/mp3")
-    else:
-        speak_with_browser(st.session_state.last_caddy_message)
-        st.session_state.caddy_audio_bytes = None
+    speak_with_browser(st.session_state.last_caddy_message)
     st.session_state.last_caddy_message = ""
-elif st.session_state.get("caddy_audio_bytes"):
-    st.audio(st.session_state.caddy_audio_bytes, format="audio/mp3")
 
 if caddy_audio is not None:
     # 同じ音声を2回処理しないようにIDで管理
