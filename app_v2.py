@@ -129,22 +129,24 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
         plan_text = context.get("plan_text", "なし")
         remaining = context["remaining"]
 
-        # 発話に「○ヤード飛んだ／飛ばなかった」が含まれる場合はPythonで計算
+        # 発話に「○ヤード飛んだ／飛ばなかった」が含まれる場合はPythonで計算してゲーム状態を更新
         shot_match = _re.search(r'(\d+)\s*ヤード.{0,6}(飛|打|だった|でした)', text)
         if shot_match:
             actual = int(shot_match.group(1))
-            remaining = max(remaining - actual, 0)
+            new_remaining = max(remaining - actual, 0)
             strokes_left = max(context["remaining_strokes"] - 1, 1)
-            if strokes_left == 1:
-                rec = _best_club(remaining, clubs)
-                calc_info = f"実際{actual}y → 新しい残り{remaining}y → 推奨：{rec['name']}（{rec['dist']}y）"
-                st.session_state.voice_revised_plan = f"残り{remaining}y → {rec['name']}（{rec['dist']}y）でグリーンオン"
+            club_used = context.get("next_club", "?")
+            st.session_state.history.append({
+                "club": club_used, "dist": actual,
+                "result": "FW", "penalty": 0, "green_on": (new_remaining == 0), "voice": True,
+            })
+            st.session_state.remaining = new_remaining
+            if new_remaining == 0:
+                calc_info = f"実際{actual}y → グリーンオン！"
             else:
-                revised = _revised_plan(remaining, strokes_left, clubs)
-                calc_info = f"実際{actual}y → 新しい残り{remaining}y → 修正戦略：{revised}"
-                st.session_state.voice_revised_plan = revised
+                revised = _revised_plan(new_remaining, strokes_left, clubs)
+                calc_info = f"実際{actual}y → 残り{new_remaining}y → 修正戦略：{revised}"
         else:
-            st.session_state.voice_revised_plan = ""
             rec = _best_club(remaining, clubs)
             calc_info = f"残り{remaining}y → 推奨クラブ：{rec['name']}（{rec['dist']}y）"
 
@@ -742,8 +744,6 @@ if "pending_speech_text" not in st.session_state:
     st.session_state.pending_speech_text = ""
 if "caddy_audio_bytes" not in st.session_state:
     st.session_state.caddy_audio_bytes = None
-if "voice_revised_plan" not in st.session_state:
-    st.session_state.voice_revised_plan = ""
 
 if "course" not in st.session_state:
     st.session_state.course = {
@@ -1155,8 +1155,9 @@ for h in st.session_state.history:
     }.get(h.get("result", ""), "")
     green_on_mark = " <span style='font-size:20px;'>🚩グリーンオン</span>" if h.get("green_on") else ""
     suffix = f" ⚡ {result_text}" if result_text else ""
+    voice_mark = " 🎤" if h.get("voice") else ""
     st.markdown(
-        f"<div class='shot-row-history'>✅ （実績）：{h['club']} {h['dist']}y{green_on_mark}{suffix}</div>",
+        f"<div class='shot-row-history'>✅ （実績）：{h['club']} {h['dist']}y{voice_mark}{green_on_mark}{suffix}</div>",
         unsafe_allow_html=True)
     current_shot += 1 + h.get("penalty", 0)
 
@@ -1196,19 +1197,6 @@ elif remaining_strokes == 0:
     st.error("⚠️ この計画では届きません")
 else:
     st.error("ショット数が不足しています")
-
-# 音声修正プランの表示
-if st.session_state.get("voice_revised_plan"):
-    st.markdown(
-        "<div style='background:#fef9c3; border-left:4px solid #f59e0b; border-radius:10px; "
-        "padding:12px 16px; margin-top:10px;'>"
-        "<div style='font-size:16px; font-weight:700; color:#92400e; margin-bottom:6px;'>🔄 音声修正プラン</div>"
-        f"<div style='font-size:20px; color:#1a2e44;'>{st.session_state.voice_revised_plan}</div>"
-        "</div>",
-        unsafe_allow_html=True)
-    if st.button("✕ 修正プランを閉じる", key="btn_clear_revised"):
-        st.session_state.voice_revised_plan = ""
-        st.rerun()
 
 
 # =========================
@@ -1313,7 +1301,6 @@ if st.session_state.caddy_result_cache:
             "result": result_s, "penalty": penalty, "green_on": green_on,
         })
         st.session_state.remaining = max(st.session_state.remaining - remain_adjust, 0)
-        st.session_state.voice_revised_plan = ""
 
         # ショット後のコメント生成
         try:
