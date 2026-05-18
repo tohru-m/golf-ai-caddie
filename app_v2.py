@@ -143,17 +143,24 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
             st.session_state.remaining = new_remaining
             if new_remaining == 0:
                 calc_info = f"実際{actual}y → グリーンオン！"
+                plan_text = "グリーンオン済み"
             else:
                 revised = _revised_plan(new_remaining, strokes_left, clubs)
                 calc_info = f"実際{actual}y → 残り{new_remaining}y → 修正戦略：{revised}"
+                plan_text = revised
+            # プロンプト用に状況も新しい値へ更新
+            prompt_remaining = new_remaining
+            prompt_strokes = strokes_left
         else:
             rec = _best_club(remaining, clubs)
             calc_info = f"残り{remaining}y → 推奨クラブ：{rec['name']}（{rec['dist']}y）"
+            prompt_remaining = remaining
+            prompt_strokes = context["remaining_strokes"]
 
         prompt = f"""あなたはベテランのゴルフキャディです。以下の計算結果と状況を踏まえ、2〜3文でキャディらしく答えてください。
 
 【計算済み推奨】{calc_info}
-【状況】{context['hole']}番ホール Par{context['par']} {context['yard']}y／元の残り{context['remaining']}y／残りショット{context['remaining_strokes']}回／目標{context['target']}打
+【状況】{context['hole']}番ホール Par{context['par']} {context['yard']}y／残り{prompt_remaining}y／残りショット{prompt_strokes}回／目標{context['target']}打
 【戦略プラン】{plan_text}
 【ホールメモ】{hole_memo if hole_memo else "なし"}
 【質問】{text}
