@@ -273,7 +273,7 @@ div:has(#adjust-btn-anchor) ~ div [data-testid="stColumn"] button { font-size:26
 [data-testid="stColumn"]:has(#reset-all-anchor) button { background-color:#fce7f3 !important; border-color:#f472b6 !important; color:#9d174d !important; font-size:22px !important; }
 div:has(#load-preset-anchor) + div[data-testid="stButton"] > button { font-size:22px !important; }
 
-.hole-header { background:linear-gradient(135deg,#1a2e44 0%,#2d4a6e 100%); color:white; border-radius:20px; padding:20px 18px; margin:10px 0 20px 0; display:flex; align-items:center; justify-content:flex-start; gap:2px; }
+.hole-header { background:linear-gradient(135deg,#1a2e44 0%,#2d4a6e 100%); color:white; border-radius:20px; padding:12px 18px; margin:10px 0 20px 0; display:flex; align-items:center; justify-content:flex-start; gap:2px; }
 .hole-header h2 { margin:0; font-size:24px; font-weight:900; color:white; white-space:nowrap; }
 .hole-header .sub { font-size:28px; font-weight:900; color:#93c5fd; white-space:nowrap; }
 
