@@ -138,10 +138,13 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
             if strokes_left == 1:
                 rec = _best_club(remaining, clubs)
                 calc_info = f"実際{actual}y → 新しい残り{remaining}y → 推奨：{rec['name']}（{rec['dist']}y）"
+                st.session_state.voice_revised_plan = f"残り{remaining}y → {rec['name']}（{rec['dist']}y）でグリーンオン"
             else:
                 revised = _revised_plan(remaining, strokes_left, clubs)
                 calc_info = f"実際{actual}y → 新しい残り{remaining}y → 修正戦略：{revised}"
+                st.session_state.voice_revised_plan = revised
         else:
+            st.session_state.voice_revised_plan = ""
             rec = _best_club(remaining, clubs)
             calc_info = f"残り{remaining}y → 推奨クラブ：{rec['name']}（{rec['dist']}y）"
 
@@ -739,6 +742,8 @@ if "pending_speech_text" not in st.session_state:
     st.session_state.pending_speech_text = ""
 if "caddy_audio_bytes" not in st.session_state:
     st.session_state.caddy_audio_bytes = None
+if "voice_revised_plan" not in st.session_state:
+    st.session_state.voice_revised_plan = ""
 
 if "course" not in st.session_state:
     st.session_state.course = {
@@ -1192,6 +1197,19 @@ elif remaining_strokes == 0:
 else:
     st.error("ショット数が不足しています")
 
+# 音声修正プランの表示
+if st.session_state.get("voice_revised_plan"):
+    st.markdown(
+        "<div style='background:#fef9c3; border-left:4px solid #f59e0b; border-radius:10px; "
+        "padding:12px 16px; margin-top:10px;'>"
+        "<div style='font-size:16px; font-weight:700; color:#92400e; margin-bottom:6px;'>🔄 音声修正プラン</div>"
+        f"<div style='font-size:20px; color:#1a2e44;'>{st.session_state.voice_revised_plan}</div>"
+        "</div>",
+        unsafe_allow_html=True)
+    if st.button("✕ 修正プランを閉じる", key="btn_clear_revised"):
+        st.session_state.voice_revised_plan = ""
+        st.rerun()
+
 
 # =========================
 # 🎤 キャディの回答を聞く（新機能）
@@ -1295,6 +1313,7 @@ if st.session_state.caddy_result_cache:
             "result": result_s, "penalty": penalty, "green_on": green_on,
         })
         st.session_state.remaining = max(st.session_state.remaining - remain_adjust, 0)
+        st.session_state.voice_revised_plan = ""
 
         # ショット後のコメント生成
         try:
