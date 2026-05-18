@@ -1146,11 +1146,12 @@ st.markdown(
     f"</div>", unsafe_allow_html=True)
 
 st.session_state.safety_margin = st.select_slider(
-    "安全マージン（各クラブの飛距離から差し引く）",
+    "安全マージン",
     options=[0, 5, 10, 15, 20],
     value=st.session_state.safety_margin,
     format_func=lambda x: "標準（0y）" if x == 0 else f"安全 −{x}y",
     key="safety_margin_slider",
+    label_visibility="collapsed",
 )
 
 current_shot = 1
