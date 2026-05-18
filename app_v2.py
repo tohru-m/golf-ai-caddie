@@ -107,6 +107,8 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
             parts = []
             for i, p in enumerate(plan_data):
                 d = min(p["dist"], p["before"])
+                if d <= 0 or p["before"] <= 0:
+                    continue
                 c = _normalize_for_tts(p["club"])
                 prefix = "次は" if i == 0 else ("その次は" if i == 1 else "さらに")
                 if p["remain"] == 0:
