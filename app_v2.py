@@ -119,10 +119,14 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
         strategy_match = _re.search(r'(戦略|プラン|ショット|作戦|計画|どう打|何打|どのクラブ|クラブは|どれ)', text)
         if strategy_match and context.get("remaining_strokes", 0) > 0:
             _used = sum(1 + h.get("penalty", 0) for h in st.session_state.history)
-            _plan_data = plan(remaining, context["remaining_strokes"], _used, context["par"], context["hole"])
-            _margin = st.session_state.get("safety_margin", 0)
-            _safety_note = f"（安全度+{_margin//5}）" if _margin > 0 else ""
-            return f"{context['hole']}番ホール、残り{remaining}ヤードの戦略{_safety_note}です。{_plan_to_voice(_plan_data)}。"
+            _rs = context["remaining_strokes"]
+            _plan_data = plan(remaining, _rs, _used, context["par"], context["hole"])
+            _margin_val = st.session_state.get("safety_margin", 0)
+            _safety_note = f"（安全度+{_margin_val//5}）" if _margin_val > 0 else ""
+            _shots_to_green = next((i+1 for i, p in enumerate(_plan_data) if p["remain"] == 0), len(_plan_data))
+            _spare = _rs - _shots_to_green
+            _spare_note = f"、{_spare}打余裕があります" if _spare > 0 else ""
+            return f"{context['hole']}番ホール、残り{remaining}ヤードの戦略{_safety_note}です。{_plan_to_voice(_plan_data)}{_spare_note}。"
 
         # 発話に「○ヤード飛んだ／飛ばなかった」が含まれる場合はPythonで計算してゲーム状態を更新
         shot_match = _re.search(r'(\d+)\s*ヤード.{0,6}(飛|打|だった|でした)', text)
