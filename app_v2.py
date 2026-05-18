@@ -91,6 +91,31 @@ def _best_club(remaining: int, clubs: list) -> dict:
     return max(clubs, key=lambda c: c["dist"])
 
 
+def _revised_plan(remaining: int, strokes: int, clubs: list) -> str:
+    """残り距離と残りショット数から修正プランを文字列で返す"""
+    if strokes <= 0 or remaining <= 0:
+        return f"残り{remaining}y"
+    parts = []
+    rem = remaining
+    for i in range(strokes):
+        shots_left = strokes - i
+        if shots_left == 1:
+            c = _best_club(rem, clubs)
+        else:
+            # 残り距離を打数で割った目標距離以上のクラブの中で最短
+            target = rem // shots_left
+            over_target = [c for c in clubs if c["dist"] >= target]
+            c = min(over_target, key=lambda x: x["dist"]) if over_target else max(clubs, key=lambda x: x["dist"])
+        dist = min(c["dist"], rem)
+        rem = max(rem - dist, 0)
+        if rem == 0:
+            parts.append(f"第{i+1}打：{c['name']}で{dist}y（グリーンオン）")
+            break
+        else:
+            parts.append(f"第{i+1}打：{c['name']}で{dist}y（残り{rem}y）")
+    return "、".join(parts)
+
+
 def handle_voice_input(text: str, clubs: list, context: dict) -> str:
     try:
         import openai, re as _re
@@ -108,9 +133,16 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
         if shot_match:
             actual = int(shot_match.group(1))
             remaining = max(remaining - actual, 0)
-
-        rec = _best_club(remaining, clubs)
-        calc_info = f"残り{remaining}y → 推奨クラブ：{rec['name']}（{rec['dist']}y）"
+            strokes_left = max(context["remaining_strokes"] - 1, 1)
+            if strokes_left == 1:
+                rec = _best_club(remaining, clubs)
+                calc_info = f"実際{actual}y → 新しい残り{remaining}y → 推奨：{rec['name']}（{rec['dist']}y）"
+            else:
+                revised = _revised_plan(remaining, strokes_left, clubs)
+                calc_info = f"実際{actual}y → 新しい残り{remaining}y → 修正戦略：{revised}"
+        else:
+            rec = _best_club(remaining, clubs)
+            calc_info = f"残り{remaining}y → 推奨クラブ：{rec['name']}（{rec['dist']}y）"
 
         prompt = f"""あなたはベテランのゴルフキャディです。以下の計算結果と状況を踏まえ、2〜3文でキャディらしく答えてください。
 
