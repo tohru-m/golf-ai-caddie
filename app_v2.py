@@ -91,31 +91,6 @@ def _best_club(remaining: int, clubs: list) -> dict:
     return max(clubs, key=lambda c: c["dist"])
 
 
-def _revised_plan(remaining: int, strokes: int, clubs: list) -> str:
-    """残り距離と残りショット数から修正プランを文字列で返す（第2打以降なのでドライバー除外）"""
-    if strokes <= 0 or remaining <= 0:
-        return f"残り{remaining}y"
-    clubs = [c for c in clubs if c["name"] != "1W"] or clubs
-    parts = []
-    rem = remaining
-    for i in range(strokes):
-        shots_left = strokes - i
-        if shots_left == 1:
-            c = _best_club(rem, clubs)
-        else:
-            # 残り距離を打数で割った目標距離以上のクラブの中で最短
-            target = rem // shots_left
-            over_target = [c for c in clubs if c["dist"] >= target]
-            c = min(over_target, key=lambda x: x["dist"]) if over_target else max(clubs, key=lambda x: x["dist"])
-        dist = min(c["dist"], rem)
-        rem = max(rem - dist, 0)
-        if rem == 0:
-            parts.append(f"第{i+1}打：{c['name']}で{dist}y（グリーンオン）")
-            break
-        else:
-            parts.append(f"第{i+1}打：{c['name']}で{dist}y（残り{rem}y）")
-    return "、".join(parts)
-
 
 def handle_voice_input(text: str, clubs: list, context: dict) -> str:
     try:
@@ -142,14 +117,19 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
             st.session_state.remaining = new_remaining
             if new_remaining == 0:
                 return f"{actual}ヤードでグリーンオンです！お見事でした。"
-            revised = _revised_plan(new_remaining, strokes_left, clubs)
-            # AIを使わずPythonで直接回答生成（数字のブレを防ぐため）
-            def _fmt(s):
-                return s.replace("第1打：", "次は").replace("第2打：", "その次は").replace("第3打：", "さらに") \
-                        .replace("で", "で、").replace("y", "ヤード").replace("（残り", "、残り") \
-                        .replace("（グリーンオン）", "でグリーンオンを狙いましょう").replace("）", "")
-            plan_voice = "、".join(_fmt(p) for p in revised.split("、"))
-            return f"{actual}ヤードでしたか。残り{new_remaining}ヤードです。{plan_voice}。"
+            # 画面と同じplan()関数で計算して一致させる
+            used_new = sum(1 + h.get("penalty", 0) for h in st.session_state.history)
+            plan_data = plan(new_remaining, strokes_left, used_new, context["par"], context["hole"])
+            voice_parts = []
+            for i, p in enumerate(plan_data):
+                d = min(p["dist"], p["before"])
+                club_spoken = _normalize_for_tts(p["club"])
+                prefix = "次は" if i == 0 else ("その次は" if i == 1 else "さらに")
+                if p["remain"] == 0:
+                    voice_parts.append(f"{prefix}{club_spoken}で{d}ヤード、グリーンオンを狙いましょう")
+                else:
+                    voice_parts.append(f"{prefix}{club_spoken}で{d}ヤード")
+            return f"{actual}ヤードでしたか。残り{new_remaining}ヤードです。{'、'.join(voice_parts)}。"
 
         rec = _best_club(remaining, clubs)
         calc_info = f"残り{remaining}y → 推奨クラブ：{rec['name']}（{rec['dist']}y）"
