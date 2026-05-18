@@ -731,6 +731,8 @@ if "pending_speech_text" not in st.session_state:
     st.session_state.pending_speech_text = ""
 if "caddy_audio_bytes" not in st.session_state:
     st.session_state.caddy_audio_bytes = None
+if "safety_margin" not in st.session_state:
+    st.session_state.safety_margin = 0
 
 if "course" not in st.session_state:
     st.session_state.course = {
@@ -1142,6 +1144,14 @@ st.markdown(
     f"<span style='font-size:24px; font-weight:900; white-space:nowrap; margin-right:16px;'>ショット戦略</span>"
     f"<span style='font-size:24px; font-weight:900; color:#6ee7b7; white-space:nowrap;'>{recommended_score}打／{label_text}</span>"
     f"</div>", unsafe_allow_html=True)
+
+st.session_state.safety_margin = st.select_slider(
+    "安全マージン（各クラブの飛距離から差し引く）",
+    options=[0, 5, 10, 15, 20],
+    value=st.session_state.safety_margin,
+    format_func=lambda x: "標準（0y）" if x == 0 else f"安全 −{x}y",
+    key="safety_margin_slider",
+)
 
 current_shot = 1
 for h in st.session_state.history:
