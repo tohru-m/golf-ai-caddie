@@ -763,9 +763,8 @@ def get_valid_clubs(margin=None):
         for c in valid
     ]
 
-def choose_club(remaining, shots_left, is_first_shot, par_num, hole):
-    safety_m = st.session_state.get("safety_margin", 0)
-    # 早打ち（非アプローチ）はマージンで短め、アプローチはplan()側で上書きするので0
+def choose_club(remaining, shots_left, is_first_shot, par_num, hole, _margin=None):
+    safety_m = _margin if _margin is not None else st.session_state.get("safety_margin", 0)
     effective_margin = 0 if shots_left == 1 else safety_m
     valid_clubs = get_valid_clubs(margin=effective_margin)
     if not valid_clubs:
@@ -857,23 +856,47 @@ def choose_club(remaining, shots_left, is_first_shot, par_num, hole):
 
 
 def plan(total_dist, strokes, used, par_num, hole):
-    result    = []
-    remaining = total_dist
+    safety_m = st.session_state.get("safety_margin", 0)
+    # Phase 1: standard plan (margin=0)
+    result_std = []
+    remaining  = total_dist
     for i in range(strokes):
         shots_left    = strokes - i
         is_first_shot = (used + i == 0)
-        club = choose_club(remaining, shots_left, is_first_shot, par_num, hole)
-        if len(result) == strokes - 1:
-            # アプローチ：早打ち(strokes-1)本分のマージンをブースト
-            safety_m = st.session_state.get("safety_margin", 0)
-            approach_boost = safety_m * (strokes - 1)
-            reachable = [c for c in get_valid_clubs(margin=-approach_boost) if c["dist"] >= remaining]
+        club = choose_club(remaining, shots_left, is_first_shot, par_num, hole, _margin=0)
+        if len(result_std) == strokes - 1:
+            reachable = [c for c in get_valid_clubs(margin=0) if c["dist"] >= remaining]
             if reachable:
                 club = min(reachable, key=lambda c: c["dist"])
         shot_dist = club["dist"]
-        result.append({"shot": i+1, "club": club["name"], "dist": shot_dist, "remain": max(remaining-shot_dist,0), "before": remaining})
+        result_std.append({"shot": i+1, "club": club["name"], "dist": shot_dist,
+                           "remain": max(remaining - shot_dist, 0), "before": remaining})
         remaining = max(remaining - shot_dist, 0)
-    return result
+    if safety_m == 0:
+        return result_std
+    # Phase 2: apply safety overlay
+    safe_result   = []
+    remaining     = total_dist
+    approach_boost = safety_m * (strokes - 1)
+    for i, p in enumerate(result_std):
+        is_approach = (i == len(result_std) - 1)
+        if is_approach:
+            boosted   = get_valid_clubs(margin=-approach_boost)
+            reachable = [c for c in boosted if c["dist"] >= remaining]
+            if reachable:
+                bc = min(reachable, key=lambda c: c["dist"])
+                club_name = bc["name"]
+                shot_dist = min(bc["dist"], remaining)
+            else:
+                club_name = p["club"]
+                shot_dist = remaining
+        else:
+            club_name = p["club"]
+            shot_dist = max(p["dist"] - safety_m, 1)
+        safe_result.append({"shot": i+1, "club": club_name, "dist": shot_dist,
+                            "remain": max(remaining - shot_dist, 0), "before": remaining})
+        remaining = max(remaining - shot_dist, 0)
+    return safe_result
 
 # =========================
 # ホール難易度・目標打数計算（app_v2と同一）
