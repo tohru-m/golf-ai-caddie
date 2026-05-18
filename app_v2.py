@@ -1148,14 +1148,15 @@ st.markdown(
 st.markdown("""
 <style>
 div[data-testid="stRadio"] label { font-size: 20px !important; font-weight: 700 !important; }
+div[data-testid="stRadio"] label > div:first-child { display: none !important; }
 </style>
 """, unsafe_allow_html=True)
 _margin_labels = ["+1", "+2", "+3"]
 _margin_values = [5, 10, 15]
 _cur_idx = _margin_values.index(st.session_state.safety_margin) if st.session_state.safety_margin in _margin_values else None
-_col_txt, _col_rad = st.columns([1, 3])
+_col_txt, _col_rad = st.columns([1, 4])
 with _col_txt:
-    st.markdown("<div style='font-size:20px; font-weight:700; color:red; padding-top:6px;'>安全度</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:20px; font-weight:700; color:red; margin-top:2px;'>安全度</div>", unsafe_allow_html=True)
 with _col_rad:
     _selected = st.radio("安全度", _margin_labels, index=_cur_idx, horizontal=True, label_visibility="collapsed")
 st.session_state.safety_margin = _margin_values[_margin_labels.index(_selected)] if _selected else 0
