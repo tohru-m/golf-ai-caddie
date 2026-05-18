@@ -83,32 +83,47 @@ def transcribe_audio(audio_bytes: bytes) -> str:
 # GPT：ショット入力 or キャディへの質問を自動判断
 # =========================
 
+def _best_club(remaining: int, clubs: list) -> dict:
+    """届くクラブの中で最短のもの。届かなければ最大飛距離クラブ。"""
+    reachable = [c for c in clubs if c["dist"] >= remaining]
+    if reachable:
+        return min(reachable, key=lambda c: c["dist"])
+    return max(clubs, key=lambda c: c["dist"])
+
+
 def handle_voice_input(text: str, clubs: list, context: dict) -> str:
     try:
-        import openai
+        import openai, re as _re
         api_key = st.secrets.get("OPENAI_API_KEY", "")
         if not api_key:
             return "APIキーが設定されていません。"
         client = openai.OpenAI(api_key=api_key)
 
-        clubs_str = "、".join([f"{c['name']}（{c['dist']}y）" for c in clubs])
         hole_memo = context.get("hole_memo", "")
         plan_text = context.get("plan_text", "なし")
+        remaining = context["remaining"]
 
-        prompt = f"""あなたはベテランのゴルフキャディです。以下の状況を踏まえ、プレーヤーの質問に2〜3文で答えてください。
+        # 発話に「○ヤード飛んだ／飛ばなかった」が含まれる場合はPythonで計算
+        shot_match = _re.search(r'(\d+)\s*ヤード.{0,6}(飛|打|だった|でした)', text)
+        if shot_match:
+            actual = int(shot_match.group(1))
+            remaining = max(remaining - actual, 0)
 
-【状況】{context['hole']}番ホール Par{context['par']} {context['yard']}y／残り{context['remaining']}y／残りショット{context['remaining_strokes']}回／目標{context['target']}打／履歴：{context['history_text']}
+        rec = _best_club(remaining, clubs)
+        calc_info = f"残り{remaining}y → 推奨クラブ：{rec['name']}（{rec['dist']}y）"
+
+        prompt = f"""あなたはベテランのゴルフキャディです。以下の計算結果と状況を踏まえ、2〜3文でキャディらしく答えてください。
+
+【計算済み推奨】{calc_info}
+【状況】{context['hole']}番ホール Par{context['par']} {context['yard']}y／元の残り{context['remaining']}y／残りショット{context['remaining_strokes']}回／目標{context['target']}打
 【戦略プラン】{plan_text}
-【このプレーヤーのクラブと飛距離（必ずこのリストだけを使うこと）】{clubs_str}
 【ホールメモ】{hole_memo if hole_memo else "なし"}
-
 【質問】{text}
 
 ルール：
 - 「〜ですよ」「〜しましょう」など親しみやすいキャディ口調
 - 戦略を聞かれたら「戦略プラン」を自然な会話に変換して答える
-- 「○ヤード飛んだ／飛ばなかった」という情報があれば、残り{context['remaining']}yからその距離を引いて新しい残り距離を計算する
-- クラブを推奨する際は【重要】一般的なゴルフの飛距離は絶対に使わず、必ず上記リストの飛距離のみを参照すること。推奨距離に届くクラブの中で、最も飛距離が近いものを選ぶこと（届かないクラブは選ばない）
+- クラブ推奨は必ず「計算済み推奨」をそのまま使うこと（変更しない）
 - 回答のみ返す（前置き不要）"""
 
         response = client.chat.completions.create(
