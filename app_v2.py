@@ -126,7 +126,6 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
         client = openai.OpenAI(api_key=api_key)
 
         hole_memo = context.get("hole_memo", "")
-        plan_text = context.get("plan_text", "なし")
         remaining = context["remaining"]
 
         # 発話に「○ヤード飛んだ／飛ばなかった」が含まれる場合はPythonで計算してゲーム状態を更新
@@ -142,26 +141,24 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
             })
             st.session_state.remaining = new_remaining
             if new_remaining == 0:
-                calc_info = f"実際{actual}y → グリーンオン！"
-                plan_text = "グリーンオン済み"
-            else:
-                revised = _revised_plan(new_remaining, strokes_left, clubs)
-                calc_info = f"実際{actual}y → 残り{new_remaining}y → 修正戦略：{revised}"
-                plan_text = revised
-            # プロンプト用に状況も新しい値へ更新
-            prompt_remaining = new_remaining
-            prompt_strokes = strokes_left
-        else:
-            rec = _best_club(remaining, clubs)
-            calc_info = f"残り{remaining}y → 推奨クラブ：{rec['name']}（{rec['dist']}y）"
-            prompt_remaining = remaining
-            prompt_strokes = context["remaining_strokes"]
+                return f"{actual}ヤードでグリーンオンです！お見事でした。"
+            revised = _revised_plan(new_remaining, strokes_left, clubs)
+            # AIを使わずPythonで直接回答生成（数字のブレを防ぐため）
+            def _fmt(s):
+                return s.replace("第1打：", "次は").replace("第2打：", "その次は").replace("第3打：", "さらに") \
+                        .replace("で", "で、").replace("y", "ヤード").replace("（残り", "、残り") \
+                        .replace("（グリーンオン）", "でグリーンオンを狙いましょう").replace("）", "")
+            plan_voice = "、".join(_fmt(p) for p in revised.split("、"))
+            return f"{actual}ヤードでしたか。残り{new_remaining}ヤードです。{plan_voice}。"
+
+        rec = _best_club(remaining, clubs)
+        calc_info = f"残り{remaining}y → 推奨クラブ：{rec['name']}（{rec['dist']}y）"
 
         prompt = f"""あなたはベテランのゴルフキャディです。以下の計算結果と状況を踏まえ、2〜3文でキャディらしく答えてください。
 
 【計算済み推奨】{calc_info}
-【状況】{context['hole']}番ホール Par{context['par']} {context['yard']}y／残り{prompt_remaining}y／残りショット{prompt_strokes}回／目標{context['target']}打
-【戦略プラン】{plan_text}
+【状況】{context['hole']}番ホール Par{context['par']} {context['yard']}y／残り{remaining}y／残りショット{context['remaining_strokes']}回／目標{context['target']}打
+【戦略プラン】{context.get("plan_text", "なし")}
 【ホールメモ】{hole_memo if hole_memo else "なし"}
 【質問】{text}
 
