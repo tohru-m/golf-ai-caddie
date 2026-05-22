@@ -112,7 +112,7 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
                 c = _normalize_for_tts(p["club"])
                 prefix = "" if i == 0 else ("次に" if i == 1 else "さらに")
                 if p["remain"] == 0:
-                    parts.append(f"{prefix}{c}で{d}ヤード、グリーンオンを狙いましょう")
+                    parts.append(f"{prefix}{c}で{d}ヤードを打ってグリーンオン")
                 else:
                     parts.append(f"{prefix}{c}で{d}ヤード")
             return "、".join(parts)
@@ -212,7 +212,7 @@ def _plan_to_voice(plan_data):
         c = _normalize_for_tts(p["club"])
         prefix = "" if i == 0 else ("次に" if i == 1 else "さらに")
         if p["remain"] == 0:
-            parts.append(f"{prefix}{c}で{d}ヤード、グリーンオンを狙いましょう")
+            parts.append(f"{prefix}{c}で{d}ヤードを打ってグリーンオン")
         else:
             parts.append(f"{prefix}{c}で{d}ヤード")
     return "、".join(parts)
