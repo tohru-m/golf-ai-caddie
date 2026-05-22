@@ -1124,7 +1124,12 @@ if "safety_margin" not in st.session_state:
 
 if "course" not in st.session_state:
     st.session_state.course = {
-        h: {"par": d["par"], "yard": d["yard"], "memo": d.get("memo", "")}
+        h: {
+            "par": d["par"], "yard": d["yard"], "memo": d.get("memo", ""),
+            "elevation": d.get("elevation", 0),
+            "green_side_bunkers": d.get("green_side_bunkers", []),
+            "green": d.get("green", {}),
+        }
         for h, d in PRESET_COURSES["宝塚ゴルフ倶楽部 新コース（フロント）"]["holes"].items()
     }
 
@@ -1920,7 +1925,15 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
         st.markdown('<div id="load-preset-anchor"></div>', unsafe_allow_html=True)
         if st.button("↓ コース情報を読み込む", key="btn_load_preset", use_container_width=True):
             preset = PRESET_COURSES[selected_preset]
-            st.session_state.course               = {h: {"par": d["par"], "yard": d["yard"], "memo": d.get("memo","")} for h, d in preset["holes"].items()}
+            st.session_state.course = {
+                h: {
+                    "par": d["par"], "yard": d["yard"], "memo": d.get("memo", ""),
+                    "elevation": d.get("elevation", 0),
+                    "green_side_bunkers": d.get("green_side_bunkers", []),
+                    "green": d.get("green", {}),
+                }
+                for h, d in preset["holes"].items()
+            }
             st.session_state.tee_type             = preset["tee"]
             st.session_state.history              = []
             st.session_state.green_on_flag        = False
@@ -1932,6 +1945,7 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
             for h, data in preset["holes"].items():
                 st.session_state[f"par_{h}"]  = data["par"]
                 st.session_state[f"yard_{h}"] = data["yard"]
+                st.session_state[f"memo_{h}"] = data.get("memo", "")
                 st.session_state.pop(f"actual_{h}", None)
                 st.session_state.pop(f"final_score_input_{h}", None)
             st.rerun()
@@ -1963,7 +1977,7 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
 
     if st.button("✅ コース設定を保存", key="btn_save_course", use_container_width=True):
         for h, data in edited_course.items():
-            st.session_state.course[h] = data
+            st.session_state.course[h].update(data)
         st.success("コース設定を保存しました")
         st.rerun()
 
