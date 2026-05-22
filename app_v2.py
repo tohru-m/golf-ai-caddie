@@ -1647,15 +1647,13 @@ with _col_rad:
     _selected = st.radio("安全度", _margin_labels, horizontal=True, label_visibility="collapsed", key="safety_radio")
 st.session_state.safety_margin = _margin_values[_margin_labels.index(_selected)]
 
-if "green_on_radio" not in st.session_state:
-    st.session_state.green_on_radio = "130y"
 _go_labels = ["なし", "100y", "130y", "160y"]
 _go_values = [0, 100, 130, 160]
 _col_go_txt, _col_go_rad = st.columns([1, 4])
 with _col_go_txt:
     st.markdown("<div style='font-size:20px; font-weight:700; color:#1d4ed8; margin-top:2px;'>直接狙い</div>", unsafe_allow_html=True)
 with _col_go_rad:
-    _go_selected = st.radio("直接狙い", _go_labels, horizontal=True, label_visibility="collapsed", key="green_on_radio")
+    _go_selected = st.radio("直接狙い", _go_labels, index=2, horizontal=True, label_visibility="collapsed", key="green_on_radio")
 st.session_state.green_on_threshold = _go_values[_go_labels.index(_go_selected)]
 
 current_shot = 1
