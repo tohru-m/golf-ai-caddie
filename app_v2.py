@@ -1211,6 +1211,9 @@ def choose_club(remaining, shots_left, is_first_shot, par_num, hole, _margin=Non
     _total_y   = hole_data.get("yard", 0)
     if _elevation != 0 and _total_y > 0:
         remaining = max(round(remaining + _elevation * remaining / _total_y), 1)
+    _go_threshold = st.session_state.get("green_on_threshold", 130)
+    if _go_threshold > 0 and remaining <= _go_threshold and shots_left > 1:
+        shots_left = 1
     safety_m = _margin if _margin is not None else st.session_state.get("safety_margin", 0)
     effective_margin = 0 if shots_left == 1 else safety_m
     valid_clubs = get_valid_clubs(margin=effective_margin)
@@ -1643,6 +1646,17 @@ with _col_txt:
 with _col_rad:
     _selected = st.radio("安全度", _margin_labels, horizontal=True, label_visibility="collapsed", key="safety_radio")
 st.session_state.safety_margin = _margin_values[_margin_labels.index(_selected)]
+
+if "green_on_radio" not in st.session_state:
+    st.session_state.green_on_radio = "130y"
+_go_labels = ["なし", "100y", "130y", "160y"]
+_go_values = [0, 100, 130, 160]
+_col_go_txt, _col_go_rad = st.columns([1, 4])
+with _col_go_txt:
+    st.markdown("<div style='font-size:20px; font-weight:700; color:#1d4ed8; margin-top:2px;'>直接狙い</div>", unsafe_allow_html=True)
+with _col_go_rad:
+    _go_selected = st.radio("直接狙い", _go_labels, horizontal=True, label_visibility="collapsed", key="green_on_radio")
+st.session_state.green_on_threshold = _go_values[_go_labels.index(_go_selected)]
 
 current_shot = 1
 for h in st.session_state.history:
