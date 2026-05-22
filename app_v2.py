@@ -1977,6 +1977,11 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
     st.markdown('<div id="preset-select-anchor"></div>', unsafe_allow_html=True)
     selected_preset = st.selectbox("プリセット選択", preset_options, key="preset_select", label_visibility="collapsed")
     if selected_preset != "コースを選択":
+        st.markdown(
+            f"<div style='font-size:18px; font-weight:700; color:#065f46; "
+            f"background:#ecfdf5; border-left:4px solid #059669; border-radius:8px; "
+            f"padding:8px 14px; margin:4px 0;'>⛳ {selected_preset}</div>",
+            unsafe_allow_html=True)
         st.markdown('<div id="load-preset-anchor"></div>', unsafe_allow_html=True)
         if st.button("↓ コース情報を読み込む", key="btn_load_preset", use_container_width=True):
             preset = PRESET_COURSES[selected_preset]
