@@ -1638,14 +1638,11 @@ if st.session_state.remaining > 0 and remaining_strokes > 0:
                     f"<div style='background:#dcfce7; border-left:4px solid #16a34a; border-radius:8px; padding:10px 20px; margin-top:8px; font-size:22px; font-weight:700; color:#15803d;'>"
                     f"🟢 {margin}打余裕があります</div>", unsafe_allow_html=True)
             _hole_d   = st.session_state.course.get(hole, {})
-            _approach = _hole_d.get("green", {}).get("approach_from", "")
             _gnote    = _hole_d.get("green", {}).get("note", "")
             _bunkers  = _hole_d.get("green_side_bunkers", [])
             _pos_jp   = {"left": "左", "right": "右", "front": "手前", "back": "奥"}
             _bunk_parts = [f"{_pos_jp.get(b['position'], b['position'])}残{b['approx_dist']}y" for b in _bunkers if b.get("approx_dist", 0) > 0]
             _adv_parts = []
-            if _approach:
-                _adv_parts.append(f"花道：{_approach}")
             if _bunk_parts:
                 _adv_parts.append("BK：" + "・".join(_bunk_parts))
             if _gnote:
