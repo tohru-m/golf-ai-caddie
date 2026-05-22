@@ -2001,13 +2001,7 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
     st.markdown('<div id="preset-select-anchor"></div>', unsafe_allow_html=True)
     selected_preset = st.selectbox("プリセット選択", preset_options, key="preset_select", label_visibility="collapsed")
     if selected_preset != "コースを選択":
-        st.markdown(
-            f"<div style='font-size:18px; font-weight:700; color:#065f46; "
-            f"background:#ecfdf5; border-left:4px solid #059669; border-radius:8px; "
-            f"padding:8px 14px; margin:4px 0;'>⛳ {selected_preset}</div>",
-            unsafe_allow_html=True)
-        st.markdown('<div id="load-preset-anchor"></div>', unsafe_allow_html=True)
-        if st.button("↓ コース情報を読み込む", key="btn_load_preset", use_container_width=True):
+        if selected_preset != st.session_state.get("loaded_preset"):
             preset = PRESET_COURSES[selected_preset]
             st.session_state.course = {
                 h: {
@@ -2020,6 +2014,7 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
             }
             st.session_state.tee_type             = preset["tee"]
             st.session_state.course_name          = selected_preset
+            st.session_state.loaded_preset        = selected_preset
             st.session_state.history              = []
             st.session_state.green_on_flag        = False
             st.session_state.course_expander_open = True
@@ -2034,6 +2029,11 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
                 st.session_state.pop(f"actual_{h}", None)
                 st.session_state.pop(f"final_score_input_{h}", None)
             st.rerun()
+        st.markdown(
+            f"<div style='font-size:18px; font-weight:700; color:#065f46; "
+            f"background:#ecfdf5; border-left:4px solid #059669; border-radius:8px; "
+            f"padding:8px 14px; margin:4px 0;'>⛳ {selected_preset}</div>",
+            unsafe_allow_html=True)
 
     edited_course = {}
     par_options   = ["Par", 3, 4, 5, 6]
