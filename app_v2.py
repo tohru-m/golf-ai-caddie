@@ -148,7 +148,11 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
             _shots_to_green = next((i+1 for i, p in enumerate(_plan_data) if p["remain"] == 0), len(_plan_data))
             _spare = _rs - _shots_to_green
             _spare_note = f"、{_spare}打余裕があります" if _spare > 0 else ""
-            return f"{context['hole']}番ホール、残り{remaining}ヤードの戦略{_safety_note}です。{_plan_to_voice(_plan_data)}{_spare_note}。"
+            _raw_memo = context.get("hole_memo", "")
+            _memo_sentences = [s for s in _raw_memo.split("。") if s.strip()]
+            _memo_short = "。".join(_memo_sentences[:2]) + ("。" if _memo_sentences else "")
+            _memo_note = f"　なお、{_memo_short}" if _memo_short else ""
+            return f"{context['hole']}番ホール、残り{remaining}ヤードの戦略{_safety_note}です。{_plan_to_voice(_plan_data)}{_spare_note}。{_memo_note}"
 
         rec = _best_club(remaining, clubs)
         calc_info = f"残り{remaining}y → 推奨クラブ：{rec['name']}（{rec['dist']}y）"
