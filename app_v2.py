@@ -1644,7 +1644,7 @@ if st.session_state.remaining > 0 and remaining_strokes > 0:
             _bunk_parts = [f"{_pos_jp.get(b['position'], b['position'])}残{b['approx_dist']}y" for b in _bunkers if b.get("approx_dist", 0) > 0]
             _adv_parts = []
             if _bunk_parts:
-                _adv_parts.append("BK：" + "・".join(_bunk_parts))
+                _adv_parts.append("バンカー：" + "・".join(_bunk_parts))
             if _gnote:
                 _adv_parts.append(_gnote)
             if _adv_parts:
