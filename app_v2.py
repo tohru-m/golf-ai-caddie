@@ -1658,11 +1658,14 @@ if st.session_state.remaining > 0 and remaining_strokes > 0:
             st.markdown(f"<div class='shot-row'><strong>{p['club']} ／{display_dist}y</strong>　残{max(p['before']-display_dist,0)}y{_elev_tag}</div>", unsafe_allow_html=True)
             # 1打目：バンカーまでの距離をティーから表示
             if i == 0 and used == 0:
-                _bunkers_ts = _hole_d.get("green_side_bunkers", [])
-                _pos_jp_ts  = {"left": "左", "right": "右", "front": "手前", "back": "奥"}
-                _tee_bunk   = [
+                _bunkers_ts  = _hole_d.get("green_side_bunkers", [])
+                _pos_jp_ts   = {"left": "左", "right": "右", "front": "手前", "back": "奥"}
+                _driver_dist = next((c["dist"] for c in st.session_state.clubs if c["name"] == "1W"), 200)
+                _tee_bunk    = [
                     f"{_pos_jp_ts.get(b['position'], b['position'])}バンカーまで{p['before'] - b['approx_dist']}y"
-                    for b in _bunkers_ts if 0 < b.get("approx_dist", 0) < p["before"]
+                    for b in _bunkers_ts
+                    if 0 < b.get("approx_dist", 0) < p["before"]
+                    and (p["before"] - b["approx_dist"]) <= _driver_dist + 50
                 ]
                 if _tee_bunk:
                     st.markdown(
