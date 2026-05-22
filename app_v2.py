@@ -1951,7 +1951,7 @@ with st.expander("⚙️ クラブ設定", expanded=False):
                 del st.session_state[k]
         st.rerun()
 
-    st.markdown("<div style='font-size:16px; font-weight:700; color:#1d4ed8; margin-top:12px; margin-bottom:-8px;'>この距離以下はグリーンを狙う</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:20px; font-weight:700; color:#1d4ed8; margin-top:12px; margin-bottom:8px;'>この距離以下はグリーンを狙う</div>", unsafe_allow_html=True)
     st.session_state.green_on_threshold = st.slider(
         "この距離以下はグリーンを狙う", min_value=80, max_value=170, value=st.session_state.get("green_on_threshold", 130),
         step=5, format="%dy", label_visibility="collapsed", key="green_on_slider"
