@@ -193,6 +193,8 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
 def _normalize_for_tts(text: str) -> str:
     _tts = {
         "S字": "エス字",
+        "とよい": "といいです",
+        "と良い": "といいです",
         "1W": "ドライバー", "2W": "2番ウッド", "3W": "3番ウッド",
         "4W": "4番ウッド", "5W": "5番ウッド", "7W": "7番ウッド",
         "3U": "3番ユーティリティ", "4U": "4番ユーティリティ",
