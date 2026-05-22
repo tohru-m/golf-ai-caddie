@@ -1473,7 +1473,10 @@ if _os.path.exists(_logo_path):
     _logo_tag = f"<img src='data:image/png;base64,{_logo_b64}' style='height:80px; vertical-align:middle; margin-right:12px;'>"
 else:
     _logo_tag = "⛳"
-st.markdown(f'<div style="font-size:40px; font-weight:900; color:#1a2e44; margin-bottom:6px; display:flex; align-items:center;">{_logo_tag}AIキャディ</div>', unsafe_allow_html=True)
+st.markdown(f'<div style="font-size:40px; font-weight:900; color:#1a2e44; margin-bottom:2px; display:flex; align-items:center;">{_logo_tag}AIキャディ</div>', unsafe_allow_html=True)
+_cn = st.session_state.get("course_name", "")
+if _cn:
+    st.markdown(f"<div style='font-size:18px; font-weight:700; color:#065f46; margin-bottom:6px;'>⛳ {_cn}</div>", unsafe_allow_html=True)
 
 # ---------- ラウンド目標 ----------
 goal_col1, goal_col2 = st.columns([1, 1])
@@ -2016,6 +2019,7 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
                 for h, d in preset["holes"].items()
             }
             st.session_state.tee_type             = preset["tee"]
+            st.session_state.course_name          = selected_preset
             st.session_state.history              = []
             st.session_state.green_on_flag        = False
             st.session_state.course_expander_open = True
