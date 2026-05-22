@@ -1639,33 +1639,31 @@ if st.session_state.remaining > 0 and remaining_strokes > 0:
                     f"🟢 {margin}打余裕があります</div>", unsafe_allow_html=True)
             _hole_d   = st.session_state.course.get(hole, {})
             _approach = _hole_d.get("green", {}).get("approach_from", "")
-            _gnote    = _hole_d.get("green", {}).get("note", "")
             _bunkers  = _hole_d.get("green_side_bunkers", [])
-            _bunk_parts = [f"{b['position']}バンカー（残{b['approx_dist']}y地点）" for b in _bunkers if b.get("approx_dist", 0) > 0]
+            _pos_jp   = {"left": "左", "right": "右", "front": "手前", "back": "奥"}
+            _bunk_parts = [f"{_pos_jp.get(b['position'], b['position'])}残{b['approx_dist']}y" for b in _bunkers if b.get("approx_dist", 0) > 0]
             _adv_parts = []
             if _approach:
                 _adv_parts.append(f"花道：{_approach}")
             if _bunk_parts:
-                _adv_parts.append("バンカー：" + "、".join(_bunk_parts))
-            if _gnote:
-                _adv_parts.append(_gnote)
+                _adv_parts.append("BK：" + "・".join(_bunk_parts))
             if _adv_parts:
                 st.markdown(
                     f"<div style='background:#fefce8; border-left:4px solid #ca8a04; border-radius:8px; "
-                    f"padding:8px 16px; margin:4px 0; font-size:18px; font-weight:600; color:#78350f;'>"
+                    f"padding:6px 14px; margin:4px 0; font-size:17px; font-weight:600; color:#78350f;'>"
                     f"⚠️ " + "　".join(_adv_parts) + "</div>", unsafe_allow_html=True)
             st.markdown(f"<div class='shot-row'><strong>パット {putts}回</strong></div>", unsafe_allow_html=True)
             break
         elif is_last:
-            st.markdown(f"<div class='shot-row-warn'><strong>{p['club']} ／{display_dist}y</strong>（残 {max(p['before']-display_dist,0)}y）</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='shot-row-warn'><strong>{p['club']} ／{display_dist}y</strong>　残{max(p['before']-display_dist,0)}y</div>", unsafe_allow_html=True)
         else:
             _elev_n = st.session_state.course.get(hole, {}).get("elevation", 0)
             _elev_tag = ""
             if _elev_n > 3:
-                _elev_tag = f"<span style='font-size:14px; color:#b45309;'> ↑打ち上げ{abs(_elev_n):.0f}y補正済</span>"
+                _elev_tag = f"<span style='font-size:13px; color:#b45309;'> ↑{abs(_elev_n):.0f}y補正</span>"
             elif _elev_n < -3:
-                _elev_tag = f"<span style='font-size:14px; color:#0369a1;'> ↓打ち下ろし{abs(_elev_n):.0f}y補正済</span>"
-            st.markdown(f"<div class='shot-row'><strong>{p['club']} ／{display_dist}y</strong>（残 {max(p['before']-display_dist,0)}y）{_elev_tag}</div>", unsafe_allow_html=True)
+                _elev_tag = f"<span style='font-size:13px; color:#0369a1;'> ↓{abs(_elev_n):.0f}y補正</span>"
+            st.markdown(f"<div class='shot-row'><strong>{p['club']} ／{display_dist}y</strong>　残{max(p['before']-display_dist,0)}y{_elev_tag}</div>", unsafe_allow_html=True)
 
 elif st.session_state.remaining == 0:
     st.markdown(f"<div class='shot-row'><strong>パット {putts}回</strong></div>", unsafe_allow_html=True)
