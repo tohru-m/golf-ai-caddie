@@ -236,21 +236,40 @@ def get_tts_bytes(text: str):
         return None
 
 
-def speak_with_browser(text: str, label: str = "▶ キャディの回答を聞く"):
+def speak_with_browser(text: str, label: str = "▶ キャディの回答を聞く", pausable: bool = False):
     text = _normalize_for_tts(text)
     escaped = text.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ")
     import streamlit.components.v1 as components
+    if pausable:
+        onclick = (
+            f"if (window.speechSynthesis.paused) {{"
+            f"  window.speechSynthesis.resume();"
+            f"  this.innerHTML = '⏸ 一時停止';"
+            f"}} else if (window.speechSynthesis.speaking) {{"
+            f"  window.speechSynthesis.pause();"
+            f"  this.innerHTML = '▶ 再生を再開';"
+            f"}} else {{"
+            f"  window.speechSynthesis.cancel();"
+            f"  var u = new SpeechSynthesisUtterance('{escaped}');"
+            f"  u.lang = 'ja-JP'; u.rate = 1.1;"
+            f"  var b = document.getElementById('btn');"
+            f"  u.onend = function() {{ b.innerHTML = '{label}'; }};"
+            f"  window.speechSynthesis.speak(u);"
+            f"  this.innerHTML = '⏸ 一時停止';"
+            f"}}"
+        )
+    else:
+        onclick = (
+            f"window.speechSynthesis.cancel();"
+            f"var u = new SpeechSynthesisUtterance('{escaped}');"
+            f"u.lang = 'ja-JP'; u.rate = 1.1;"
+            f"window.speechSynthesis.speak(u);"
+            f"this.innerHTML = '⏸ 再生中...';"
+            f"u.onend = function() {{ document.getElementById('btn').innerHTML = '▶ もう一度聞く'; }};"
+        )
     components.html(
         f"""
-        <button onclick="
-            window.speechSynthesis.cancel();
-            var u = new SpeechSynthesisUtterance('{escaped}');
-            u.lang = 'ja-JP';
-            u.rate = 1.1;
-            window.speechSynthesis.speak(u);
-            this.innerHTML = '⏸ 再生中...';
-            u.onend = function() {{ document.getElementById('btn').innerHTML = '▶ もう一度聞く'; }};
-        " id="btn" style="
+        <button onclick="{onclick}" id="btn" style="
             font-size:22px; font-weight:700;
             padding:14px 20px; width:100%;
             background:#1a2e44; color:white;
@@ -1648,7 +1667,7 @@ if st.session_state.remaining > 0 and remaining_strokes > 0:
     _sv_memo_note = f"　なお、{_sv_memo_short}" if _sv_memo_short else ""
     _sv_text = (f"{hole}番ホール、{st.session_state.remaining}ヤード、"
                 f"{_plan_to_voice(plan_data)}{_sv_spare_note}。{_sv_memo_note}")
-    speak_with_browser(_sv_text, label="🔊 ショット戦略を聞く")
+    speak_with_browser(_sv_text, label="🔊 ショット戦略を聞く", pausable=True)
 
     _hole_d = st.session_state.course.get(hole, {})
     for i, p in enumerate(plan_data):
