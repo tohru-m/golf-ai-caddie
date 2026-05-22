@@ -110,7 +110,7 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
                 if d <= 0 or p["before"] <= 0:
                     continue
                 c = _normalize_for_tts(p["club"])
-                prefix = "次は" if i == 0 else ("その次は" if i == 1 else "さらに")
+                prefix = "" if i == 0 else ("次に" if i == 1 else "さらに")
                 if p["remain"] == 0:
                     parts.append(f"{prefix}{c}で{d}ヤード、グリーンオンを狙いましょう")
                 else:
@@ -143,8 +143,6 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
             _used = sum(1 + h.get("penalty", 0) for h in st.session_state.history)
             _rs = context["remaining_strokes"]
             _plan_data = plan(remaining, _rs, _used, context["par"], context["hole"])
-            _margin_val = st.session_state.get("safety_margin", 0)
-            _safety_note = f"（安全度+{_margin_val//5}）" if _margin_val > 0 else ""
             _shots_to_green = next((i+1 for i, p in enumerate(_plan_data) if p["remain"] == 0), len(_plan_data))
             _spare = _rs - _shots_to_green
             _spare_note = f"、{_spare}打余裕があります" if _spare > 0 else ""
@@ -152,7 +150,7 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
             _memo_sentences = [s for s in _raw_memo.split("。") if s.strip()]
             _memo_short = "。".join(_memo_sentences[:2]) + ("。" if _memo_sentences else "")
             _memo_note = f"　なお、{_memo_short}" if _memo_short else ""
-            return f"{context['hole']}番ホール、残り{remaining}ヤードの戦略{_safety_note}です。{_plan_to_voice(_plan_data)}{_spare_note}。{_memo_note}"
+            return f"{context['hole']}番ホール、{remaining}ヤード、{_plan_to_voice(_plan_data)}{_spare_note}。{_memo_note}"
 
         rec = _best_club(remaining, clubs)
         calc_info = f"残り{remaining}y → 推奨クラブ：{rec['name']}（{rec['dist']}y）"
@@ -211,7 +209,7 @@ def _plan_to_voice(plan_data):
         if d <= 0 or p["before"] <= 0:
             continue
         c = _normalize_for_tts(p["club"])
-        prefix = "次は" if i == 0 else ("その次は" if i == 1 else "さらに")
+        prefix = "" if i == 0 else ("次に" if i == 1 else "さらに")
         if p["remain"] == 0:
             parts.append(f"{prefix}{c}で{d}ヤード、グリーンオンを狙いましょう")
         else:
@@ -1642,15 +1640,13 @@ if st.session_state.remaining > 0 and remaining_strokes > 0:
     shots_to_green = next((i+1 for i, p in enumerate(plan_data) if p["remain"] == 0), len(plan_data))
 
     # ── 音声で聞くボタン ──
-    _sv_margin_val = st.session_state.get("safety_margin", 0)
-    _sv_safety_note = f"（安全度+{_sv_margin_val//5}）" if _sv_margin_val > 0 else ""
     _sv_spare = remaining_strokes - shots_to_green
     _sv_spare_note = f"、{_sv_spare}打余裕があります" if _sv_spare > 0 else ""
     _sv_memo_raw = st.session_state.course.get(hole, {}).get("memo", "")
     _sv_memo_sentences = [s for s in _sv_memo_raw.split("。") if s.strip()]
     _sv_memo_short = "。".join(_sv_memo_sentences[:2]) + ("。" if _sv_memo_sentences else "")
     _sv_memo_note = f"　なお、{_sv_memo_short}" if _sv_memo_short else ""
-    _sv_text = (f"{hole}番ホール、残り{st.session_state.remaining}ヤードの戦略{_sv_safety_note}です。"
+    _sv_text = (f"{hole}番ホール、{st.session_state.remaining}ヤード、"
                 f"{_plan_to_voice(plan_data)}{_sv_spare_note}。{_sv_memo_note}")
     speak_with_browser(_sv_text, label="🔊 ショット戦略を聞く")
 
