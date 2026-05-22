@@ -1641,7 +1641,8 @@ if st.session_state.remaining > 0 and remaining_strokes > 0:
             _gnote    = _hole_d.get("green", {}).get("note", "")
             _bunkers  = _hole_d.get("green_side_bunkers", [])
             _pos_jp   = {"left": "左", "right": "右", "front": "手前", "back": "奥"}
-            _bunk_parts = [f"{_pos_jp.get(b['position'], b['position'])}残{b['approx_dist']}y" for b in _bunkers if b.get("approx_dist", 0) > 0]
+            _cur_remaining = st.session_state.remaining
+            _bunk_parts = [f"{_pos_jp.get(b['position'], b['position'])}残{b['approx_dist']}y" for b in _bunkers if 0 < b.get("approx_dist", 0) < _cur_remaining]
             _adv_parts = []
             if _bunk_parts:
                 _adv_parts.append("バンカー：" + "・".join(_bunk_parts))
