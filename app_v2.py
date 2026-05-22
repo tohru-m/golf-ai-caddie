@@ -115,6 +115,11 @@ def handle_voice_input(text: str, clubs: list, context: dict) -> str:
                     parts.append(f"{prefix}{c}で{d}ヤードを打ってグリーンオン")
                 else:
                     parts.append(f"{prefix}{c}で{d}ヤード")
+            if parts:
+                if parts[-1].endswith("グリーンオン"):
+                    parts[-1] += "です"
+                else:
+                    parts[-1] += "を打ちます"
             return "、".join(parts)
 
         # 発話に「○ヤード飛んだ／飛ばなかった」が含まれる場合はゲーム状態を更新してプランを返す
@@ -215,6 +220,11 @@ def _plan_to_voice(plan_data):
             parts.append(f"{prefix}{c}で{d}ヤードを打ってグリーンオン")
         else:
             parts.append(f"{prefix}{c}で{d}ヤード")
+    if parts:
+        if parts[-1].endswith("グリーンオン"):
+            parts[-1] += "です"
+        else:
+            parts[-1] += "を打ちます"
     return "、".join(parts)
 
 
