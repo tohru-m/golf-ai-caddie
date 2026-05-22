@@ -1647,15 +1647,6 @@ with _col_rad:
     _selected = st.radio("安全度", _margin_labels, horizontal=True, label_visibility="collapsed", key="safety_radio")
 st.session_state.safety_margin = _margin_values[_margin_labels.index(_selected)]
 
-_go_labels = ["なし", "100y", "130y", "160y"]
-_go_values = [0, 100, 130, 160]
-_col_go_txt, _col_go_rad = st.columns([1, 4])
-with _col_go_txt:
-    st.markdown("<div style='font-size:20px; font-weight:700; color:#1d4ed8; margin-top:2px;'>直接狙い</div>", unsafe_allow_html=True)
-with _col_go_rad:
-    _go_selected = st.radio("直接狙い", _go_labels, index=2, horizontal=True, label_visibility="collapsed", key="green_on_radio")
-st.session_state.green_on_threshold = _go_values[_go_labels.index(_go_selected)]
-
 current_shot = 1
 for h in st.session_state.history:
     result_text = {
@@ -1959,6 +1950,12 @@ with st.expander("⚙️ クラブ設定", expanded=False):
             if k.startswith(("name_", "dist_", "miss_")):
                 del st.session_state[k]
         st.rerun()
+
+    st.markdown("<div style='font-size:16px; font-weight:700; color:#1d4ed8; margin-top:12px; margin-bottom:-8px;'>この距離以下はグリーンを狙う</div>", unsafe_allow_html=True)
+    st.session_state.green_on_threshold = st.slider(
+        "この距離以下はグリーンを狙う", min_value=80, max_value=170, value=st.session_state.get("green_on_threshold", 130),
+        step=5, format="%dy", label_visibility="collapsed", key="green_on_slider"
+    )
 
     edited_clubs = []
     for i, c in enumerate(st.session_state.clubs):
