@@ -204,6 +204,21 @@ def _normalize_for_tts(text: str) -> str:
     return text
 
 
+def _plan_to_voice(plan_data):
+    parts = []
+    for i, p in enumerate(plan_data):
+        d = min(p["dist"], p["before"])
+        if d <= 0 or p["before"] <= 0:
+            continue
+        c = _normalize_for_tts(p["club"])
+        prefix = "次は" if i == 0 else ("その次は" if i == 1 else "さらに")
+        if p["remain"] == 0:
+            parts.append(f"{prefix}{c}で{d}ヤード、グリーンオンを狙いましょう")
+        else:
+            parts.append(f"{prefix}{c}で{d}ヤード")
+    return "、".join(parts)
+
+
 def get_tts_bytes(text: str):
     try:
         import openai
@@ -223,7 +238,7 @@ def get_tts_bytes(text: str):
         return None
 
 
-def speak_with_browser(text: str):
+def speak_with_browser(text: str, label: str = "▶ キャディの回答を聞く"):
     text = _normalize_for_tts(text)
     escaped = text.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ")
     import streamlit.components.v1 as components
@@ -243,7 +258,7 @@ def speak_with_browser(text: str):
             background:#1a2e44; color:white;
             border:none; border-radius:14px;
             cursor:pointer; margin-top:4px;
-        ">▶ キャディの回答を聞く</button>
+        ">{label}</button>
         """,
         height=62,
     )
@@ -1625,6 +1640,20 @@ if st.session_state.remaining > 0 and remaining_strokes > 0:
     next_club_dist = plan_data[0]["dist"] if plan_data else 0
 
     shots_to_green = next((i+1 for i, p in enumerate(plan_data) if p["remain"] == 0), len(plan_data))
+
+    # ── 音声で聞くボタン ──
+    _sv_margin_val = st.session_state.get("safety_margin", 0)
+    _sv_safety_note = f"（安全度+{_sv_margin_val//5}）" if _sv_margin_val > 0 else ""
+    _sv_spare = remaining_strokes - shots_to_green
+    _sv_spare_note = f"、{_sv_spare}打余裕があります" if _sv_spare > 0 else ""
+    _sv_memo_raw = st.session_state.course.get(hole, {}).get("memo", "")
+    _sv_memo_sentences = [s for s in _sv_memo_raw.split("。") if s.strip()]
+    _sv_memo_short = "。".join(_sv_memo_sentences[:2]) + ("。" if _sv_memo_sentences else "")
+    _sv_memo_note = f"　なお、{_sv_memo_short}" if _sv_memo_short else ""
+    _sv_text = (f"{hole}番ホール、残り{st.session_state.remaining}ヤードの戦略{_sv_safety_note}です。"
+                f"{_plan_to_voice(plan_data)}{_sv_spare_note}。{_sv_memo_note}")
+    speak_with_browser(_sv_text, label="🔊 ショット戦略を聞く")
+
     _hole_d = st.session_state.course.get(hole, {})
     for i, p in enumerate(plan_data):
         if p["before"] == 0: continue
