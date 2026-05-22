@@ -1625,6 +1625,7 @@ if st.session_state.remaining > 0 and remaining_strokes > 0:
     next_club_dist = plan_data[0]["dist"] if plan_data else 0
 
     shots_to_green = next((i+1 for i, p in enumerate(plan_data) if p["remain"] == 0), len(plan_data))
+    _hole_d = st.session_state.course.get(hole, {})
     for i, p in enumerate(plan_data):
         if p["before"] == 0: continue
         display_dist  = min(p["dist"], p["before"])
@@ -1637,22 +1638,12 @@ if st.session_state.remaining > 0 and remaining_strokes > 0:
                 st.markdown(
                     f"<div style='background:#dcfce7; border-left:4px solid #16a34a; border-radius:8px; padding:10px 20px; margin-top:8px; font-size:22px; font-weight:700; color:#15803d;'>"
                     f"🟢 {margin}打余裕があります</div>", unsafe_allow_html=True)
-            _hole_d   = st.session_state.course.get(hole, {})
-            _gnote    = _hole_d.get("green", {}).get("note", "")
-            _bunkers  = _hole_d.get("green_side_bunkers", [])
-            _pos_jp   = {"left": "左", "right": "右", "front": "手前", "back": "奥"}
-            _cur_remaining = st.session_state.remaining
-            _bunk_parts = [f"{_pos_jp.get(b['position'], b['position'])}残{b['approx_dist']}y" for b in _bunkers if 0 < b.get("approx_dist", 0) < _cur_remaining]
-            _adv_parts = []
-            if _bunk_parts:
-                _adv_parts.append("バンカー：" + "・".join(_bunk_parts))
+            _gnote  = _hole_d.get("green", {}).get("note", "")
             if _gnote:
-                _adv_parts.append(_gnote)
-            if _adv_parts:
                 st.markdown(
                     f"<div style='background:#fefce8; border-left:4px solid #ca8a04; border-radius:8px; "
                     f"padding:6px 14px; margin:4px 0; font-size:17px; font-weight:600; color:#78350f;'>"
-                    f"⚠️ " + "　".join(_adv_parts) + "</div>", unsafe_allow_html=True)
+                    f"⚠️ {_gnote}</div>", unsafe_allow_html=True)
             st.markdown(f"<div class='shot-row'><strong>パット {putts}回</strong></div>", unsafe_allow_html=True)
             break
         elif is_last:
@@ -1665,6 +1656,19 @@ if st.session_state.remaining > 0 and remaining_strokes > 0:
             elif _elev_n < -3:
                 _elev_tag = f"<span style='font-size:13px; color:#0369a1;'> ↓{abs(_elev_n):.0f}y補正</span>"
             st.markdown(f"<div class='shot-row'><strong>{p['club']} ／{display_dist}y</strong>　残{max(p['before']-display_dist,0)}y{_elev_tag}</div>", unsafe_allow_html=True)
+            # 1打目：バンカーまでの距離をティーから表示
+            if i == 0 and used == 0:
+                _bunkers_ts = _hole_d.get("green_side_bunkers", [])
+                _pos_jp_ts  = {"left": "左", "right": "右", "front": "手前", "back": "奥"}
+                _tee_bunk   = [
+                    f"{_pos_jp_ts.get(b['position'], b['position'])}バンカーまで{p['before'] - b['approx_dist']}y"
+                    for b in _bunkers_ts if 0 < b.get("approx_dist", 0) < p["before"]
+                ]
+                if _tee_bunk:
+                    st.markdown(
+                        f"<div style='background:#fefce8; border-left:4px solid #ca8a04; border-radius:8px; "
+                        f"padding:6px 14px; margin:4px 0; font-size:17px; font-weight:600; color:#78350f;'>"
+                        f"⚠️ " + "　".join(_tee_bunk) + "</div>", unsafe_allow_html=True)
 
 elif st.session_state.remaining == 0:
     st.markdown(f"<div class='shot-row'><strong>パット {putts}回</strong></div>", unsafe_allow_html=True)
