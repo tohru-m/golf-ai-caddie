@@ -1684,6 +1684,7 @@ if st.session_state.remaining > 0 and remaining_strokes > 0:
     _sv_text = (f"{hole}番ホール、{st.session_state.remaining}ヤード、"
                 f"{_plan_to_voice(plan_data)}{_sv_spare_note}。{_sv_memo_note}")
     speak_with_browser(_sv_text, label="🔊 ショット戦略を聞く", pausable=True)
+    st.markdown("<div style='margin-top:10px;'></div>", unsafe_allow_html=True)
 
     _hole_d = st.session_state.course.get(hole, {})
     for i, p in enumerate(plan_data):
