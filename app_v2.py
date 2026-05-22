@@ -504,6 +504,160 @@ PRESET_COURSES = {
             18: {"par": 4, "yard": 398, "memo": "ティーショットは正面の木の右サイドが狙い目。左に行くと木が邪魔になりグリーンが狙いにくい。グリーンは手前から奥に向かって速い。"},
         }
     },
+    "宝塚ゴルフ倶楽部 旧コース（ホワイト）": {
+        "name": "宝塚ゴルフ倶楽部", "tee": "WHT",
+        "holes": {
+            1:  {"par": 4, "yard": 233, "elevation": -13.9,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 142, "note": "グリーン手前左に2つ"}],
+                 "green": {"approach_from": "右（花道）", "note": "右サイドにバンカー。手前右から攻めるのが安全"},
+                 "memo": "打ち下ろし13.9y。グリーン手前左バンカー。花道は右から。"},
+            2:  {"par": 4, "yard": 233, "elevation": -4.3,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 0, "note": "グリーン左サイドにバンカー"}],
+                 "green": {"approach_from": "右（花道）", "note": "グリーン左にバンカー。右から攻める"},
+                 "memo": "打ち下ろし4.3y。左サイドにバンカー。花道は右。"},
+            3:  {"par": 5, "yard": 186, "elevation": -12.2,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 149, "note": "グリーン手前左バンカー"}, {"position": "right", "approx_dist": 130, "note": "グリーン右サイド"}],
+                 "green": {"approach_from": "左（花道）", "note": "奥からは速い。手前から攻める"},
+                 "memo": "打ち下ろし12.2y。左右にバンカー。手前から攻める。"},
+            4:  {"par": 4, "yard": 236, "elevation": -6.5,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 119, "note": "フェアウェイ左バンカー"}, {"position": "right", "approx_dist": 72, "note": "グリーン手前右バンカー"}],
+                 "green": {"approach_from": "左（花道）", "note": "グリーン手前右にバンカー。左から攻める"},
+                 "memo": "打ち下ろし6.5y。グリーン手前右バンカーに注意。"},
+            5:  {"par": 5, "yard": 188, "elevation": -9.2,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 56, "note": "グリーン左バンカー"}, {"position": "right", "approx_dist": 56, "note": "グリーン右バンカー"}],
+                 "green": {"approach_from": "正面（花道広め）", "note": "グリーン奥が高い。手前から攻める"},
+                 "memo": "打ち下ろし9.2y。グリーン左右バンカー。手前から攻める。"},
+            6:  {"par": 3, "yard": 133, "elevation": 0,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 0, "note": "グリーン左バンカー"}],
+                 "green": {"approach_from": "正面", "note": "奥は急傾斜。手前から攻めること"},
+                 "memo": "Par3。グリーン奥は急傾斜。絶対に奥には外さない。"},
+            7:  {"par": 4, "yard": 224, "elevation": 0,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 153, "note": "フェアウェイ左バンカー"}],
+                 "green": {"approach_from": "正面右（花道）", "note": "グリーン奥から手前への急傾斜"},
+                 "memo": "フェアウェイ左バンカー注意。グリーンは奥から手前に傾斜。"},
+            8:  {"par": 3, "yard": 174, "elevation": 0,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 0, "note": "グリーン左バンカー"}],
+                 "green": {"approach_from": "正面", "note": "グリーン周りバンカー注意"},
+                 "memo": "Par3。池あり。グリーン左バンカー注意。"},
+            9:  {"par": 4, "yard": 234, "elevation": 0,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 121, "note": "フェアウェイ左バンカー"}, {"position": "right", "approx_dist": 134, "note": "フェアウェイ右バンカー"}],
+                 "green": {"approach_from": "右（花道）", "note": "グリーン手前左右にバンカー。花道は右"},
+                 "memo": "フェアウェイ中央バンカー左右に注意。花道は右から。"},
+            10: {"par": 4, "yard": 235, "elevation": 0,
+                 "green_side_bunkers": [],
+                 "green": {"approach_from": "右（花道）", "note": "比較的フラット。右から攻める"},
+                 "memo": "フェアウェイ左にバンカー。グリーンは比較的フラット。"},
+            11: {"par": 4, "yard": 235, "elevation": 0,
+                 "green_side_bunkers": [],
+                 "green": {"approach_from": "右（花道）", "note": "グリーン右から花道経由が安全"},
+                 "memo": "グリーン手前右から攻める。"},
+            12: {"par": 4, "yard": 0, "elevation": 0,
+                 "green_side_bunkers": [],
+                 "green": {"approach_from": "正面", "note": "川沿いホール。距離データ不明"},
+                 "memo": "川沿いホール。距離は要設定。"},
+            13: {"par": 5, "yard": 207, "elevation": 0,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 97, "note": "グリーン手前左バンカー"}],
+                 "green": {"approach_from": "正面手前", "note": "急傾斜。絶対に奥に外さない"},
+                 "memo": "打ち上げホール。グリーン奥は急傾斜+12。手前から必ず攻める。"},
+            14: {"par": 4, "yard": 230, "elevation": 14.1,
+                 "green_side_bunkers": [{"position": "right", "approx_dist": 122, "note": "グリーン手前右バンカー"}],
+                 "green": {"approach_from": "左（花道）", "note": "打ち上げ14.1y。グリーン左が高い"},
+                 "memo": "打ち上げ14.1y。グリーン手前右バンカー注意。花道は左から。"},
+            15: {"par": 5, "yard": 228, "elevation": 0,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 128, "note": "グリーン手前左バンカー"}],
+                 "green": {"approach_from": "正面（花道広め）", "note": "グリーン手前左バンカー注意"},
+                 "memo": "グリーン手前左バンカー注意。花道は正面から。"},
+            16: {"par": 3, "yard": 20, "elevation": 0,
+                 "green_side_bunkers": [],
+                 "green": {"approach_from": "正面", "note": "非常に短いPar3。複雑なグリーン"},
+                 "memo": "超短距離Par3（距離要確認）。グリーンのアンジュレーションに注意。"},
+            17: {"par": 4, "yard": 228, "elevation": -15.0,
+                 "green_side_bunkers": [{"position": "right", "approx_dist": 110, "note": "川が右サイドに沿っている"}],
+                 "green": {"approach_from": "左（花道）", "note": "右に川。グリーン左から攻める"},
+                 "memo": "打ち下ろし15.0y。右サイドに川。グリーン左から攻める。"},
+            18: {"par": 4, "yard": 221, "elevation": 4.0,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 93, "note": "グリーン左バンカー"}],
+                 "green": {"approach_from": "右（花道）", "note": "二段グリーン。左にバンカー。右から攻める"},
+                 "memo": "打ち上げ4.0y。二段グリーン。左バンカー注意。花道は右から。"},
+        }
+    },
+    "宝塚ゴルフ倶楽部 新コース（ホワイト）": {
+        "name": "宝塚ゴルフ倶楽部", "tee": "WHT",
+        "holes": {
+            1:  {"par": 5, "yard": 225, "elevation": 8.0,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 115, "note": "フェアウェイ左バンカー"}, {"position": "right", "approx_dist": 115, "note": "フェアウェイ右バンカー"}],
+                 "green": {"approach_from": "正面手前", "note": "打ち上げ8y。グリーン右サイドにバンカー。手前から攻める"},
+                 "memo": "打ち上げ8.0y。フェアウェイ左右バンカー注意。グリーン奥は急傾斜。"},
+            2:  {"par": 4, "yard": 223, "elevation": 4.8,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 123, "note": "グリーン左バンカー"}, {"position": "right", "approx_dist": 123, "note": "グリーン右バンカー"}],
+                 "green": {"approach_from": "正面", "note": "グリーン周りバンカー多数。二段グリーン"},
+                 "memo": "打ち上げ4.8y。グリーン左右バンカー。二段グリーンに注意。"},
+            3:  {"par": 3, "yard": 27, "elevation": 0,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 0, "note": "グリーン左バンカー"}],
+                 "green": {"approach_from": "正面", "note": "短いPar3。グリーン複雑な傾斜"},
+                 "memo": "短距離Par3（距離要確認）。グリーン左バンカー注意。"},
+            4:  {"par": 4, "yard": 199, "elevation": 16.5,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 89, "note": "グリーン左サイド。左に池"}],
+                 "green": {"approach_from": "正面手前", "note": "打ち上げ16.5y。急傾斜。絶対に奥に外さない"},
+                 "memo": "大きな打ち上げ16.5y。左サイドに池。グリーン奥は急傾斜。手前必須。"},
+            5:  {"par": 4, "yard": 199, "elevation": 0,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 93, "note": "グリーン左バンカー"}],
+                 "green": {"approach_from": "正面", "note": "比較的フラット。二段グリーン気味"},
+                 "memo": "グリーン左バンカー注意。二段グリーン。"},
+            6:  {"par": 5, "yard": 215, "elevation": -11.0,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 65, "note": "フェアウェイ左バンカー"}],
+                 "green": {"approach_from": "正面", "note": "打ち下ろし11y。比較的フラット"},
+                 "memo": "打ち下ろし11.0y。フェアウェイ左バンカー注意。"},
+            7:  {"par": 3, "yard": 0, "elevation": 0,
+                 "green_side_bunkers": [],
+                 "green": {"approach_from": "正面", "note": "Par3。グリーン奥は急傾斜+11"},
+                 "memo": "Par3（距離要確認）。グリーン奥は非常に急傾斜。"},
+            8:  {"par": 5, "yard": 226, "elevation": -5.6,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 104, "note": "グリーン左バンカー"}],
+                 "green": {"approach_from": "右（花道）", "note": "打ち下ろし5.6y。左に川。グリーン複雑"},
+                 "memo": "打ち下ろし5.6y。左サイドに川。グリーン左バンカー注意。"},
+            9:  {"par": 4, "yard": 228, "elevation": -6.3,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 113, "note": "グリーン左バンカー"}, {"position": "right", "approx_dist": 113, "note": "グリーン右バンカー"}],
+                 "green": {"approach_from": "正面", "note": "打ち下ろし6.3y。グリーン左右バンカー"},
+                 "memo": "打ち下ろし6.3y。グリーン左右バンカー注意。"},
+            10: {"par": 4, "yard": 175, "elevation": -5.9,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 53, "note": "グリーン左バンカー"}],
+                 "green": {"approach_from": "右（花道）", "note": "打ち下ろし5.9y。グリーン複雑な傾斜"},
+                 "memo": "打ち下ろし5.9y。グリーン左バンカー注意。複雑なアンジュレーション。"},
+            11: {"par": 4, "yard": 218, "elevation": 4.1,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 103, "note": "グリーン左バンカー"}, {"position": "right", "approx_dist": 103, "note": "グリーン右バンカー"}],
+                 "green": {"approach_from": "正面手前", "note": "打ち上げ4.1y。グリーン奥は急傾斜。手前から"},
+                 "memo": "打ち上げ4.1y。グリーン左右バンカー。奥は急傾斜。必ず手前から攻める。"},
+            12: {"par": 3, "yard": 0, "elevation": 0,
+                 "green_side_bunkers": [],
+                 "green": {"approach_from": "正面", "note": "Par3。グリーン奥は急傾斜+9"},
+                 "memo": "Par3（距離要確認）。グリーン奥は急傾斜。"},
+            13: {"par": 4, "yard": 197, "elevation": 0,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 87, "note": "グリーン左バンカー"}, {"position": "right", "approx_dist": 87, "note": "グリーン右バンカー"}],
+                 "green": {"approach_from": "正面", "note": "グリーン左右バンカー。手前から攻める"},
+                 "memo": "グリーン左右バンカー注意。左に池あり。手前から攻める。"},
+            14: {"par": 5, "yard": 226, "elevation": 10.6,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 114, "note": "グリーン左バンカー"}],
+                 "green": {"approach_from": "正面手前", "note": "打ち上げ10.6y。グリーン奥は急傾斜+11"},
+                 "memo": "打ち上げ10.6y。グリーン奥は急傾斜。絶対に手前から攻める。"},
+            15: {"par": 4, "yard": 217, "elevation": -4.4,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 83, "note": "グリーン左バンカー"}],
+                 "green": {"approach_from": "右（花道）", "note": "打ち下ろし4.4y。グリーン左バンカー注意"},
+                 "memo": "打ち下ろし4.4y。グリーン左バンカー注意。花道は右から。"},
+            16: {"par": 4, "yard": 211, "elevation": -1.8,
+                 "green_side_bunkers": [],
+                 "green": {"approach_from": "正面", "note": "グリーン手前に小さな池。手前から攻める"},
+                 "memo": "グリーン手前に池注意。奥から手前への傾斜。"},
+            17: {"par": 5, "yard": 189, "elevation": -2.6,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 68, "note": "グリーン左バンカー"}, {"position": "right", "approx_dist": 68, "note": "グリーン右バンカー"}],
+                 "green": {"approach_from": "正面", "note": "打ち下ろし2.6y。グリーン左右バンカー注意"},
+                 "memo": "打ち下ろし2.6y。グリーン左右バンカー注意。複雑なアンジュレーション。"},
+            18: {"par": 4, "yard": 228, "elevation": -6.3,
+                 "green_side_bunkers": [{"position": "left", "approx_dist": 113, "note": "グリーン左バンカー"}],
+                 "green": {"approach_from": "右（花道）", "note": "打ち下ろし6.3y。グリーン左バンカー注意"},
+                 "memo": "打ち下ろし6.3y。グリーン左バンカー注意。花道は右から。"},
+        }
+    },
     "琵琶湖レークサイドGC 中→南（レギュラー）": {
         "name": "琵琶湖レークサイドGC", "tee": "REG",
         "holes": {
@@ -782,6 +936,11 @@ def get_valid_clubs(margin=None):
     ]
 
 def choose_club(remaining, shots_left, is_first_shot, par_num, hole, _margin=None):
+    hole_data  = st.session_state.course.get(hole, {}) if isinstance(hole, (int, str)) else {}
+    _elevation = hole_data.get("elevation", 0)
+    _total_y   = hole_data.get("yard", 0)
+    if _elevation != 0 and _total_y > 0:
+        remaining = max(round(remaining + _elevation * remaining / _total_y), 1)
     safety_m = _margin if _margin is not None else st.session_state.get("safety_margin", 0)
     effective_margin = 0 if shots_left == 1 else safety_m
     valid_clubs = get_valid_clubs(margin=effective_margin)
@@ -1253,12 +1412,35 @@ if st.session_state.remaining > 0 and remaining_strokes > 0:
                 st.markdown(
                     f"<div style='background:#dcfce7; border-left:4px solid #16a34a; border-radius:8px; padding:10px 20px; margin-top:8px; font-size:22px; font-weight:700; color:#15803d;'>"
                     f"🟢 {margin}打余裕があります</div>", unsafe_allow_html=True)
+            _hole_d   = st.session_state.course.get(hole, {})
+            _approach = _hole_d.get("green", {}).get("approach_from", "")
+            _gnote    = _hole_d.get("green", {}).get("note", "")
+            _bunkers  = _hole_d.get("green_side_bunkers", [])
+            _bunk_parts = [f"{b['position']}バンカー（残{b['approx_dist']}y地点）" for b in _bunkers if b.get("approx_dist", 0) > 0]
+            _adv_parts = []
+            if _approach:
+                _adv_parts.append(f"花道：{_approach}")
+            if _bunk_parts:
+                _adv_parts.append("バンカー：" + "、".join(_bunk_parts))
+            if _gnote:
+                _adv_parts.append(_gnote)
+            if _adv_parts:
+                st.markdown(
+                    f"<div style='background:#fefce8; border-left:4px solid #ca8a04; border-radius:8px; "
+                    f"padding:8px 16px; margin:4px 0; font-size:18px; font-weight:600; color:#78350f;'>"
+                    f"⚠️ " + "　".join(_adv_parts) + "</div>", unsafe_allow_html=True)
             st.markdown(f"<div class='shot-row'><strong>パット {putts}回</strong></div>", unsafe_allow_html=True)
             break
         elif is_last:
             st.markdown(f"<div class='shot-row-warn'><strong>{p['club']} ／{display_dist}y</strong>（残 {max(p['before']-display_dist,0)}y）</div>", unsafe_allow_html=True)
         else:
-            st.markdown(f"<div class='shot-row'><strong>{p['club']} ／{display_dist}y</strong>（残 {max(p['before']-display_dist,0)}y）</div>", unsafe_allow_html=True)
+            _elev_n = st.session_state.course.get(hole, {}).get("elevation", 0)
+            _elev_tag = ""
+            if _elev_n > 3:
+                _elev_tag = f"<span style='font-size:14px; color:#b45309;'> ↑打ち上げ{abs(_elev_n):.0f}y補正済</span>"
+            elif _elev_n < -3:
+                _elev_tag = f"<span style='font-size:14px; color:#0369a1;'> ↓打ち下ろし{abs(_elev_n):.0f}y補正済</span>"
+            st.markdown(f"<div class='shot-row'><strong>{p['club']} ／{display_dist}y</strong>（残 {max(p['before']-display_dist,0)}y）{_elev_tag}</div>", unsafe_allow_html=True)
 
 elif st.session_state.remaining == 0:
     st.markdown(f"<div class='shot-row'><strong>パット {putts}回</strong></div>", unsafe_allow_html=True)
