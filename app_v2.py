@@ -24,6 +24,7 @@ def _persist_settings():
         "remaining":       st.session_state.get("remaining", 0),
         "green_on_flag":   st.session_state.get("green_on_flag", False),
         "prev_hole":       st.session_state.get("prev_hole", None),
+        "target_score":    st.session_state.get("target_score", 100),
     })
 
 
@@ -1454,6 +1455,8 @@ if not st.session_state.get("_settings_loaded_from_storage") and isinstance(_sav
         st.session_state.loaded_preset = st.session_state.course_name
     for h_str, score in _saved_all.get("scores", {}).items():
         st.session_state[f"actual_{h_str}"] = score
+    if "target_score" in _saved_all:
+        st.session_state["target_score"] = _saved_all["target_score"]
     if _saved_all.get("history") is not None:
         st.session_state.history       = _saved_all["history"]
         st.session_state.remaining     = _saved_all.get("remaining", 0)
@@ -1796,9 +1799,10 @@ with goal_col2:
 if "adjust_plan"          not in st.session_state: st.session_state.adjust_plan          = False
 if "dismissed_triggers"   not in st.session_state: st.session_state.dismissed_triggers   = set()
 if st.session_state.get("_last_target_score") != target_score:
-    st.session_state.adjust_plan        = False
-    st.session_state.dismissed_triggers = set()
+    st.session_state.adjust_plan           = False
+    st.session_state.dismissed_triggers    = set()
     st.session_state["_last_target_score"] = target_score
+    st.session_state._needs_persist        = True
 
 if st.session_state.adjust_plan:
     hole_targets = calc_remaining_targets(target_score)
