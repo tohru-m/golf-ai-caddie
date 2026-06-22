@@ -1420,7 +1420,7 @@ CLUB_OPTIONS = [
 ]
 
 if "clubs" not in st.session_state:
-    _saved_clubs = _localS.getItem("golf_ai_clubs")
+    _saved_clubs = _localS.getItem("golf_ai_clubs", key="gi_clubs")
     st.session_state.clubs = _saved_clubs if _saved_clubs else CLUBS.copy()
 if "selected_club" not in st.session_state:
     st.session_state.selected_club = st.session_state.clubs[0]["name"]
@@ -1435,15 +1435,15 @@ if "caddy_audio_bytes" not in st.session_state:
 if "safety_margin" not in st.session_state:
     st.session_state.safety_margin = 0
 if "green_on_threshold" not in st.session_state:
-    _saved_threshold = _localS.getItem("golf_ai_green_threshold")
+    _saved_threshold = _localS.getItem("golf_ai_green_threshold", key="gi_green")
     st.session_state.green_on_threshold = int(_saved_threshold) if _saved_threshold is not None else 130
 
 if "course" not in st.session_state:
-    _saved_course = _localS.getItem("golf_ai_course")
+    _saved_course = _localS.getItem("golf_ai_course", key="gi_course")
     if _saved_course:
         st.session_state.course = {int(k): v for k, v in _saved_course.items()}
-        st.session_state.tee_type    = _localS.getItem("golf_ai_tee_type") or "REG"
-        st.session_state.course_name = _localS.getItem("golf_ai_course_name") or ""
+        st.session_state.tee_type    = _localS.getItem("golf_ai_tee_type", key="gi_tee") or "REG"
+        st.session_state.course_name = _localS.getItem("golf_ai_course_name", key="gi_cname") or ""
         st.session_state.loaded_preset = st.session_state.course_name
     else:
         st.session_state.course = {
@@ -2222,7 +2222,7 @@ st.divider()
 with st.expander("⚙️ クラブ設定", expanded=False):
     if st.button("クラブ設定を初期に戻す", use_container_width=True):
         st.session_state.clubs = CLUBS.copy()
-        _localS.removeItem("golf_ai_clubs")
+        _localS.removeItem("golf_ai_clubs", key="ri_clubs")
         for k in list(st.session_state.keys()):
             if k.startswith(("name_", "dist_", "miss_")):
                 del st.session_state[k]
@@ -2263,8 +2263,8 @@ if st.button("✅ クラブ設定を更新", use_container_width=True):
         st.error("クラブはパターを除いて13本までです"); st.stop()
     club_order = {"1W":1,"3W":2,"5W":3,"3U":4,"4U":5,"5U":6,"6U":7,"5I":8,"6I":9,"7I":10,"8I":11,"9I":12,"PW":13,"AW":14,"UW":15,"SW":16,"52°":17,"56°":18,"58°":19,"60°":20}
     st.session_state.clubs = sorted(edited_clubs, key=lambda x: club_order.get(x["name"], 999))
-    _localS.setItem("golf_ai_clubs", st.session_state.clubs)
-    _localS.setItem("golf_ai_green_threshold", st.session_state.get("green_on_threshold", 130))
+    _localS.setItem("golf_ai_clubs", st.session_state.clubs, key="si_clubs")
+    _localS.setItem("golf_ai_green_threshold", st.session_state.get("green_on_threshold", 130), key="si_green")
     st.session_state.pop("name_0", None)
     st.rerun()
 
@@ -2307,9 +2307,9 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
                 st.session_state[f"memo_{h}"] = data.get("memo", "")
                 st.session_state.pop(f"actual_{h}", None)
                 st.session_state.pop(f"final_score_input_{h}", None)
-            _localS.setItem("golf_ai_course", {str(k): v for k, v in st.session_state.course.items()})
-            _localS.setItem("golf_ai_course_name", selected_preset)
-            _localS.setItem("golf_ai_tee_type", preset["tee"])
+            _localS.setItem("golf_ai_course", {str(k): v for k, v in st.session_state.course.items()}, key="si_p_course")
+            _localS.setItem("golf_ai_course_name", selected_preset, key="si_p_cname")
+            _localS.setItem("golf_ai_tee_type", preset["tee"], key="si_p_tee")
             st.rerun()
         st.markdown(
             f"<div style='font-size:18px; font-weight:700; color:#065f46; "
@@ -2345,9 +2345,9 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
     if st.button("✅ コース設定を保存", key="btn_save_course", use_container_width=True):
         for h, data in edited_course.items():
             st.session_state.course[h].update(data)
-        _localS.setItem("golf_ai_course", {str(k): v for k, v in st.session_state.course.items()})
-        _localS.setItem("golf_ai_course_name", st.session_state.get("course_name", ""))
-        _localS.setItem("golf_ai_tee_type", st.session_state.get("tee_type", "REG"))
+        _localS.setItem("golf_ai_course", {str(k): v for k, v in st.session_state.course.items()}, key="si_s_course")
+        _localS.setItem("golf_ai_course_name", st.session_state.get("course_name", ""), key="si_s_cname")
+        _localS.setItem("golf_ai_tee_type", st.session_state.get("tee_type", "REG"), key="si_s_tee")
         st.success("コース設定を保存しました")
         st.rerun()
 
