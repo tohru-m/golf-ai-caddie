@@ -1430,6 +1430,11 @@ CLUB_OPTIONS = [
     "SW", "52°", "56°", "58°", "60°"
 ]
 
+# 前レンダーで保存フラグが立っていたらここで保存
+# （st.rerunの前に呼ぶと書き込みが完了しないため、次レンダーの先頭で実行する）
+if st.session_state.pop("_needs_persist", False):
+    _persist_settings()
+
 # localStorage から設定を読み込む（非同期対応: データが届いたレンダーで1回だけロード）
 _saved_all = _localS.getItem("golf_ai_settings")
 if not st.session_state.get("_settings_loaded_from_storage") and isinstance(_saved_all, dict):
@@ -2237,8 +2242,7 @@ st.divider()
 with st.expander("⚙️ クラブ設定", expanded=False):
     if st.button("クラブ設定を初期に戻す", use_container_width=True):
         st.session_state.clubs = CLUBS.copy()
-        st.session_state.clubs = CLUBS.copy()
-        _persist_settings()
+        st.session_state._needs_persist = True
         for k in list(st.session_state.keys()):
             if k.startswith(("name_", "dist_", "miss_")):
                 del st.session_state[k]
@@ -2279,7 +2283,7 @@ if st.button("✅ クラブ設定を更新", use_container_width=True):
         st.error("クラブはパターを除いて13本までです"); st.stop()
     club_order = {"1W":1,"3W":2,"5W":3,"3U":4,"4U":5,"5U":6,"6U":7,"5I":8,"6I":9,"7I":10,"8I":11,"9I":12,"PW":13,"AW":14,"UW":15,"SW":16,"52°":17,"56°":18,"58°":19,"60°":20}
     st.session_state.clubs = sorted(edited_clubs, key=lambda x: club_order.get(x["name"], 999))
-    _persist_settings()
+    st.session_state._needs_persist = True
     st.session_state.pop("name_0", None)
     st.rerun()
 
@@ -2322,7 +2326,7 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
                 st.session_state[f"memo_{h}"] = data.get("memo", "")
                 st.session_state.pop(f"actual_{h}", None)
                 st.session_state.pop(f"final_score_input_{h}", None)
-            _persist_settings()
+            st.session_state._needs_persist = True
             st.rerun()
         st.markdown(
             f"<div style='font-size:18px; font-weight:700; color:#065f46; "
@@ -2358,7 +2362,7 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
     if st.button("✅ コース設定を保存", key="btn_save_course", use_container_width=True):
         for h, data in edited_course.items():
             st.session_state.course[h].update(data)
-        _persist_settings()
+        st.session_state._needs_persist = True
         st.success("コース設定を保存しました")
         st.rerun()
 
