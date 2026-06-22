@@ -2241,6 +2241,10 @@ with st.expander("⚙️ クラブ設定", expanded=False):
             edited_clubs.append({"name": name, "dist": 0 if dist == "未設定" else dist, "miss": miss, "favorite": 0 if favorite == "未設定" else favorite})
         st.markdown("<div class='section-divider'></div>", unsafe_allow_html=True)
 
+    if st.button("➕ クラブを追加する", use_container_width=True, key="btn_add_club"):
+        st.session_state.clubs.append({"name": "（未選択）", "dist": 150, "miss": 0.20, "favorite": 0})
+        st.rerun()
+
 if st.button("✅ クラブ設定を更新", use_container_width=True):
     names = [c["name"] for c in edited_clubs]
     if len(names) != len(set(names)):
