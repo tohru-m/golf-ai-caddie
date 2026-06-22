@@ -11,13 +11,19 @@ from streamlit_local_storage import LocalStorage
 _localS = LocalStorage()
 
 def _persist_settings():
-    """クラブ・コース設定をまとめてlocalStorageに保存（1回のsetItemで完結）"""
+    """全設定・スコアをまとめてlocalStorageに保存（1回のsetItemで完結）"""
+    scores = {k[7:]: v for k, v in st.session_state.items() if k.startswith("actual_")}
     _localS.setItem("golf_ai_settings", {
         "clubs":           st.session_state.get("clubs", []),
         "green_threshold": int(st.session_state.get("green_on_threshold", 130)),
         "course":          {str(k): v for k, v in st.session_state.get("course", {}).items()},
         "course_name":     st.session_state.get("course_name", ""),
         "tee_type":        st.session_state.get("tee_type", "REG"),
+        "scores":          scores,
+        "history":         st.session_state.get("history", []),
+        "remaining":       st.session_state.get("remaining", 0),
+        "green_on_flag":   st.session_state.get("green_on_flag", False),
+        "prev_hole":       st.session_state.get("prev_hole", None),
     })
 
 
@@ -1446,6 +1452,13 @@ if not st.session_state.get("_settings_loaded_from_storage") and isinstance(_sav
         st.session_state.tee_type    = _saved_all.get("tee_type", "REG")
         st.session_state.course_name = _saved_all.get("course_name", "")
         st.session_state.loaded_preset = st.session_state.course_name
+    for h_str, score in _saved_all.get("scores", {}).items():
+        st.session_state[f"actual_{h_str}"] = score
+    if _saved_all.get("history") is not None:
+        st.session_state.history       = _saved_all["history"]
+        st.session_state.remaining     = _saved_all.get("remaining", 0)
+        st.session_state.green_on_flag = _saved_all.get("green_on_flag", False)
+        st.session_state.prev_hole     = _saved_all.get("prev_hole", None)
     st.session_state._settings_loaded_from_storage = True
 
 # フォールバック（localStorage 未保存 or 第1レンダー時）
@@ -2196,6 +2209,7 @@ with _confirm_col:
     st.markdown('<div id="confirm-score-anchor"></div>', unsafe_allow_html=True)
     if st.button("入力", key="btn_confirm_score", use_container_width=True):
         st.session_state[f"actual_{hole}"] = final_score
+        st.session_state._needs_persist = True
         st.rerun()
 
 if "reset_confirm" not in st.session_state:
@@ -2227,6 +2241,7 @@ if st.session_state.reset_confirm:
             for h in st.session_state.course.keys():
                 st.session_state.pop(f"actual_{h}", None)
                 st.session_state.pop(f"final_score_input_{h}", None)
+            st.session_state._needs_persist = True
             st.rerun()
     with no_col:
         if st.button("いいえ", key="btn_reset_no", use_container_width=True):
