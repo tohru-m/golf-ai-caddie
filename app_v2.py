@@ -1434,17 +1434,27 @@ if "caddy_audio_bytes" not in st.session_state:
     st.session_state.caddy_audio_bytes = None
 if "safety_margin" not in st.session_state:
     st.session_state.safety_margin = 0
+if "green_on_threshold" not in st.session_state:
+    _saved_threshold = _localS.getItem("golf_ai_green_threshold")
+    st.session_state.green_on_threshold = int(_saved_threshold) if _saved_threshold is not None else 130
 
 if "course" not in st.session_state:
-    st.session_state.course = {
-        h: {
-            "par": d["par"], "yard": d["yard"], "memo": d.get("memo", ""),
-            "elevation": d.get("elevation", 0),
-            "green_side_bunkers": d.get("green_side_bunkers", []),
-            "green": d.get("green", {}),
+    _saved_course = _localS.getItem("golf_ai_course")
+    if _saved_course:
+        st.session_state.course = {int(k): v for k, v in _saved_course.items()}
+        st.session_state.tee_type    = _localS.getItem("golf_ai_tee_type") or "REG"
+        st.session_state.course_name = _localS.getItem("golf_ai_course_name") or ""
+        st.session_state.loaded_preset = st.session_state.course_name
+    else:
+        st.session_state.course = {
+            h: {
+                "par": d["par"], "yard": d["yard"], "memo": d.get("memo", ""),
+                "elevation": d.get("elevation", 0),
+                "green_side_bunkers": d.get("green_side_bunkers", []),
+                "green": d.get("green", {}),
+            }
+            for h, d in PRESET_COURSES["宝塚ゴルフ倶楽部 新コース（フロント）"]["holes"].items()
         }
-        for h, d in PRESET_COURSES["宝塚ゴルフ倶楽部 新コース（フロント）"]["holes"].items()
-    }
 
 # =========================
 # クラブ選択ロジック（app_v2と同一）
@@ -2254,6 +2264,7 @@ if st.button("✅ クラブ設定を更新", use_container_width=True):
     club_order = {"1W":1,"3W":2,"5W":3,"3U":4,"4U":5,"5U":6,"6U":7,"5I":8,"6I":9,"7I":10,"8I":11,"9I":12,"PW":13,"AW":14,"UW":15,"SW":16,"52°":17,"56°":18,"58°":19,"60°":20}
     st.session_state.clubs = sorted(edited_clubs, key=lambda x: club_order.get(x["name"], 999))
     _localS.setItem("golf_ai_clubs", st.session_state.clubs)
+    _localS.setItem("golf_ai_green_threshold", st.session_state.get("green_on_threshold", 130))
     st.session_state.pop("name_0", None)
     st.rerun()
 
@@ -2296,6 +2307,9 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
                 st.session_state[f"memo_{h}"] = data.get("memo", "")
                 st.session_state.pop(f"actual_{h}", None)
                 st.session_state.pop(f"final_score_input_{h}", None)
+            _localS.setItem("golf_ai_course", {str(k): v for k, v in st.session_state.course.items()})
+            _localS.setItem("golf_ai_course_name", selected_preset)
+            _localS.setItem("golf_ai_tee_type", preset["tee"])
             st.rerun()
         st.markdown(
             f"<div style='font-size:18px; font-weight:700; color:#065f46; "
@@ -2331,6 +2345,9 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
     if st.button("✅ コース設定を保存", key="btn_save_course", use_container_width=True):
         for h, data in edited_course.items():
             st.session_state.course[h].update(data)
+        _localS.setItem("golf_ai_course", {str(k): v for k, v in st.session_state.course.items()})
+        _localS.setItem("golf_ai_course_name", st.session_state.get("course_name", ""))
+        _localS.setItem("golf_ai_tee_type", st.session_state.get("tee_type", "REG"))
         st.success("コース設定を保存しました")
         st.rerun()
 
