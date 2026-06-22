@@ -10,6 +10,17 @@ st.set_page_config(
 from streamlit_local_storage import LocalStorage
 _localS = LocalStorage()
 
+def _persist_settings():
+    """クラブ・コース設定をまとめてlocalStorageに保存（1回のsetItemで完結）"""
+    _localS.setItem("golf_ai_settings", {
+        "clubs":           st.session_state.get("clubs", []),
+        "green_threshold": int(st.session_state.get("green_on_threshold", 130)),
+        "course":          {str(k): v for k, v in st.session_state.get("course", {}).items()},
+        "course_name":     st.session_state.get("course_name", ""),
+        "tee_type":        st.session_state.get("tee_type", "REG"),
+    })
+
+
 # =========================
 # OpenAI Whisper による音声認識
 # =========================
@@ -1419,14 +1430,24 @@ CLUB_OPTIONS = [
     "SW", "52°", "56°", "58°", "60°"
 ]
 
-if "clubs" not in st.session_state or "green_on_threshold" not in st.session_state:
-    _saved_cs = _localS.getItem("golf_ai_club_settings")
-    if isinstance(_saved_cs, dict):
-        st.session_state.clubs = _saved_cs.get("clubs", CLUBS.copy())
-        st.session_state.green_on_threshold = int(_saved_cs.get("green_threshold", 130))
-    else:
-        st.session_state.clubs = CLUBS.copy()
-        st.session_state.green_on_threshold = 130
+# localStorage から設定を読み込む（非同期対応: データが届いたレンダーで1回だけロード）
+_saved_all = _localS.getItem("golf_ai_settings")
+if not st.session_state.get("_settings_loaded_from_storage") and isinstance(_saved_all, dict):
+    if "clubs" in _saved_all:
+        st.session_state.clubs            = _saved_all["clubs"]
+        st.session_state.green_on_threshold = int(_saved_all.get("green_threshold", 130))
+    if _saved_all.get("course"):
+        st.session_state.course      = {int(k): v for k, v in _saved_all["course"].items()}
+        st.session_state.tee_type    = _saved_all.get("tee_type", "REG")
+        st.session_state.course_name = _saved_all.get("course_name", "")
+        st.session_state.loaded_preset = st.session_state.course_name
+    st.session_state._settings_loaded_from_storage = True
+
+# フォールバック（localStorage 未保存 or 第1レンダー時）
+if "clubs" not in st.session_state:
+    st.session_state.clubs = CLUBS.copy()
+if "green_on_threshold" not in st.session_state:
+    st.session_state.green_on_threshold = 130
 if "selected_club" not in st.session_state:
     st.session_state.selected_club = st.session_state.clubs[0]["name"]
 if "caddy_log" not in st.session_state:
@@ -1439,24 +1460,16 @@ if "caddy_audio_bytes" not in st.session_state:
     st.session_state.caddy_audio_bytes = None
 if "safety_margin" not in st.session_state:
     st.session_state.safety_margin = 0
-
 if "course" not in st.session_state:
-    _saved_ps = _localS.getItem("golf_ai_course_settings")
-    if isinstance(_saved_ps, dict) and _saved_ps.get("course"):
-        st.session_state.course = {int(k): v for k, v in _saved_ps["course"].items()}
-        st.session_state.tee_type    = _saved_ps.get("tee_type", "REG")
-        st.session_state.course_name = _saved_ps.get("course_name", "")
-        st.session_state.loaded_preset = st.session_state.course_name
-    else:
-        st.session_state.course = {
-            h: {
-                "par": d["par"], "yard": d["yard"], "memo": d.get("memo", ""),
-                "elevation": d.get("elevation", 0),
-                "green_side_bunkers": d.get("green_side_bunkers", []),
-                "green": d.get("green", {}),
-            }
-            for h, d in PRESET_COURSES["宝塚ゴルフ倶楽部 新コース（フロント）"]["holes"].items()
+    st.session_state.course = {
+        h: {
+            "par": d["par"], "yard": d["yard"], "memo": d.get("memo", ""),
+            "elevation": d.get("elevation", 0),
+            "green_side_bunkers": d.get("green_side_bunkers", []),
+            "green": d.get("green", {}),
         }
+        for h, d in PRESET_COURSES["宝塚ゴルフ倶楽部 新コース（フロント）"]["holes"].items()
+    }
 
 # =========================
 # クラブ選択ロジック（app_v2と同一）
@@ -2224,7 +2237,8 @@ st.divider()
 with st.expander("⚙️ クラブ設定", expanded=False):
     if st.button("クラブ設定を初期に戻す", use_container_width=True):
         st.session_state.clubs = CLUBS.copy()
-        _localS.removeItem("golf_ai_club_settings")
+        st.session_state.clubs = CLUBS.copy()
+        _persist_settings()
         for k in list(st.session_state.keys()):
             if k.startswith(("name_", "dist_", "miss_")):
                 del st.session_state[k]
@@ -2265,10 +2279,7 @@ if st.button("✅ クラブ設定を更新", use_container_width=True):
         st.error("クラブはパターを除いて13本までです"); st.stop()
     club_order = {"1W":1,"3W":2,"5W":3,"3U":4,"4U":5,"5U":6,"6U":7,"5I":8,"6I":9,"7I":10,"8I":11,"9I":12,"PW":13,"AW":14,"UW":15,"SW":16,"52°":17,"56°":18,"58°":19,"60°":20}
     st.session_state.clubs = sorted(edited_clubs, key=lambda x: club_order.get(x["name"], 999))
-    _localS.setItem("golf_ai_club_settings", {
-        "clubs": st.session_state.clubs,
-        "green_threshold": st.session_state.get("green_on_threshold", 130),
-    })
+    _persist_settings()
     st.session_state.pop("name_0", None)
     st.rerun()
 
@@ -2311,11 +2322,7 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
                 st.session_state[f"memo_{h}"] = data.get("memo", "")
                 st.session_state.pop(f"actual_{h}", None)
                 st.session_state.pop(f"final_score_input_{h}", None)
-            _localS.setItem("golf_ai_course_settings", {
-                "course": {str(k): v for k, v in st.session_state.course.items()},
-                "course_name": selected_preset,
-                "tee_type": preset["tee"],
-            })
+            _persist_settings()
             st.rerun()
         st.markdown(
             f"<div style='font-size:18px; font-weight:700; color:#065f46; "
@@ -2351,11 +2358,7 @@ with st.expander("⛳ コース設定", expanded=st.session_state.course_expande
     if st.button("✅ コース設定を保存", key="btn_save_course", use_container_width=True):
         for h, data in edited_course.items():
             st.session_state.course[h].update(data)
-        _localS.setItem("golf_ai_course_settings", {
-            "course": {str(k): v for k, v in st.session_state.course.items()},
-            "course_name": st.session_state.get("course_name", ""),
-            "tee_type": st.session_state.get("tee_type", "REG"),
-        })
+        _persist_settings()
         st.success("コース設定を保存しました")
         st.rerun()
 
